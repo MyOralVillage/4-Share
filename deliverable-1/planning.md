@@ -1,4 +1,4 @@
-# YOUR PRODUCT/TEAM NAME
+# Team Bahen
 > _Note:_ This document is meant to evolve throughout the planning phase of your project.   That is, it makes sense for you commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section). Most importantly, it is a reflection of all the planning you work you've done in the first iteration. 
  > **This document will serve as a master plan between your team, your partner and your TA.**
 
@@ -253,8 +253,6 @@ With respect to organizing tasks, a Trello board will be utilized where each lis
 
 
 #### Q9: What are the rules regarding how your team works?
-
-Describe your team's working culture.
 
 **Communications:**
   * The expected frequency is at least once a week of group meetings to receive feedback on the current progress of the project. Additionally, the main method of communication will be through a Discord group server but there will be smaller group meetings if necessary. If there are any important announcements on Discord, it is expected that all team members reply within a day.
