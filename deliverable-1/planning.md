@@ -155,49 +155,123 @@ This is similar in concept to an MVC architecture. Where models represent aspect
 
 #### Q6: What are the roles & responsibilities on the team?
 
-Describe the different roles on the team and the responsibilities associated with each role. 
- * Roles should reflect the structure of your team and be appropriate for your project. Not necessarily one role to one team member.
+* Alexander Yang
+  * Focus: testing strategies
+  * Technical Strengths
+    * Experience working in a team from past projects
+    * Experience with C++ and Java
+    * Testing experience from personal projects
+  * Technical Weaknesses
+    * Little experience with Android development
+    * Bad at time management
+    * Explain ideas or codes not so clear
+    
+* Jiaheng Li
+  * Focus:
+  * Technical Strengths
+    * Have experience in developing Android app and web 
+    * Experience with C, Python, Java, PHP and SQL
+    * Algorithm design
+  * Technical Weaknesses
+    * Don’t have much experience working in large teams
+    * Sometimes, code structure is not clear
+    
+* Hamza Mahfooz
+  * Focus: delivering the core application
+  * Technical Strengths
+    * A lot of experience in the open source community
+    * Experience working on large existing codebases
+    * Have lots of Java and full stack experience
+  * Technical Weaknesses
+    * Don’t have much experience working in large teams
+    * Sometimes biting off more than I can chew
 
-List each team member and:
- * A description of their role(s) and responsibilities including the components they'll work on and non-software related work
- * 3 technical strengths and weaknesses each (e.g. languages, frameworks, libraries, development methodologies, etc.)
+* Lingjjng Zou
+  * Focus: UX & UI design, front- end development. Test application.
+  * Technical Strengths
+    * Developed android app before in past course project
+    * Some experience with both front and back end
+    * Experience with xml and java
+  * Technical Weaknesses
+    * Little experience with working in a big group
+    * Don’ know much about cloud and huge database
+
+* Yujie Wu
+  * Focus: design code for the application, make tests to debug.
+  * Technical Strengths
+    * Developed android apps from past course project
+    * Find corner cases for debugging
+    * Algorithm design
+  * Technical Weaknesses
+    * Less experience with web development
+    * Little experience with API implementation
+
+* Panagiotis Roubatsis
+  * Focus: Point of contact for the partner, creating Trello tasks, development of the application
+  * Technical Strengths
+    * Industry experience as a Software Developer and as a QA Analyst
+    * Android development experience from personal projects
+    * Full-stack web development experience (Node, React, Web Components)
+  * Technical Weaknesses
+    * Most of my experience has been with smaller 3-4 person teams rather than 7 people like in this course
+    * Proactive communication skills can be lacking at times
+    * May take on too much responsibility and overwork myself
+
+* Zhipeng Zhou
+  * Focus: Adjuct team progress, development of the application, scavenger
+  * Technical Strengths
+    * Have experience in both Android and Web development
+    * Experienced with C, Java, Python and HTML
+    * Familiar with team work process, especially in large team
+  * Technical Weaknesses
+    * Don’t know much about JavaScript
+    * Sometimes the code structure can be messy
+
 
 #### Q7: What operational events will you have as a team?
 
-Describe meetings (and other events) you are planning to have. 
- * When and where? Recurring or ad hoc? In-person or online?
- * What's the purpose of each meeting?
- * Other events could be coding sessions, code reviews, quick weekly sync meeting online, etc.
- * You must have at least 2 meetings with your project partner (if you have one). Describe them here:
-   * What did you discuss during the meetings?
-   * What were the outcomes of each meeting?
-   * You must provide meeting minutes.
-   * You must have a regular meeting schedule established by the second meeting.  
+Generally, weekly meetings will be held on Mondays from 5:00pm to 6:00pm, preferably in a booked study room in Robarts Library. During these meetings, the main objective is to discuss implementation details and to assign specific tasks to each member. Additionally, any issues from the past week (such as a team member could not complete his/her assigned tasks due to medical reasons) will be resolved initially. Code reviews may occur before the meeting if necessary.  
+
+We’ll also have weekly meetings with our partner on Saturdays 10AM-11AM. This will be to show our progress, get feedback, and prioritize upcoming tasks.  
+
+In addition to our general meetings, there may be online meetings on Discord. These meetings will occur if there is an urgent adjustment required, a team member requires assistance on a specific task or just as a means to sync. The online meetings are flexible and depend on the participating members’ schedules.   
+
+* Partner Meeting 1  
+Meeting minutes : 53 minutes  
+During the meeting, a brief introduction was given by all attending members, followed by a summarized description of our partner’s research on the project. Additionally, the technical advisor who was present suggested and recommended the programming languages that they expect (Flutter or React), as well as clarified on the artifacts that we intend to use. After the expectations and artifacts were stated, the team’s questions were answered, clarifying the project. Finally, both the team members and the partner group decided to schedule the second meeting on Saturday at 10:00am via online, which was determined to be the time for our weekly (or bi-weekly) scheduled meetings.  
+
+* Partner Meeting 2  
+Meeting minutes: 50 minutes  
+Walked through the deliverable one document to ensure that we are on the same page. Made some modifications to existing user stories as well as adding some new ones. Confirmed that we’ll send a copy of the deliverable one document to Brett for review by Sunday morning, specifically for the user stories. Confirmed that we’ll email Brett a scan of the signed NDA by Tuesday morning.
+
   
 #### Q8: What artifacts will you use to self-organize?
 
-List/describe the artifacts you will produce in order to organize your team.       
+A Discord group server is used to notify and remind team members of the weekly meetings as well as any other meetings that were planned on the spot. Additionally, it will be used as a form to recap a meeting’s agenda for members who could not attend the meeting.  
 
- * Artifacts can be To-Do lists, Task boards, schedule(s), meeting minutes, etc.
- * We want to understand:
-   * How do you keep track of what needs to get done?
-   * How do you prioritize tasks?
-   * How do tasks get assigned to team members?
-   * How do you determine the status of work from inception to completion?
+With respect to organizing tasks, a Trello board will be utilized where each list will represent the priority of a task. In the Trello board, each member can choose which task they will complete and move the cards into the correct columns as progress is made.
+
 
 #### Q9: What are the rules regarding how your team works?
 
 Describe your team's working culture.
 
 **Communications:**
- * What is the expected frequency? What methods/channels are appropriate? 
- * If you have a partner project, what is your process (in detail) for communicating with your partner?
+  * The expected frequency is at least once a week of group meetings to receive feedback on the current progress of the project. Additionally, the main method of communication will be through a Discord group server but there will be smaller group meetings if necessary. If there are any important announcements on Discord, it is expected that all team members reply within a day.
+  * With respect to our partner, we intend to meet with the partner in person weekly. If we need further communication, it will be via email.
+
  
 **Meetings:**
- * How are people held accountable for attending meetings, completing action items? Is there a moderator or process?
+ * It is ensured that all group members attend the meeting but due to all members having different schedules, not all members may not be able to attend. In such a case, these members will be informed of what transpired in the meeting through Discord.
  
 **Conflict Resolution:**
- * List at least three team scenarios/conflicts you discussed in lecture and how you decided you will resolve them. Indecisions? Non-responsive team members? Any other scenarios you can think of?
+ * Team cannot come to a conclusive decision
+   * A decision can be made judging from the benefits and impacts of the decision. If this decision is still not accepted by all members, a majority vote will be performed.
+ * Team member is not responsive
+   * Other team members will attempt to communicate with that team member face to face and resolve any issues if possible.
+ * Team member is not meeting deadlines
+   * That specific team member will be given a warning and if a valid reason for the inability to complete the task, then other team members will assist or complete the task in that member’s instead.
+
 
 
 
@@ -205,13 +279,9 @@ Describe your team's working culture.
 ----
 ### Highlights
 
-Specify 3 - 5 key decisions and/or insights that came up during your meetings
-and/or collaborative process.
+We chose this product because we felt that it could be the most impactful as far as it’s reach and scope is concerned, it also helped that the partner was one of the only registered non profit organizations that was interested in having us develop their idea and/or to help them see to light that it is implemented. We also considered B12Give and Harvard Medical, however we ranked the former lower because it was affiliated with a for-profit partner and the latter because it didn’t fit our impactfulness criteria. The process plan on the other hand was developed with having our target user’s concerns in mind before all else, for that reason we chose to use technologies that are most accessible to them while not forgetting the primary mission statement of the product. As for the decisions we made during the planning phase, they revolved around suggestions made for team convenience and due to practical reasons we needed to make changes with how the product is structured (that were run through with the partner). Notable examples of such cases include:
 
- * Short (5 min' read max)
- * Decisions can be related to the product and/or the team process.
-    * Mention which alternatives you were considering.
-    * Present the arguments for each alternative.
-    * Explain why the option you decided on makes the most sense for your team/product/users.
- * Essentially, we want to understand how (and why) you ended up with your current product and process plan.
- * This section is useful for important information regarding your decision making process that may not necessarily fit in other sections. 
+  * the fact that we wanted to use react native to create the app however most of the team members didn’t have experience with react and the fact that the react apk was far larger than the required minimum size led us to choose native android instead.
+  * We initially wanted to meet with the partner twice a week, however we soon realized that with 7 different schedules it was only possible to do it once a week.
+  * Initially we wanted to implement accessibility features however after talking to the partner we realized that we should focus on our primary target audience.
+
