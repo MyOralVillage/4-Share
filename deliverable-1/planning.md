@@ -28,7 +28,7 @@ As a software developer, Chi is developing an app targeted to one of the above g
 Our users will typically share some common characteristics (First three groups):  
 1. They receive less education so that they have a hard time reading multi-digit numbers.  
 2. They can not perform basic arithmetic operations on multi-digit numbers.  
-3. money transactions are highly involved in their daily work (heavily inflated currency will force them to deal with multi-digits numbers).  
+3. Monetary transactions are highly involved in their daily work (heavily inflated currency will force them to deal with multi-digit numbers).  
 
 Therefore, this inspired us to provide an external tool to assist them in daily lives.  
 
@@ -54,8 +54,6 @@ To test the application, we will use a combination of strategies. First, we’ll
 No third party APIs will be used, this application should work mostly offline. An Android application is built off of views and activities, they go hand in hand. The views are what the user sees on the screen, and a corresponding activity adds functionality to the view. Since one of the requirements is to deliver a library that developers can incorporate into their own app, the main view/activity will be developed as an external library to the application. The user of the library can specify which currency they would like to use, and the view/activity will behave accordingly. The application will import this library and in addition to the functionality this library provides, the application will also have a currency switcher view.  
 
 This is similar in concept to an MVC architecture. Where models represent aspects of the application state, the view corresponds to the Android XML views, and the controllers are the Android Activities. The application state does not need to be persisted, as this is a purely offline application, and it has no user-specified settings that need to be saved between sessions.
-
-* Documentation for the library is a deliverable
 
 There will also be a second part to this application which will be a small web interface for administrators. This web application will be built with Node.js for the backend REST API, and a React frontend. This web app will be deployed to Heroku. For persistence we’ll most likely use a Postgres DB instance on Heroku, since it is free and we won’t need anywhere near the 10K rows limit for the free instance.
 
