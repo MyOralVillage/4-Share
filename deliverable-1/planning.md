@@ -19,6 +19,8 @@ As a market vendor, John is selling watermelon in a market in Kenya. He can not 
 As a micro entrepreneurs, Kevin manages 8 people. He needs to calculate net profit everyday, which involves addition and subtraction. However, he really can not read numbers that are above 5 digits.
 * Record Keepers – e.g. in Savings Groups, shoppers/buyers  
 As a record keeper, Jean records every expense and income for her entire family. However, she really has a hard time with performing arithmetic operations on complex numbers.
+* Administrator  
+As an administrator, Jack wants to configure certain aspects of the application for his users via a web interface.
 * Software Developers  
 As a software developer, Chi is developing an app targeted to one of the above groups of users. He wants to use an existing library to save development time on his own app.
 
@@ -49,53 +51,49 @@ We will build a native Android application using Java and Android Studio. We wil
 
 To test the application, we will use a combination of strategies. First, we’ll use unit tests for testing functions or classes. For more complex scenarios, we may use espresso to do UI tests. Finally, we will have Pull Request reviews where the reviewer will be responsible to verify that the new changes work as intended, and that code quality is not compromised. As part of the pull request reviews, we will also run our automated tests on a CI system and block the ability to merge them should the tests fail.  
 <img width="477" alt="Screen Shot 2020-02-05 at 2 50 29 PM" src="https://user-images.githubusercontent.com/46569172/73877589-f08dbf80-4826-11ea-8621-45273ee82544.png">  
-No third party APIs will be used, this application should work completely offline. An Android application is built off of views and activities, they go hand in hand. The views are what the user sees on the screen, and a corresponding activity adds functionality to the view. Since one of the requirements is to deliver a library that developers can incorporate into their own app, the main view/activity will be developed as an external library to the application. The user of the library can specify which currency they would like to use, and the view/activity will behave accordingly. The application will import this library and in addition to the functionality this library provides, the application will also have a currency switcher view.  
+No third party APIs will be used, this application should work mostly offline. An Android application is built off of views and activities, they go hand in hand. The views are what the user sees on the screen, and a corresponding activity adds functionality to the view. Since one of the requirements is to deliver a library that developers can incorporate into their own app, the main view/activity will be developed as an external library to the application. The user of the library can specify which currency they would like to use, and the view/activity will behave accordingly. The application will import this library and in addition to the functionality this library provides, the application will also have a currency switcher view.  
 
 This is similar in concept to an MVC architecture. Where models represent aspects of the application state, the view corresponds to the Android XML views, and the controllers are the Android Activities. The application state does not need to be persisted, as this is a purely offline application, and it has no user-specified settings that need to be saved between sessions.
 
+* Documentation for the library is a deliverable
 
+There will also be a second part to this application which will be a small web interface for administrators. This web application will be built with Node.js for the backend REST API, and a React frontend. This web app will be deployed to Heroku. For persistence we’ll most likely use a Postgres DB instance on Heroku, since it is free and we won’t need anywhere near the 10K rows limit for the free instance.
+
+The API will consist of two endpoints, one for fetching existing configurations, and one for updating configurations. The frontend will contain two views. One view for selecting a country to modify, and one view for ranking the displayed currencies for that country. The web app will be secured using basic auth.
+<img width="453" alt="Screen Shot 2020-02-08 at 3 26 20 PM" src="https://user-images.githubusercontent.com/46569172/74091654-a0f9fe80-4a87-11ea-95e0-a9cf9e053e45.png">
 
 #### Q5: What are the user stories that make up the MVP?
 * As a record keeper/market vendor, I want to convert a visual depiction of cash into a number, so that I can keep tabs on my sales.
   * User can place images of bills and coins onto the screen
   * A numeric representation of the amount of currency is automatically displayed as cash is added/removed to the screen
  
-* As a user, I should be able to input a number, and the number should automatically displayed as currency in the counting area, so that I can understand what value that number represents to me
+* As a user learning written arithmetic notation, I should be able to input a written number, and the number should automatically be displayed as currency in the counting area, so that I can understand what value that number represents to me
   * User can input a number and it is automatically converted to a visual depiction of the currency equivalent
- 
-* As a micro entrepreneur, I want to count money by adding bills and coins into a common area, so that I can count without having physical access to currency
+
+* As an economically active adult, I want to be able to count and calculate without having physical access to money, in order to plan for my household and futur
   * User can tap bills and coins located at the bottom of the screen to add them into the main counting area
   * No limit as to how much currency can be placed into the counting area
   * User can discard bill from the counting area by tapping on it
   * Number is updated to reflect the amount of currency in the counting area
- 
+
 * As a record keeper, I want to be able to perform addition, so that I can keep better track of my sales
   * User can swipe right to select addition operation
-  * User can swipe left to change their mind and undo the operation
-  * If user undoes their operation, then the previous state should be kept and they can see the same bills they placed previously
   * The displayed number automatically reflects the current result
   * Addition is chainable with itself and other arithmetic operations
+  * User can tap addition icon to go back to the counting area and see the final result
 
 * As a record keeper, I want to be able to perform subtraction, so that I can keep better track of my sales
   * User can swipe left to select subtraction operation
-  * User can swipe right to change their mind and undo the operation
-  * If user undoes their operation, then the previous state should be kept and they can see the same bills they placed previously
   * The displayed number automatically reflects the current results
   * Subtraction is chainable with itself and other arithmetic operations
+  * User can tap subtraction icon to go back to the counting area and see the final result
 
 * As a record keeper, I want to be able to perform multiplication, so that I can keep better track of my sales
   * User can swipe up to perform multiplication
-  *User can swipe down to change their mind and undo the operation
-  *If user undoes their operation, then the previous state should be kept and they can see the same bills they placed previously
   * The displayed number automatically reflects the current results
-  *Multiplication is chainable with itself and other arithmetic operations
+  * Multiplication is chainable with itself and other arithmetic operations
+  * User can tap the multiplication icon to go back to the counting area and see the final result
 
-* As a record keeper, I want to be able to perform division, so that I can keep better track of my sales
-  * User can swipe down to perform division
-  * User can swipe up to change their mind and undo the operation
-  * If user undoes their operation, then the previous state should be kept and they can see the same bills they placed previously
-  * The displayed number automatically reflects the current results
-  * Division is chainable with itself and other arithmetic operations
 
 * As a user, I want to be able to select a currency, so I can use the cash calculator with any available currency I wish to work with
   * User can click the settings button to bring up a view with a selection of currency
@@ -124,29 +122,55 @@ This is similar in concept to an MVC architecture. Where models represent aspect
   * Upon starting the application for the first time a video should play
   * Upon subsequent startups the video should not play
 
-* As a user, I want to multiply using stones, so I can quickly multiply on the main screen without using spatial navigation
-  * Should multiply when the toggle is set to the left position
-  * Amount of cash on the screen is multiplied by the number of black stones specified
-  * User can add black stones by dragging up from the one black stone at the bottom of the stack
-  * User should be able to multiply by 1, 2, 3, 4, 5, 6, 7, 8, 9, or 10
-
-* As a user, I want to divide using stones, so I can quickly divide on the main screen without using spatial navigation
-  * Should divide when the toggle is set to the right position
-  * Amount of cash on the screen is divided by the number of black stones specified
-  * User can add black stones by dragging up from the one black stone at the bottom of the stack
-  * User should be able to divide by 1, 2, 3, 4, 5, 6, 7, 8, 9, or 10
-
-* As a user, I should be able to switch scrollbars, to input digits instead of adding currency to the counting area
-  * User can swipe horizontally on the scrollbar to switch input method to digits
-
-* As a user, I should be able to switch scrollbars, to input currency instead of inputting digits
-  * User can swipe horizontally on the scrollbar to switch input method to currency
-
 * As a user, I should be able to work with the Kenyan Shilling, so that I can use it to count and do math
   * Kenyan currency is displayed in the scrollbar
 
 * As a user, I should be able to work with the US Dollar, so that I can use it to count and do math
   * US Dollar is displayed in the scrollbar
+
+* As a user, I should be able to work with the Indian Rupee, so that I can use it to count and do math
+  * Indian Rupee is displayed in the scrollbar
+
+* As a user, I should be able to work with Pakistani Rupee, so that I can use it to count and do math
+  * Pakistani Rupee is displayed in the scrollbar
+
+* As a user, I should be able to work with the Bangladesh Taka, so that I can use it to count and do math
+  * Bangladesh Taka is displayed in the scrollbar
+
+* As an administrator, I should be able to rank the order in which currencies are displayed for a specific locale, so that I can more effectively optimize the experience for my users in different countries
+  * Clicking on a country displays current rankings of the currency
+  * Administrator can drag and drop currency up and down list to change the ranking
+  * Click save button to save rankings
+
+* As the cash calculator mobile app, I should fetch currency ranking configurations from the server, so that I can effectively localize the experience based on the administrator’s expectations
+  * Every time the application is opened, a request should be made for the configuration
+  * The application’s local configuration is updated
+  * The fetched configuration should override the defaults
+  * The app should continue working as expected even if there’s no internet access to fetch the configuration
+
+* As a developer, documentation should be available, so I know how to use the library
+  * Documentation for classes and methods are available
+  * Example usage of the library should be available
+
+* As a user, I should be able to swipe down to enter numeric mode if I am in image mode, so that I can input numbers instead of currency
+  * Number pad is displayed
+  * Can enter a number with number pad
+  * Entered number is converted to currency
+
+* As a user, I should be able to swipe down to enter image mode if I am in numeric mode
+  * No number pad is displayed
+  * Can add currency to the counting area by tapping it on the scrollbar
+  * Currency is converted into a numeric form
+
+* As a user, I should be able to clear the screen
+  * Tap icon in bottom right corner (handshake icon)
+  * Returns app to starting state
+
+* As a user, I can click on the road icon to start a slideshow to review what I’ve already done, so that I can make changes or check my work
+  * User can view a slideshow of each operation they did
+  * User can tap to stop the slideshow at a specific phase
+  * User can modify what they’ve already done
+
 
 
 ----
