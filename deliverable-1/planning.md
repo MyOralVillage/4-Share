@@ -1,4 +1,4 @@
-# Bahen
+# Team Bahen
 > _Note:_ This document is meant to evolve throughout the planning phase of your project.   That is, it makes sense for you commit regularly to this file while working on the project (especially edits/additions/deletions to the _Highlights_ section). Most importantly, it is a reflection of all the planning you work you've done in the first iteration. 
  > **This document will serve as a master plan between your team, your partner and your TA.**
 
@@ -6,7 +6,7 @@
  
 #### Q1: What are you planning to build?
 
-The goal of this project is to write an calculator-like application, which the main screen will consist of two parts, example images area and working area, and  user inputs will be gestures and the app will support numerical digits and cash value translation, basic arithmetic operations (such as + - X ÷), auto-aggregate large quantities and simple fraction visualization. This application is designed to help those who can not read large numbers, but have to operate on money with large face value in daily life. Empowering them with the ability to read complex numerical digit and or perform simple arithmetic operations on them.  
+The goal of this project is to write a calculator-like application. The main screen will consist of two parts, the scroll bar and the counting area. User inputs will be gestures and the app will support numerical digits and cash value translation, basic arithmetic operations (such as + - X ÷), auto-aggregate large quantities and simple fraction visualization. This application is designed to help those who can not read large numbers, but have to operate on money with large face value in daily life. Empowering them with the ability to read complex numerical digit and or perform simple arithmetic operations on them.
 <img width="601" alt="Screen Shot 2020-02-05 at 2 34 02 PM" src="https://user-images.githubusercontent.com/46569172/73876578-377ab580-4825-11ea-9dfa-e0664bf685e2.png">
 
 
@@ -26,8 +26,8 @@ As a software developer, Chi is developing an app targeted to one of the above g
 
 
 Our users will typically share some common characteristics (First three groups):  
-1. they receive less education so that they have a hard time reading multi-digits numbers,  
-2. they can not perform basic arithmetic operations on multi-digits numbers,  
+1. They receive less education so that they have a hard time reading multi-digit numbers.  
+2. They can not perform basic arithmetic operations on multi-digit numbers.  
 3. money transactions are highly involved in their daily work (heavily inflated currency will force them to deal with multi-digits numbers).  
 
 Therefore, this inspired us to provide an external tool to assist them in daily lives.  
@@ -63,7 +63,7 @@ The API will consist of two endpoints, one for fetching existing configurations,
 <img width="453" alt="Screen Shot 2020-02-08 at 3 26 20 PM" src="https://user-images.githubusercontent.com/46569172/74091654-a0f9fe80-4a87-11ea-95e0-a9cf9e053e45.png">
 
 #### Q5: What are the user stories that make up the MVP?
-* As a record keeper/market vendor, I want to convert a visual depiction of cash into a number, so that I can keep tabs on my sales.
+* As a user, I want to convert currency to numeric form, so that I can learn to read and write Indo-Arabic notation and arithmetic operators
   * User can place images of bills and coins onto the screen
   * A numeric representation of the amount of currency is automatically displayed as cash is added/removed to the screen
  
@@ -73,7 +73,7 @@ The API will consist of two endpoints, one for fetching existing configurations,
 * As an economically active adult, I want to be able to count and calculate without having physical access to money, in order to plan for my household and futur
   * User can tap bills and coins located at the bottom of the screen to add them into the main counting area
   * No limit as to how much currency can be placed into the counting area
-  * User can discard bill from the counting area by tapping on it
+  * User can discard bill from the counting area by long-pressing it
   * Number is updated to reflect the amount of currency in the counting area
 
 * As a record keeper, I want to be able to perform addition, so that I can keep better track of my sales
@@ -136,6 +136,9 @@ The API will consist of two endpoints, one for fetching existing configurations,
 
 * As a user, I should be able to work with the Bangladesh Taka, so that I can use it to count and do math
   * Bangladesh Taka is displayed in the scrollbar
+  
+* As a user, I should be able to work with Canadian Dollar, so that I can use it to count and do math
+  * Canadian Dollar is displayed in the scrollbar
 
 * As an administrator, I should be able to rank the order in which currencies are displayed for a specific locale, so that I can more effectively optimize the experience for my users in different countries
   * Clicking on a country displays current rankings of the currency
@@ -242,7 +245,7 @@ The API will consist of two endpoints, one for fetching existing configurations,
     * May take on too much responsibility and overwork myself
 
 * Zhipeng Zhou
-  * Focus: Adjuct team progress, development of the application, scavenger
+  * Focus: Adjuct team progress, development of the application
   * Technical Strengths
     * Have experience in both Android and Web development
     * Experienced with C, Java, Python and HTML
@@ -267,6 +270,10 @@ During the meeting, a brief introduction was given by all attending members, fol
 * Partner Meeting 2  
 Meeting minutes: 50 minutes  
 Walked through the deliverable one document to ensure that we are on the same page. Made some modifications to existing user stories as well as adding some new ones. Confirmed that we’ll send a copy of the deliverable one document to Brett for review by Sunday morning, specifically for the user stories. Confirmed that we’ll email Brett a scan of the signed NDA by Tuesday morning.
+
+* Partner Meeting 3  
+Meeting minutes: 1h 14 minutes
+Walked through the deliverable one document again and settle down some controversial issues. Made some modifications to the existing user stories, add some more and add a new role (administrator) to the project. Brett showed some more detailed information about the project. And left two issues to be discussed and comfirmed in the next meeting.
 
   
 #### Q8: What artifacts will you use to self-organize?
@@ -303,7 +310,7 @@ With respect to organizing tasks, a Trello board will be utilized where each lis
 
 We chose this product because we felt that it could be the most impactful as far as it’s reach and scope is concerned, it also helped that the partner was one of the only registered non profit organizations that was interested in having us develop their idea and/or to help them see to light that it is implemented. We also considered B12Give and Harvard Medical, however we ranked the former lower because it was affiliated with a for-profit partner and the latter because it didn’t fit our impactfulness criteria. The process plan on the other hand was developed with having our target user’s concerns in mind before all else, for that reason we chose to use technologies that are most accessible to them while not forgetting the primary mission statement of the product. As for the decisions we made during the planning phase, they revolved around suggestions made for team convenience and due to practical reasons we needed to make changes with how the product is structured (that were run through with the partner). Notable examples of such cases include:
 
-  * the fact that we wanted to use react native to create the app however most of the team members didn’t have experience with react and the fact that the react apk was far larger than the required minimum size led us to choose native android instead.
+  * The fact that we wanted to use react-native to create the app, however, most of the team members didn’t have experience with react and the fact that the react apk was far larger than the required minimum size led us to choose native android instead.
   * We initially wanted to meet with the partner twice a week, however we soon realized that with 7 different schedules it was only possible to do it once a week.
   * Initially we wanted to implement accessibility features however after talking to the partner we realized that we should focus on our primary target audience.
 
