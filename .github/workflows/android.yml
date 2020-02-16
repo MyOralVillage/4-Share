@@ -15,7 +15,7 @@ jobs:
         java-version: 1.8
     - name: Build with Gradle
       working-directory: android-app
-      run: ./gradlew build
+      run: chmod +x ./gradlew && ./gradlew build
     - name: Run Tests
       working-directory: android-app
       run: ./gradlew test
