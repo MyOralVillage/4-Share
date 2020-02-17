@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CashCalculatorModule</string>
+    <string name="total"> </string>
+    <string name="denominations">Denominations</string>
 </resources>

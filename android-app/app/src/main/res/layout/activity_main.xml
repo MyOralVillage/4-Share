@@ -15,6 +15,28 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toTopOf="@id/currency_scrollbar" />
 
+    <TextView
+        android:id="@+id/sum_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:text="@string/total"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/division"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="57dp"
+        android:layout_marginLeft="57dp"
+        android:layout_marginTop="111dp"
+        android:text="@string/denominations"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView
         android:id="@+id/currency_scrollbar"
         android:layout_width="match_parent"
