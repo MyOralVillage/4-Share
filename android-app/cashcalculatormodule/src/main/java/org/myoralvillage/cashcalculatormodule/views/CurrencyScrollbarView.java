@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
+import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyTapListener;
 
 import java.math.BigDecimal;
 
@@ -19,6 +21,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     private final int PADDING_HORIZONTAL_PX = dpToPixels(8);
 
     private LinearLayout linearLayout;
+    private CurrencyTapListener currencyTapListener;
 
     public CurrencyScrollbarView(Context context) {
         super(context);
@@ -31,6 +34,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     }
 
     private void initialize() {
+        currencyTapListener = null;
         setBackgroundColor(getResources().getColor(R.color.scrollbar_background));
 
         linearLayout = new LinearLayout(getContext());
@@ -41,6 +45,10 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         addView(linearLayout);
+    }
+
+    public void setCurrencyTapListener(CurrencyTapListener currencyTapListener) {
+        this.currencyTapListener = currencyTapListener;
     }
 
     public void setCurrency(String currencyCode) {
@@ -78,12 +86,20 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         return model;
     }
 
-    private void addDenomination(DenominationModel denominationModel) {
+    private void addDenomination(final DenominationModel denominationModel) {
         ImageView imageView = new ImageView(getContext());
         imageView.setImageResource(denominationModel.getImageResource());
         imageView.setAdjustViewBounds(true);
 
         imageView.setPadding(PADDING_HORIZONTAL_PX, PADDING_VERTICAL_PX, PADDING_HORIZONTAL_PX, PADDING_VERTICAL_PX);
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currencyTapListener != null)
+                    currencyTapListener.onTapDenomination(denominationModel);
+            }
+        });
+
         linearLayout.addView(imageView);
     }
 
