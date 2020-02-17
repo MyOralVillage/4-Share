@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="currency_CAD">
+        <item>100</item>
+        <item>@drawable/currency_cad_hundred_dollars</item>
+
+        <item>50</item>
+        <item>@drawable/currency_cad_fifty_dollars</item>
+
+        <item>20</item>
+        <item>@drawable/currency_cad_twenty_dollars</item>
+
+        <item>10</item>
+        <item>@drawable/currency_cad_ten_dollars</item>
+
+        <item>5</item>
+        <item>@drawable/currency_cad_five_dollars</item>
+    </array>
+</resources>

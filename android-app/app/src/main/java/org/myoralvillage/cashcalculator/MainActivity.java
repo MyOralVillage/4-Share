@@ -24,6 +24,6 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(message.getMessage());
 
         CurrencyScrollbarView currencyScrollbarView = findViewById(R.id.currency_scrollbar);
-        currencyScrollbarView.setCurrency(CurrencyModel.getInstance("CAD"));
+        currencyScrollbarView.setCurrency("CAD");
     }
 }

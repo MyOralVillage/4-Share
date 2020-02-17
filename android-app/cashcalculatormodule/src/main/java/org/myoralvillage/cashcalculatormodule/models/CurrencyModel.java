@@ -1,6 +1,6 @@
 package org.myoralvillage.cashcalculatormodule.models;
 
-import org.myoralvillage.cashcalculatormodule.R;
+import android.content.res.Resources;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -34,21 +34,5 @@ public class CurrencyModel {
 
     public Set<DenominationModel> getDenominations() {
         return denominations;
-    }
-
-    public static CurrencyModel getInstance(String currencyCode) {
-        CurrencyModel model = new CurrencyModel(currencyCode);
-
-        switch(currencyCode) {
-            case "CAD":
-                model.addDenomination(new BigDecimal(100), R.drawable.currency_cad_hundred_dollars);
-                model.addDenomination(new BigDecimal(50), R.drawable.currency_cad_fifty_dollars);
-                model.addDenomination(new BigDecimal(20), R.drawable.currency_cad_twenty_dollars);
-                model.addDenomination(new BigDecimal(10), R.drawable.currency_cad_ten_dollars);
-                model.addDenomination(new BigDecimal(5), R.drawable.currency_cad_five_dollars);
-                break;
-        }
-
-        return model;
     }
 }
