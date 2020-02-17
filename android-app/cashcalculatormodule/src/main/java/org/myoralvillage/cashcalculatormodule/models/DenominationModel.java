@@ -1,5 +1,7 @@
 package org.myoralvillage.cashcalculatormodule.models;
 
+import androidx.annotation.Nullable;
+
 import java.math.BigDecimal;
 
 public class DenominationModel implements Comparable<DenominationModel> {
@@ -22,5 +24,14 @@ public class DenominationModel implements Comparable<DenominationModel> {
     @Override
     public int compareTo(DenominationModel o) {
         return this.value.compareTo(o.value);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof DenominationModel))
+            return false;
+
+        DenominationModel dm = (DenominationModel) obj;
+        return value.equals(dm.value) && imageResource == dm.imageResource;
     }
 }
