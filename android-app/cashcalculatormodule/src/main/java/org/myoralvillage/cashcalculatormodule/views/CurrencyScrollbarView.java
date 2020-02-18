@@ -16,14 +16,13 @@ import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyTapListener;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 public class CurrencyScrollbarView extends HorizontalScrollView {
     private final int PADDING_VERTICAL_PX = dpToPixels(4);
     private final int PADDING_HORIZONTAL_PX = dpToPixels(8);
 
     private LinearLayout linearLayout;
-    private Optional<CurrencyTapListener> currencyTapListener = Optional.empty();
+    private CurrencyTapListener currencyTapListener;
 
     public CurrencyScrollbarView(Context context) {
         super(context);
@@ -36,6 +35,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     }
 
     private void initialize() {
+        currencyTapListener = null;
         setBackgroundColor(ContextCompat.getColor(getContext(), R.color.scrollbar_background));
 
         linearLayout = new LinearLayout(getContext());
@@ -49,7 +49,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     }
 
     public void setCurrencyTapListener(CurrencyTapListener currencyTapListener) {
-        this.currencyTapListener = Optional.of(currencyTapListener);
+        this.currencyTapListener = currencyTapListener;
     }
 
     public void setCurrency(String currencyCode) {
@@ -95,9 +95,10 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
         imageView.setPadding(PADDING_HORIZONTAL_PX, PADDING_VERTICAL_PX,
                 PADDING_HORIZONTAL_PX, PADDING_VERTICAL_PX);
-        imageView.setOnClickListener(v ->
-                currencyTapListener.ifPresent(listener ->
-                        listener.onTapDenomination(denominationModel)));
+        imageView.setOnClickListener(v -> {
+            if (currencyTapListener != null)
+                currencyTapListener.onTapDenomination(denominationModel);
+        });
 
         linearLayout.addView(imageView);
     }
