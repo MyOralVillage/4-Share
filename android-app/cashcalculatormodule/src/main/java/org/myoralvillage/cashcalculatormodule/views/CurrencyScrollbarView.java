@@ -8,8 +8,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.core.content.ContextCompat;
-
 import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
@@ -41,7 +39,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
     private void initialize() {
         currencyTapListener = null;
-        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.scrollbar_background));
+        setBackgroundResource(R.drawable.scrollbar_background);
 
         linearLayout = new LinearLayout(getContext());
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
