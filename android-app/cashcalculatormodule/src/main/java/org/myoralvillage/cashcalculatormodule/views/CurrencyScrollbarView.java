@@ -9,6 +9,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.core.content.ContextCompat;
+
 import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
@@ -35,7 +37,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
     private void initialize() {
         currencyTapListener = null;
-        setBackgroundColor(getResources().getColor(R.color.scrollbar_background));
+        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.scrollbar_background));
 
         linearLayout = new LinearLayout(getContext());
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -64,7 +66,8 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
         // Get an array from the android resources with name "currency_{currencyCode}"
         String arrayName = String.format("currency_%s", currencyCode);
-        int arrayId = getResources().getIdentifier(arrayName, "array", getContext().getPackageName());
+        int arrayId = getResources().getIdentifier(arrayName, "array",
+                getContext().getPackageName());
 
         if (arrayId != 0) {
             TypedArray array = getResources().obtainTypedArray(arrayId);
@@ -91,7 +94,8 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         imageView.setImageResource(denominationModel.getImageResource());
         imageView.setAdjustViewBounds(true);
 
-        imageView.setPadding(PADDING_HORIZONTAL_PX, PADDING_VERTICAL_PX, PADDING_HORIZONTAL_PX, PADDING_VERTICAL_PX);
+        imageView.setPadding(PADDING_HORIZONTAL_PX, PADDING_VERTICAL_PX,
+                PADDING_HORIZONTAL_PX, PADDING_VERTICAL_PX);
         imageView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
