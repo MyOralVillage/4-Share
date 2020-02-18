@@ -12,11 +12,10 @@ public class CountingService {
         num = Math.abs(num);
         Set<DenominationModel> denominations = curr.getDenominations();
         ArrayList<Integer> result = new ArrayList<>();
-        int denominationCount;
-        double value;
-        for (DenominationModel curr_deno: denominations) {
-            value = curr_deno.getValue().doubleValue();
-            denominationCount = (int) (num / value);
+
+        for (DenominationModel currDeno: denominations) {
+            double value = currDeno.getValue().doubleValue();
+            int denominationCount = (int) (num / value);
             num -= value * denominationCount;
             result.add(denominationCount);
         }

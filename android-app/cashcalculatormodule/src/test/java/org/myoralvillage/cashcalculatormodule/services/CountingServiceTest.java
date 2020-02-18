@@ -1,6 +1,7 @@
-package org.myoralvillage.cashcalculatormodule.models;
+package org.myoralvillage.cashcalculatormodule.services;
 
 import org.junit.Test;
+import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 
 import java.math.BigDecimal;
@@ -12,7 +13,7 @@ public class CountingServiceTest {
 
     @Test
     public void testDivisionP() {
-        CountingService cModel = new CountingService();
+        CountingService cService = new CountingService();
         CurrencyModel model = new CurrencyModel("CAD");
         model.addDenomination(new BigDecimal(25), 0);
         model.addDenomination(new BigDecimal(50), 0);
@@ -23,14 +24,14 @@ public class CountingServiceTest {
         expected.add(0);
         expected.add(0);
 
-        ArrayList<Integer> result = cModel.allocation(100, model);
+        ArrayList<Integer> result = cService.allocation(100, model);
         assertEquals(expected, result);
 
     }
 
     @Test
     public void testDivisionN() {
-        CountingService cModel = new CountingService();
+        CountingService cService = new CountingService();
         CurrencyModel model = new CurrencyModel("CAD");
         model.addDenomination(new BigDecimal(50), 0);
         model.addDenomination(new BigDecimal(100), 0);
@@ -46,6 +47,6 @@ public class CountingServiceTest {
         expected.add(1);
         expected.add(3);
 
-        assertEquals(expected, cModel.allocation(-228, model));
+        assertEquals(expected, cService.allocation(-228, model));
     }
 }

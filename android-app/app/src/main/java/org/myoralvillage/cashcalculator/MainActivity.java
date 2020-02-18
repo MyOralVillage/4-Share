@@ -19,7 +19,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private CurrencyModel currCurrency;
     private HelloWorldMessage message = new HelloWorldMessage();
-    private double current_sum = 0; // Whether should I put it in onCreate
+    private double currentSum = 0;
 
     CountingService countingService = new CountingService();
 
@@ -39,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
         currencyScrollbarView.setCurrencyTapListener(new CurrencyTapListener() {
             @Override
             public void onTapDenomination(DenominationModel denomination) {
-                current_sum += denomination.getValue().doubleValue();
+                currentSum += denomination.getValue().doubleValue();
                 textView.setText(String.format(Locale.CANADA, "Tapped on %s", denomination.getValue()));
-                sumView.setText(String.format(Locale.CANADA, "%s %s", currCurrency.getCurrency().getSymbol(), current_sum));
+                sumView.setText(String.format(Locale.CANADA, "%s %s", currCurrency.getCurrency().getSymbol(), currentSum));
 
-                // The part below will be delete after the image arrangement part finished
+                // TODO: Delete this part below when the counting table is created
                 String divisionText = "";
-                ArrayList<Integer> allocation = countingService.allocation(current_sum, currCurrency);
+                ArrayList<Integer> allocation = countingService.allocation(currentSum, currCurrency);
                 Iterator denos = currCurrency.getDenominations().iterator();
                 for (int i = 0; i < allocation.size(); i++){
                     int number = allocation.get(i);
