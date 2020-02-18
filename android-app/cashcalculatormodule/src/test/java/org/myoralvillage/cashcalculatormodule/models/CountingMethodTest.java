@@ -7,41 +7,43 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class CountingModelTest {
+public class CountingMethodTest {
 
     @Test
     public void testAdding() {
-        CountingModel model = new CountingModel();
-        double a = model.add_or_sub(100, 50, true);
+        CountingMethod model = new CountingMethod();
+        double a = model.adding(100, 50);
         assertTrue(a == 150);
     }
 
     @Test
     public void testSubtracting() {
-        CountingModel model = new CountingModel();
-        double a = model.add_or_sub(100, 50, false);
+        CountingMethod model = new CountingMethod();
+        double a = model.subtracting(100, 50);
         assertTrue( a == -50);
     }
 
     @Test
     public void testDivisionP() {
-        CountingModel c_model = new CountingModel();
+        CountingMethod cModel = new CountingMethod();
         CurrencyModel model = new CurrencyModel("CAD");
         model.addDenomination(new BigDecimal(25), 0);
         model.addDenomination(new BigDecimal(50), 0);
         model.addDenomination(new BigDecimal(100), 0);
 
-        ArrayList<ArrayList<Object>> result = c_model.division(100, model);
+        ArrayList<Integer> expected = new ArrayList<>();
+        expected.add(1);
+        expected.add(0);
+        expected.add(0);
 
-        assertEquals(1, result.get(0).get(1));
-        assertEquals(0, result.get(1).get(1));
-        assertEquals(0, result.get(2).get(1));
+        ArrayList<Integer> result = cModel.allocation(100, model);
+        assertEquals(expected, result);
 
     }
 
     @Test
     public void testDivisionN() {
-        CountingModel c_model = new CountingModel();
+        CountingMethod cModel = new CountingMethod();
         CurrencyModel model = new CurrencyModel("CAD");
         model.addDenomination(new BigDecimal(50), 0);
         model.addDenomination(new BigDecimal(100), 0);
@@ -50,13 +52,13 @@ public class CountingModelTest {
         model.addDenomination(new BigDecimal(1), 0);
 
 
-        ArrayList<ArrayList<Object>> result = c_model.division(-228, model);
+        ArrayList<Integer> expected = new ArrayList<>();
+        expected.add(2);
+        expected.add(0);
+        expected.add(1);
+        expected.add(1);
+        expected.add(3);
 
-        assertEquals(2, result.get(0).get(1));
-        assertEquals(0, result.get(1).get(1));
-        assertEquals(1, result.get(2).get(1));
-        assertEquals(1, result.get(3).get(1));
-        assertEquals(3, result.get(4).get(1));
-
+        assertEquals(expected, cModel.allocation(-228, model));
     }
 }

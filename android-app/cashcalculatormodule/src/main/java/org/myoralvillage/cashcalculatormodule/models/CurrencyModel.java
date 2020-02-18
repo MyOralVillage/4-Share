@@ -12,10 +12,6 @@ public class CurrencyModel {
     private Currency currency;
     private Set<DenominationModel> denominations;
 
-    public String getSymbol() {
-        return currency.getSymbol();
-    }
-
     public CurrencyModel(String currencyCode) {
         this.denominations = new TreeSet<>(new Comparator<DenominationModel>() {
             @Override
@@ -37,7 +33,6 @@ public class CurrencyModel {
     }
 
     public Set<DenominationModel> getDenominations() {
-        System.out.print(denominations);
         return denominations;
     }
 }
