@@ -23,6 +23,11 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
     private LinearLayout linearLayout;
     private CurrencyTapListener currencyTapListener;
+    private CurrencyModel currCurrency;
+
+    public CurrencyModel getCurrency() {
+        return this.currCurrency;
+    }
 
     public CurrencyScrollbarView(Context context) {
         super(context);
@@ -56,6 +61,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         linearLayout.removeAllViews();
 
         CurrencyModel currency =loadCurrencyModel(currencyCode);
+        this.currCurrency = currency;
         for (DenominationModel denomination : currency.getDenominations())
             addDenomination(denomination);
     }
