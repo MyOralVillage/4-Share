@@ -1,4 +1,7 @@
-package org.myoralvillage.cashcalculatormodule.models;
+package org.myoralvillage.cashcalculatormodule.services;
+
+import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
+import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -9,15 +12,13 @@ public class CountingService {
         num = Math.abs(num);
         Set<DenominationModel> denominations = curr.getDenominations();
         ArrayList<Integer> result = new ArrayList<>();
-        DenominationModel curr_deno;
-        int temp_number;
+        int denominationCount;
         double value;
-        for (Object entry: denominations) {
-            curr_deno = (DenominationModel) entry;
+        for (DenominationModel curr_deno: denominations) {
             value = curr_deno.getValue().doubleValue();
-            temp_number = (int) (num / value);
-            num -= value * temp_number;
-            result.add(temp_number);
+            denominationCount = (int) (num / value);
+            num -= value * denominationCount;
+            result.add(denominationCount);
         }
 
         return result;

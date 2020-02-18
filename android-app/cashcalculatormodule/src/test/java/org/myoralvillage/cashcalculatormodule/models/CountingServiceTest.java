@@ -1,17 +1,18 @@
 package org.myoralvillage.cashcalculatormodule.models;
 
 import org.junit.Test;
+import org.myoralvillage.cashcalculatormodule.services.CountingService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class CountingMethodTest {
+public class CountingServiceTest {
 
     @Test
     public void testDivisionP() {
-        CountingMethod cModel = new CountingMethod();
+        CountingService cModel = new CountingService();
         CurrencyModel model = new CurrencyModel("CAD");
         model.addDenomination(new BigDecimal(25), 0);
         model.addDenomination(new BigDecimal(50), 0);
@@ -29,7 +30,7 @@ public class CountingMethodTest {
 
     @Test
     public void testDivisionN() {
-        CountingMethod cModel = new CountingMethod();
+        CountingService cModel = new CountingService();
         CurrencyModel model = new CurrencyModel("CAD");
         model.addDenomination(new BigDecimal(50), 0);
         model.addDenomination(new BigDecimal(100), 0);

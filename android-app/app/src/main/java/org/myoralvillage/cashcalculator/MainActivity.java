@@ -10,7 +10,7 @@ import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyTapListener;
-import org.myoralvillage.cashcalculatormodule.models.CountingMethod;
+import org.myoralvillage.cashcalculatormodule.services.CountingService;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private HelloWorldMessage message = new HelloWorldMessage();
     private double current_sum = 0; // Whether should I put it in onCreate
 
-    CountingMethod countingMethod = new CountingMethod();
+    CountingService countingService = new CountingService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +39,13 @@ public class MainActivity extends AppCompatActivity {
         currencyScrollbarView.setCurrencyTapListener(new CurrencyTapListener() {
             @Override
             public void onTapDenomination(DenominationModel denomination) {
-                current_sum = countingMethod.adding(denomination.getValue().doubleValue(), current_sum);
+                current_sum += denomination.getValue().doubleValue();
                 textView.setText(String.format(Locale.CANADA, "Tapped on %s", denomination.getValue()));
                 sumView.setText(String.format(Locale.CANADA, "%s %s", currCurrency.getCurrency().getSymbol(), current_sum));
 
                 // The part below will be delete after the image arrangement part finished
                 String divisionText = "";
-                ArrayList<Integer> allocation = countingMethod.allocation(current_sum, currCurrency);
+                ArrayList<Integer> allocation = countingService.allocation(current_sum, currCurrency);
                 Iterator denos = currCurrency.getDenominations().iterator();
                 for (int i = 0; i < allocation.size(); i++){
                     int number = allocation.get(i);
