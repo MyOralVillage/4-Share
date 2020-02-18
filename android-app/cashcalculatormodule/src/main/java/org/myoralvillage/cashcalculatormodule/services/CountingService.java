@@ -4,18 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 
-public class CountingMethod {
-
-    public double adding(double num, double current_sum) {
-        return num + current_sum;
-    }
-
-    public double subtracting(double num, double current_sum) {
-        return current_sum - num;
-    }
-
-
-
+public class CountingService {
     public ArrayList<Integer> allocation(double num, CurrencyModel curr) {
         num = Math.abs(num);
         Set<DenominationModel> denominations = curr.getDenominations();

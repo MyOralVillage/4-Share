@@ -10,20 +10,6 @@ import static org.junit.Assert.*;
 public class CountingMethodTest {
 
     @Test
-    public void testAdding() {
-        CountingMethod model = new CountingMethod();
-        double a = model.adding(100, 50);
-        assertTrue(a == 150);
-    }
-
-    @Test
-    public void testSubtracting() {
-        CountingMethod model = new CountingMethod();
-        double a = model.subtracting(100, 50);
-        assertTrue( a == -50);
-    }
-
-    @Test
     public void testDivisionP() {
         CountingMethod cModel = new CountingMethod();
         CurrencyModel model = new CurrencyModel("CAD");
