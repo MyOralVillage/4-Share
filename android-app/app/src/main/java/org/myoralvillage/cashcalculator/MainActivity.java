@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(message.getMessage());
 
         final CurrencyScrollbarView currencyScrollbarView = findViewById(R.id.currency_scrollbar);
-        currencyScrollbarView.setCurrency("CAD");
+        currencyScrollbarView.setCurrency("PKR");
         this.currCurrency = currencyScrollbarView.getCurrency();
         currencyScrollbarView.setCurrencyTapListener(new CurrencyTapListener() {
             @Override
