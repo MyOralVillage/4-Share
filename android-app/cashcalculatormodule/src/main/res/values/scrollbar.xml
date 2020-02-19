@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="scrollbar_background">#aaa</color>
+    <drawable name="scrollbar_background">@drawable/metallic_surface</drawable>
 </resources>
