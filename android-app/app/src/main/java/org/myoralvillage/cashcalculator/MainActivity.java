@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         this.currCurrency = currencyScrollbarView.getCurrency();
 
         final CountingTableView countingTableView = findViewById(R.id.counting_table);
+        countingTableView.initDenominationModels(currCurrency.getDenominations());
         currencyScrollbarView.setCurrencyTapListener(denomination -> {
             currentSum += denomination.getValue().doubleValue();
             textView.setText(String.format(Locale.CANADA, "Tapped on %s",
