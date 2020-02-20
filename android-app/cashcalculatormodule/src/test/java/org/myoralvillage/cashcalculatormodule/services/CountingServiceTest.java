@@ -49,4 +49,44 @@ public class CountingServiceTest {
 
         assertEquals(expected, cService.allocation(-228, model));
     }
+
+    @Test
+    public void testSmallCurrencyCombination() {
+        CountingService cService = new CountingService();
+        CurrencyModel model = new CurrencyModel("PKR");
+        model.addDenomination(new BigDecimal(50), 0);
+        model.addDenomination(new BigDecimal(20), 0);
+        model.addDenomination(new BigDecimal(10), 0);
+        model.addDenomination(new BigDecimal(5), 0);
+        model.addDenomination(new BigDecimal(2), 0);
+
+        ArrayList<Integer> expected = new ArrayList<>();
+        expected.add(0);
+        expected.add(0);
+        expected.add(1);
+        expected.add(0);
+        expected.add(3);
+
+        assertEquals(expected, cService.allocation(16, model));
+    }
+
+    @Test
+    public void testIdealAllocation() {
+        CountingService cService = new CountingService();
+        CurrencyModel model = new CurrencyModel("PKR");
+        model.addDenomination(new BigDecimal(50), 0);
+        model.addDenomination(new BigDecimal(20), 0);
+        model.addDenomination(new BigDecimal(10), 0);
+        model.addDenomination(new BigDecimal(5), 0);
+        model.addDenomination(new BigDecimal(2), 0);
+
+        ArrayList<Integer> expected = new ArrayList<>();
+        expected.add(0);
+        expected.add(1);
+        expected.add(1);
+        expected.add(1);
+        expected.add(4);
+
+        assertEquals(expected, cService.allocation(43, model));
+    }
 }
