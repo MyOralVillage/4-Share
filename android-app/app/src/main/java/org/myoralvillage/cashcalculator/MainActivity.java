@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
@@ -17,6 +18,8 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
     private AppService service;
     private CurrencyModel currCurrency;
+    private CountingTableView countingTableView;
+    private TextView sumView;
 
     CountingService countingService = new CountingService();
 
@@ -27,20 +30,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         service = new AppService();
 
-        final TextView sumView = findViewById(R.id.sum_view);
+        sumView = findViewById(R.id.sum_view);
         final CurrencyScrollbarView currencyScrollbarView = findViewById(R.id.currency_scrollbar);
         currencyScrollbarView.setCurrency("PKR");
         this.currCurrency = currencyScrollbarView.getCurrency();
 
-        final CountingTableView countingTableView = findViewById(R.id.counting_table);
+        countingTableView = findViewById(R.id.counting_table);
         countingTableView.initDenominationModels(currCurrency.getDenominations());
+
         currencyScrollbarView.setCurrencyTapListener(denomination -> {
             service.setValue(service.getValue().add(denomination.getValue()));
-
-            sumView.setText(String.format(Locale.CANADA, "%s %s",
-                    currCurrency.getCurrency().getSymbol(), service.getValue()));
-            countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
-                    countingService.allocation(service.getValue().doubleValue(), currCurrency));
+            refreshCountingTable();
         });
+
+        Button leftButton = findViewById(R.id.left_button);
+        Button rightButton = findViewById(R.id.right_button);
+        Button upButton = findViewById(R.id.up_button);
+
+        leftButton.setOnClickListener((e) -> {
+            service.subtract();
+            refreshCountingTable();
+        });
+
+        rightButton.setOnClickListener((e) -> {
+            service.add();
+            refreshCountingTable();
+        });
+
+        upButton.setOnClickListener((e) -> {
+            service.multiply();
+            refreshCountingTable();
+        });
+    }
+
+    private void refreshCountingTable() {
+        sumView.setText(String.format(Locale.CANADA, "%s %s",
+                currCurrency.getCurrency().getSymbol(), service.getValue()));
+
+        countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
+                countingService.allocation(service.getValue().doubleValue(), currCurrency));
     }
 }
