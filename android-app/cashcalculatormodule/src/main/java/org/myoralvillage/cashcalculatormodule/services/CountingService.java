@@ -4,22 +4,34 @@ import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 
 public class CountingService {
-    public ArrayList<Integer> allocation(double num, CurrencyModel curr) {
-        num = Math.abs(num);
-        Set<DenominationModel> denominations = curr.getDenominations();
+    public ArrayList<Integer> allocation(double sum, CurrencyModel curr) {
+        sum = Math.abs(sum);
+        boolean haveLess;
+        int number;
+        double currValue, checkValue;
         ArrayList<Integer> result = new ArrayList<>();
 
-        for (DenominationModel currDeno: denominations) {
-            double value = currDeno.getValue().doubleValue();
-            int denominationCount = (int) (num / value);
-            num -= value * denominationCount;
-            result.add(denominationCount);
+        for (DenominationModel currDeno: curr.getDenominations()) {
+            currValue = currDeno.getValue().doubleValue();
+            haveLess = false;
+            number = (int) (sum / currValue);
+            for (DenominationModel denoCheck: curr.getDenominations()) {
+                checkValue = denoCheck.getValue().doubleValue();
+                if ((sum - currValue * number) % checkValue == 0) {
+                    haveLess = true;
+                    break;
+                }
+            }
+            if (haveLess) {
+                sum -= currValue * number;
+                result.add(number);
+            } else {
+                result.add(0);
+            }
         }
-
         return result;
     }
 }
