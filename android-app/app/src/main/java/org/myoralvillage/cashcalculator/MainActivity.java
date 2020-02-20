@@ -6,22 +6,15 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import org.myoralvillage.cashcalculatormodule.HelloWorldMessage;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
-import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
-import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyTapListener;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private CurrencyModel currCurrency;
-    private HelloWorldMessage message = new HelloWorldMessage();
     private double currentSum = 0;
 
     CountingService countingService = new CountingService();
@@ -32,10 +25,7 @@ public class MainActivity extends AppCompatActivity {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_main);
 
-        final TextView textView = findViewById(R.id.message_view);
         final TextView sumView = findViewById(R.id.sum_view);
-        textView.setText(message.getMessage());
-
         final CurrencyScrollbarView currencyScrollbarView = findViewById(R.id.currency_scrollbar);
         currencyScrollbarView.setCurrency("PKR");
         this.currCurrency = currencyScrollbarView.getCurrency();
@@ -44,8 +34,7 @@ public class MainActivity extends AppCompatActivity {
         countingTableView.initDenominationModels(currCurrency.getDenominations());
         currencyScrollbarView.setCurrencyTapListener(denomination -> {
             currentSum += denomination.getValue().doubleValue();
-            textView.setText(String.format(Locale.CANADA, "Tapped on %s",
-                    denomination.getValue()));
+
             sumView.setText(String.format(Locale.CANADA, "%s %s",
                     currCurrency.getCurrency().getSymbol(), currentSum));
             countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
