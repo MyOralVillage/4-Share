@@ -17,6 +17,10 @@ public class AppService {
         appState = AppStateModel.getDefault();
     }
 
+    public AppService(AppStateModel appState) {
+        this.appState = appState;
+    }
+
     public AppStateModel getAppState() {
         return appState;
     }
