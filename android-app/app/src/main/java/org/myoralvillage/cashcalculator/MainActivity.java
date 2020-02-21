@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.myoralvillage.cashcalculatormodule.HelloWorldMessage;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
@@ -13,6 +14,7 @@ import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyTapListener;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
+import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,6 +52,27 @@ public class MainActivity extends AppCompatActivity {
                     currCurrency.getCurrency().getSymbol(), currentSum));
             countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
                     countingService.allocation(currentSum, currCurrency));
+        });
+
+        //final TextView gesture = findViewById(R.id.swipe);
+        countingTableView.setOnTouchListener(new SwipeListener(MainActivity.this) {
+            @Override
+            public void swipeLeft() {
+                Toast.makeText(MainActivity.this, "Swipe Left gesture detected", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void swipeRight() {
+                Toast.makeText(MainActivity.this, "Swipe Right gesture detected", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void swipeUp() {
+                Toast.makeText(MainActivity.this, "Swipe Up gesture detected", Toast.LENGTH_SHORT).show();
+            }
+            @Override
+            public void swipeDown() {
+                super.swipeRight();
+                Toast.makeText(MainActivity.this, "Swipe Down gesture detected", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }
