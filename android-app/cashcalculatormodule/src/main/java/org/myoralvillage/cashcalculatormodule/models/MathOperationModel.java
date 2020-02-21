@@ -2,9 +2,10 @@ package org.myoralvillage.cashcalculatormodule.models;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class MathOperationModel {
+public class MathOperationModel implements Serializable {
     private MathOperationMode mode;
     private BigDecimal value;
 

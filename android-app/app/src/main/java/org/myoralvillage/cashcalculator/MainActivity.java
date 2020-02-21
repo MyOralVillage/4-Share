@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
@@ -21,6 +22,7 @@ import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private final String APP_STATE_KEY = "appState";
     private AppService service;
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
@@ -36,7 +38,11 @@ public class MainActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        service = new AppService();
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null && extras.containsKey(APP_STATE_KEY))
+            service = new AppService((AppStateModel) extras.getSerializable(APP_STATE_KEY));
+        else service = new AppService();
 
         sumView = findViewById(R.id.sum_view);
         final CurrencyScrollbarView currencyScrollbarView = findViewById(R.id.currency_scrollbar);
@@ -62,9 +68,7 @@ public class MainActivity extends AppCompatActivity {
             public void swipeLeft() {
                 // Dragging towards the right
                 service.add();
-//                refreshCountingTable();
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
+                switchState();
                 overridePendingTransition(R.anim.activity_left_in,R.anim.activity_left_out);
                 finish();
             }
@@ -73,9 +77,7 @@ public class MainActivity extends AppCompatActivity {
             public void swipeRight() {
                 // Dragging towards the left
                 service.subtract();
-//                refreshCountingTable();
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
+                switchState();
                 overridePendingTransition(R.anim.activity_right_in,R.anim.activity_right_out);
                 finish();
             }
@@ -90,9 +92,7 @@ public class MainActivity extends AppCompatActivity {
             public void swipeDown() {
                 // Dragging towards the top
                 service.multiply();
-//                refreshCountingTable();
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
+                switchState();
                 overridePendingTransition(R.anim.activity_down_in,R.anim.activity_down_out);
                 finish();
             }
@@ -123,5 +123,11 @@ public class MainActivity extends AppCompatActivity {
 
         countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
                 countingService.allocate(service.getValue(), currCurrency));
+    }
+
+    private void switchState() {
+        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+        intent.putExtra(APP_STATE_KEY, service.getAppState());
+        startActivity(intent);
     }
 }

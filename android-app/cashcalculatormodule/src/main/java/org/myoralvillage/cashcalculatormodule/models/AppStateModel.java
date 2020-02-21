@@ -2,11 +2,12 @@ package org.myoralvillage.cashcalculatormodule.models;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppStateModel {
+public class AppStateModel implements Serializable {
     private AppMode appMode;
     private List<MathOperationModel> operations;
 
