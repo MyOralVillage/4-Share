@@ -129,4 +129,8 @@ public class CountingTableView extends View {
         }
     }
 
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
 }
