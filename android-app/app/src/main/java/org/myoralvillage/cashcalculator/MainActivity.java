@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         this.currCurrency = currencyScrollbarView.getCurrency();
 
         countingTableView = findViewById(R.id.counting_table);
-        countingTableView.initDenominationModels(currCurrency.getDenominations());
+        //countingTableView.initDenominationModels(currCurrency.getDenominations());
+        countingTableView.setCurrencyModel("PKR");
 
         currencyScrollbarView.setCurrencyTapListener(denomination -> {
             service.setValue(service.getValue().add(denomination.getValue()));
