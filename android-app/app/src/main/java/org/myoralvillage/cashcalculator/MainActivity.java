@@ -59,25 +59,29 @@ public class MainActivity extends AppCompatActivity {
         countingTableView.setOnTouchListener(new SwipeListener(MainActivity.this) {
             @Override
             public void swipeLeft() {
-                service.subtract();
-                refreshCountingTable();
-            }
-
-            @Override
-            public void swipeRight() {
+                // Dragging towards the right
                 service.add();
                 refreshCountingTable();
             }
 
             @Override
-            public void swipeUp() {
-                service.multiply();
+            public void swipeRight() {
+                // Dragging towards the left
+                service.subtract();
                 refreshCountingTable();
             }
 
             @Override
-            public void swipeDown() {
+            public void swipeUp() {
+                // Dragging towards the bottom
                 // TODO: Enter numeric/image mode
+            }
+
+            @Override
+            public void swipeDown() {
+                // Dragging towards the top
+                service.multiply();
+                refreshCountingTable();
             }
         });
 
