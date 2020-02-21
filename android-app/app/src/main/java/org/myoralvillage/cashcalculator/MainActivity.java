@@ -9,7 +9,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
@@ -51,25 +50,6 @@ public class MainActivity extends AppCompatActivity {
             refreshCountingTable();
         });
 
-        Button leftButton = findViewById(R.id.left_button);
-        Button rightButton = findViewById(R.id.right_button);
-        Button upButton = findViewById(R.id.up_button);
-
-        leftButton.setOnClickListener((e) -> {
-            service.subtract();
-            refreshCountingTable();
-        });
-
-        rightButton.setOnClickListener((e) -> {
-            service.add();
-            refreshCountingTable();
-        });
-
-        upButton.setOnClickListener((e) -> {
-            service.multiply();
-            refreshCountingTable();
-        });
-
         calculateButton = findViewById(R.id.calculate_button);
         calculateButton.setOnClickListener((e) -> {
             service.calculate();
@@ -79,20 +59,25 @@ public class MainActivity extends AppCompatActivity {
         countingTableView.setOnTouchListener(new SwipeListener(MainActivity.this) {
             @Override
             public void swipeLeft() {
-                Toast.makeText(MainActivity.this, "Swipe Left gesture detected", Toast.LENGTH_SHORT).show();
+                service.subtract();
+                refreshCountingTable();
             }
+
             @Override
             public void swipeRight() {
-                Toast.makeText(MainActivity.this, "Swipe Right gesture detected", Toast.LENGTH_SHORT).show();
+                service.add();
+                refreshCountingTable();
             }
+
             @Override
             public void swipeUp() {
-                Toast.makeText(MainActivity.this, "Swipe Up gesture detected", Toast.LENGTH_SHORT).show();
+                service.multiply();
+                refreshCountingTable();
             }
+
             @Override
             public void swipeDown() {
-                super.swipeRight();
-                Toast.makeText(MainActivity.this, "Swipe Down gesture detected", Toast.LENGTH_SHORT).show();
+                // TODO: Enter numeric/image mode
             }
         });
 
