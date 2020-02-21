@@ -109,6 +109,6 @@ public class MainActivity extends AppCompatActivity {
                 currCurrency.getCurrency().getSymbol(), service.getValue()));
 
         countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
-                countingService.allocation(service.getValue().doubleValue(), currCurrency));
+                countingService.allocate(service.getValue(), currCurrency));
     }
 }
