@@ -2,6 +2,7 @@ package org.myoralvillage.cashcalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
@@ -61,14 +62,22 @@ public class MainActivity extends AppCompatActivity {
             public void swipeLeft() {
                 // Dragging towards the right
                 service.add();
-                refreshCountingTable();
+//                refreshCountingTable();
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.activity_left_in,R.anim.activity_left_out);
+                finish();
             }
 
             @Override
             public void swipeRight() {
                 // Dragging towards the left
                 service.subtract();
-                refreshCountingTable();
+//                refreshCountingTable();
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.activity_right_in,R.anim.activity_right_out);
+                finish();
             }
 
             @Override
@@ -81,7 +90,11 @@ public class MainActivity extends AppCompatActivity {
             public void swipeDown() {
                 // Dragging towards the top
                 service.multiply();
-                refreshCountingTable();
+//                refreshCountingTable();
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.activity_down_in,R.anim.activity_down_out);
+                finish();
             }
         });
 
