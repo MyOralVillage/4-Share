@@ -17,7 +17,8 @@ public class CountingService {
         for (DenominationModel d : model.getDenominations())
             denominations.add(d.getValue());
 
-        return allocateHelper(value.abs(), denominations, model.getCurrency().getSymbol());
+        ArrayList<Integer> allocation = allocateHelper(value.abs(), denominations, model.getCurrency().getSymbol());
+        return allocation != null ? allocation : allocateZero(denominations.size());
     }
 
     private ArrayList<Integer> allocateHelper(BigDecimal value, List<BigDecimal> denominations, String symbol) {
