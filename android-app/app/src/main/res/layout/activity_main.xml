@@ -37,6 +37,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        android:id="@+id/calculate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/right_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
     private TextView sumView;
+    private Button calculateButton;
 
     CountingService countingService = new CountingService();
 
@@ -61,9 +63,33 @@ public class MainActivity extends AppCompatActivity {
             service.multiply();
             refreshCountingTable();
         });
+
+        calculateButton = findViewById(R.id.calculate_button);
+        calculateButton.setOnClickListener((e) -> {
+            service.calculate();
+            refreshCountingTable();
+        });
+
+        refreshCountingTable();
     }
 
     private void refreshCountingTable() {
+        calculateButton.setVisibility(View.VISIBLE);
+        switch(service.getOperationMode()) {
+            case STANDARD:
+                calculateButton.setVisibility(View.INVISIBLE);
+                break;
+            case ADD:
+                calculateButton.setText("+");
+                break;
+            case SUBTRACT:
+                calculateButton.setText("-");
+                break;
+            case MULTIPLY:
+                calculateButton.setText("X");
+                break;
+        }
+
         sumView.setText(String.format(Locale.CANADA, "%s %s",
                 currCurrency.getCurrency().getSymbol(), service.getValue()));
 

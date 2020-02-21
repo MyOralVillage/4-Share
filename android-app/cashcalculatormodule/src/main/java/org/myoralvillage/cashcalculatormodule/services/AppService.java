@@ -27,6 +27,11 @@ public class AppService {
         appState.setAppMode(mode);
     }
 
+    public MathOperationMode getOperationMode() {
+        int currentIndex = appState.getOperations().size() - 1;
+        return appState.getOperations().get(currentIndex).getMode();
+    }
+
     public BigDecimal getValue() {
         int currentIndex = appState.getOperations().size() - 1;
         return appState.getOperations().get(currentIndex).getValue();
