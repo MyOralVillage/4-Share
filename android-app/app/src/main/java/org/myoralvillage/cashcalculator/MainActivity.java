@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
     private TextView sumView;
-    private Button calculateButton;
+    private ImageView calculateButton;
 
     CountingService countingService = new CountingService();
 
@@ -95,13 +95,13 @@ public class MainActivity extends AppCompatActivity {
                 calculateButton.setVisibility(View.INVISIBLE);
                 break;
             case ADD:
-                calculateButton.setText("+");
+                calculateButton.setImageResource(R.drawable.operator_plus);
                 break;
             case SUBTRACT:
-                calculateButton.setText("-");
+                calculateButton.setImageResource(R.drawable.operator_minus);
                 break;
             case MULTIPLY:
-                calculateButton.setText("X");
+                calculateButton.setImageResource(R.drawable.operator_times);
                 break;
         }
 
