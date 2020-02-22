@@ -13,12 +13,14 @@ import android.widget.TextView;
 
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
+import org.myoralvillage.cashcalculatormodule.models.MathOperationMode;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private CountingTableView countingTableView;
     private TextView sumView;
     private ImageView calculateButton;
+    private ImageView clearButton;
 
     CountingService countingService = new CountingService();
 
@@ -60,6 +63,12 @@ public class MainActivity extends AppCompatActivity {
         calculateButton = findViewById(R.id.calculate_button);
         calculateButton.setOnClickListener((e) -> {
             service.calculate();
+            refreshCountingTable();
+        });
+
+        clearButton = findViewById(R.id.clear_button);
+        clearButton.setOnClickListener((e) -> {
+            service.reset();
             refreshCountingTable();
         });
 
@@ -117,6 +126,11 @@ public class MainActivity extends AppCompatActivity {
                 calculateButton.setImageResource(R.drawable.operator_times);
                 break;
         }
+
+        if (service.getOperationMode() == MathOperationMode.STANDARD && service.getValue().equals(BigDecimal.ZERO))
+            clearButton.setVisibility(View.INVISIBLE);
+        else
+            clearButton.setVisibility(View.VISIBLE);
 
         sumView.setText(String.format(Locale.CANADA, "%s %s",
                 currCurrency.getCurrency().getSymbol(), service.getValue()));
