@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 currCurrency.getCurrency().getSymbol(), service.getValue()));
 
         countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
-                countingService.allocate(service.getValue(), currCurrency));
+                countingService.allocate(service.getValue(), currCurrency), service.getValue());
     }
 
     private void switchState() {
