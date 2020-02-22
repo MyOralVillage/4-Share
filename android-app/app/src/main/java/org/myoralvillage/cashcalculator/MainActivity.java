@@ -3,7 +3,9 @@ package org.myoralvillage.cashcalculator;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -42,9 +44,15 @@ public class MainActivity extends AppCompatActivity {
         currencyScrollbarView.setCurrency("PKR");
         this.currCurrency = currencyScrollbarView.getCurrency();
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        System.out.print("Width: " + width);
+
         countingTableView = findViewById(R.id.counting_table);
-        //countingTableView.initDenominationModels(currCurrency.getDenominations());
-        countingTableView.setCurrencyModel("PKR");
+        countingTableView.initDenominationModels(currCurrency.getDenominations(), width, height);
 
         currencyScrollbarView.setCurrencyTapListener(denomination -> {
             service.setValue(service.getValue().add(denomination.getValue()));

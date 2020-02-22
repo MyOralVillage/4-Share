@@ -7,10 +7,12 @@ import java.math.BigDecimal;
 public class DenominationModel implements Comparable<DenominationModel> {
     private BigDecimal value;
     private int imageResource;
+    private int imageResourceFolded;
 
-    public DenominationModel(BigDecimal value, int imageResource) {
+    public DenominationModel(BigDecimal value, int imageResource, int imageResourceFolded) {
         this.value = value;
         this.imageResource = imageResource;
+        this.imageResourceFolded = imageResourceFolded;
     }
 
     public BigDecimal getValue() {
@@ -19,6 +21,10 @@ public class DenominationModel implements Comparable<DenominationModel> {
 
     public int getImageResource() {
         return imageResource;
+    }
+
+    public int getImageResourceFolded(){
+        return imageResourceFolded;
     }
 
     @Override
