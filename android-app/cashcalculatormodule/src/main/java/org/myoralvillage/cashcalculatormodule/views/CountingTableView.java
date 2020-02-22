@@ -10,6 +10,7 @@ import android.view.View;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListener;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +33,7 @@ public class CountingTableView extends View {
     private Map<DenominationModel, Integer> counts;
     private Map<DenominationModel, Bitmap> bitmaps;
     private boolean initialized;
+    private boolean isNegative = false;
 
     public CountingTableView(Context context) {
         super(context);
@@ -73,9 +75,12 @@ public class CountingTableView extends View {
         for (Map.Entry<DenominationModel, Integer> entry : counts.entrySet()) {
             int sum_left = initialLeft;
             Bitmap bmp = bitmaps.get(entry.getKey());
+            if (isNegative) bmp = invertBitmap(bmp);
+
             if(entry.getValue() == 0){
                 continue;
             }
+
             for (int i = 1; i < entry.getValue() + 1; i++) {
                 canvas.drawBitmap(bmp, left + 20 * i, (top * i) + level, null);
                 sum_left += 20;
@@ -96,9 +101,23 @@ public class CountingTableView extends View {
         }
     }
 
+    private Bitmap invertBitmap(Bitmap bmp) {
+        Bitmap output = bmp.copy(Bitmap.Config.ARGB_8888, true);
+
+        for (int x = 0; x < bmp.getWidth(); x++) {
+            for (int y = 0; y < bmp.getHeight(); y++) {
+                int pixel = bmp.getPixel(x, y);
+                output.setPixel(x, y, pixel ^ 0x00FFFFFF);
+            }
+        }
+
+        return output;
+    }
+
     private Bitmap scaleBitmap(Bitmap bmp,int widthApp, int heightApp) {
         int scale;
         int width, height;
+
         if (bmp.getHeight() > bmp.getWidth()) {
             scale = (int) Math.floor((widthApp * DENOM_SIZE) / 100.0) * 100;
             width = (int) Math.floor(scale * (bmp.getWidth() / ((float) bmp.getHeight())));
@@ -139,12 +158,14 @@ public class CountingTableView extends View {
         counts.put(deno, newCount);
     }
 
-    public void setDenominations(Iterator<DenominationModel> iterator, List<Integer> allocations) {
+    public void setDenominations(Iterator<DenominationModel> iterator, List<Integer> allocations, BigDecimal value) {
         for (int i = 0; i < allocations.size(); i++) {
             DenominationModel deno = iterator.next();
             int newCount = allocations.get(i);
             callEvent(deno, newCount);
         }
+
+        isNegative = value.compareTo(BigDecimal.ZERO) < 0;
         invalidate();
     }
 

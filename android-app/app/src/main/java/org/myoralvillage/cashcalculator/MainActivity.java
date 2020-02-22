@@ -140,11 +140,16 @@ public class MainActivity extends AppCompatActivity {
         else
             clearButton.setVisibility(View.VISIBLE);
 
+        if (service.getValue().compareTo(BigDecimal.ZERO) < 0)
+            sumView.setTextColor(getResources().getColor(R.color.negativeSum));
+        else
+            sumView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+
         sumView.setText(String.format(Locale.CANADA, "%s %s",
                 currCurrency.getCurrency().getSymbol(), service.getValue()));
 
         countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
-                countingService.allocate(service.getValue(), currCurrency));
+                countingService.allocate(service.getValue(), currCurrency), service.getValue());
     }
 
     private void switchState() {
