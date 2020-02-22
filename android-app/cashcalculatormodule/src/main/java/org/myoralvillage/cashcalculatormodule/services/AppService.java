@@ -1,9 +1,8 @@
 package org.myoralvillage.cashcalculatormodule.services;
 
-import org.myoralvillage.cashcalculatormodule.models.AppMode;
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
-import org.myoralvillage.cashcalculatormodule.models.MathOperationMode;
 import org.myoralvillage.cashcalculatormodule.models.MathOperationModel;
+import org.myoralvillage.cashcalculatormodule.models.MathOperationModel.MathOperationMode;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class AppService {
     }
 
     public void reset() {
-        AppMode mode = appState.getAppMode();
+        AppStateModel.AppMode mode = appState.getAppMode();
         appState = AppStateModel.getDefault();
         appState.setAppMode(mode);
     }

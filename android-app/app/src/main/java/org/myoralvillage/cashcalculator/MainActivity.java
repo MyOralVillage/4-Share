@@ -1,7 +1,5 @@
 package org.myoralvillage.cashcalculator;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -11,12 +9,14 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
+import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
-import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import java.util.Locale;
