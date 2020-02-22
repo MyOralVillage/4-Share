@@ -6,11 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView
+        android:id="@+id/currency_scrollbar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <org.myoralvillage.cashcalculatormodule.views.CountingTableView
         android:id="@+id/counting_table"
         android:layout_width="match_parent"
-        android:layout_marginTop="0dp"
         android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/wooden_surface"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,15 +37,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView
-        android:id="@+id/currency_scrollbar"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <ImageView
         android:id="@+id/calculate_button"
         android:layout_width="48dp"
@@ -48,8 +48,36 @@
         android:id="@+id/clear_button"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/handshake"
         app:layout_constraintBottom_toBottomOf="@id/counting_table"
-        android:src="@drawable/handshake" />
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5">
+        <org.myoralvillage.cashcalculatormodule.views.NumberPadView
+            android:id="@+id/number_pad"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:gravity="center"
+            android:numColumns="3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/entry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="300dp"
+        android:layout_marginRight="350dp"
+        android:layout_marginEnd="350dp"
+        android:textSize="32sp"
+        android:text="@string/total"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
