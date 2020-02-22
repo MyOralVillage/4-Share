@@ -75,13 +75,14 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         if (arrayId != 0) {
             TypedArray array = getResources().obtainTypedArray(arrayId);
             try {
-                for (int i = 0; i < array.length(); i += 2) {
+                for (int i = 0; i < array.length(); i += 3) {
                     // Build CurrencyModel instance from the values in the xml
                     String value = array.getString(i);
                     int imageResourceId = array.getResourceId(i + 1, 0);
+                    int imageResourceIDFolded = array.getResourceId(i + 2, 0);
 
                     if (value != null && imageResourceId != 0)
-                        model.addDenomination(new BigDecimal(value), imageResourceId);
+                        model.addDenomination(new BigDecimal(value), imageResourceId, imageResourceIDFolded);
                 }
             } finally {
                 // Required to call as part of the TypedArray lifecycle
