@@ -108,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: Enter numeric/image mode
                 numberPadView.setVisibility(View.VISIBLE);
                 entryView.setVisibility(View.VISIBLE);
-                entryView.setText("R0");
+                entryView.setText(String.format(Locale.CANADA, "%s 0",
+                        currCurrency.getCurrency().getSymbol()));
             }
 
             @Override
