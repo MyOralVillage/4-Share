@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
-import org.myoralvillage.cashcalculatormodule.models.MathOperationMode;
+import org.myoralvillage.cashcalculatormodule.models.MathOperationModel;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        if (service.getOperationMode() == MathOperationMode.STANDARD && service.getValue().equals(BigDecimal.ZERO))
+        if (service.getOperationMode() == MathOperationModel.MathOperationMode.STANDARD && service.getValue().equals(BigDecimal.ZERO))
             clearButton.setVisibility(View.INVISIBLE);
         else
             clearButton.setVisibility(View.VISIBLE);
