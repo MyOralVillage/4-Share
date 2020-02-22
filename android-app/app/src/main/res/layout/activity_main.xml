@@ -44,4 +44,12 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageView
+        android:id="@+id/clear_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/counting_table"
+        android:src="@drawable/handshake" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
