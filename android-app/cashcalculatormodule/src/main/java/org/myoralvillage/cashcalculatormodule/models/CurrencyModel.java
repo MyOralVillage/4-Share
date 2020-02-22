@@ -16,8 +16,8 @@ public class CurrencyModel {
         this.currency = Currency.getInstance(currencyCode);
     }
 
-    public void addDenomination(BigDecimal value, int imageResource) {
-        this.denominations.add(new DenominationModel(value, imageResource));
+    public void addDenomination(BigDecimal value, int imageResource, int imageResourceFolded) {
+        this.denominations.add(new DenominationModel(value, imageResource, imageResourceFolded));
     }
 
     public Currency getCurrency() {
