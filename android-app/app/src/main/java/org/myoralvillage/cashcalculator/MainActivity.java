@@ -1,7 +1,5 @@
 package org.myoralvillage.cashcalculator;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -11,13 +9,16 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.MathOperationMode;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
+import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
-import org.myoralvillage.cashcalculatormodule.services.CountingService;
+import org.myoralvillage.cashcalculatormodule.views.NumberPadView;
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import java.math.BigDecimal;
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private AppService service;
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
+    private NumberPadView numberPadView;
+    private TextView entryView;
     private TextView sumView;
     private ImageView calculateButton;
     private ImageView clearButton;
@@ -95,6 +98,9 @@ public class MainActivity extends AppCompatActivity {
             public void swipeUp() {
                 // Dragging towards the bottom
                 // TODO: Enter numeric/image mode
+                numberPadView.setVisibility(View.VISIBLE);
+                entryView.setVisibility(View.VISIBLE);
+                entryView.setText("R0");
             }
 
             @Override
@@ -108,6 +114,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
         refreshCountingTable();
+
+        numberPadView = findViewById(R.id.number_pad);
+        entryView = findViewById(R.id.entry);
+        entryView.setVisibility(View.INVISIBLE);
+        final StringBuilder stringBuilder = new StringBuilder();
+        numberPadView.setOnItemClickListener((parent, view, position, id) -> {
+            String text = ((TextView) view).getText().toString();
+            switch (position) {
+                case 0:
+                    service.setValue(new BigDecimal(Integer.valueOf(stringBuilder.toString())));
+                    stringBuilder.setLength(0);
+                    entryView.setVisibility(View.INVISIBLE);
+                    numberPadView.setVisibility(View.INVISIBLE);
+                    refreshCountingTable();
+                    return;
+                case 2:
+                    if (stringBuilder.length() > 0) {
+                        stringBuilder.setLength(stringBuilder.length() - 1);
+                    }
+                    break;
+                default:
+                    stringBuilder.append(text);
+                    break;
+            }
+            entryView.setText(String.format(Locale.CANADA, "R%s",
+                    stringBuilder.length() > 0 ? stringBuilder.toString() : "0"));
+        });
     }
 
     private void refreshCountingTable() {
