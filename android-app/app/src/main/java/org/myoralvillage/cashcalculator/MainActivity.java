@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         display.getSize(size);
         int width = size.x;
         int height = size.y;
-        System.out.print("Width: " + width);
 
         countingTableView = findViewById(R.id.counting_table);
         countingTableView.initDenominationModels(currCurrency.getDenominations(), width, height);
