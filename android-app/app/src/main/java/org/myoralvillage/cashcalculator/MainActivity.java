@@ -146,7 +146,8 @@ public class MainActivity extends AppCompatActivity {
                     stringBuilder.append(text);
                     break;
             }
-            entryView.setText(String.format(Locale.CANADA, "R%s",
+            entryView.setText(String.format(Locale.CANADA, "%s %s",
+                    currCurrency.getCurrency().getSymbol(),
                     stringBuilder.length() > 0 ? stringBuilder.toString() : "0"));
         });
     }
