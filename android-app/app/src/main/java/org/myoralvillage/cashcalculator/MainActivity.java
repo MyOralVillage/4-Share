@@ -2,7 +2,9 @@ package org.myoralvillage.cashcalculator;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -13,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
-import org.myoralvillage.cashcalculatormodule.models.MathOperationMode;
+import org.myoralvillage.cashcalculatormodule.models.MathOperationModel;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
@@ -55,8 +57,14 @@ public class MainActivity extends AppCompatActivity {
         currencyScrollbarView.setCurrency("PKR");
         this.currCurrency = currencyScrollbarView.getCurrency();
 
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+
         countingTableView = findViewById(R.id.counting_table);
-        countingTableView.initDenominationModels(currCurrency.getDenominations());
+        countingTableView.initDenominationModels(currCurrency.getDenominations(), width, height);
 
         currencyScrollbarView.setCurrencyTapListener(denomination -> {
             service.setValue(service.getValue().add(denomination.getValue()));
@@ -160,16 +168,21 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
-        if (service.getOperationMode() == MathOperationMode.STANDARD && service.getValue().equals(BigDecimal.ZERO))
+        if (service.getOperationMode() == MathOperationModel.MathOperationMode.STANDARD && service.getValue().equals(BigDecimal.ZERO))
             clearButton.setVisibility(View.INVISIBLE);
         else
             clearButton.setVisibility(View.VISIBLE);
+
+        if (service.getValue().compareTo(BigDecimal.ZERO) < 0)
+            sumView.setTextColor(getResources().getColor(R.color.negativeSum));
+        else
+            sumView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
 
         sumView.setText(String.format(Locale.CANADA, "%s %s",
                 currCurrency.getCurrency().getSymbol(), service.getValue()));
 
         countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
-                countingService.allocate(service.getValue(), currCurrency));
+                countingService.allocate(service.getValue(), currCurrency), service.getValue());
     }
 
     private void switchState() {

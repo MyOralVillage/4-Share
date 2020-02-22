@@ -43,4 +43,9 @@ public class AppStateModel implements Serializable {
         AppStateModel state = (AppStateModel) obj;
         return operations.equals(state.operations) && appMode == state.appMode;
     }
+
+    public enum AppMode {
+        IMAGE,
+        NUMERIC
+    }
 }

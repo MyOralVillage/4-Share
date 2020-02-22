@@ -54,4 +54,11 @@ public class MathOperationModel implements Serializable {
         MathOperationModel model = (MathOperationModel) obj;
         return mode == model.mode && value.equals(model.value);
     }
+
+    public enum MathOperationMode {
+        ADD,
+        SUBTRACT,
+        MULTIPLY,
+        STANDARD
+    }
 }
