@@ -132,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
             String text = ((TextView) view).getText().toString();
             switch (position) {
                 case 0:
+                    if (stringBuilder.length() == 0) {
+                        return;
+                    }
                     service.setValue(new BigDecimal(Integer.valueOf(stringBuilder.toString())));
                     stringBuilder.setLength(0);
                     entryView.setVisibility(View.INVISIBLE);
