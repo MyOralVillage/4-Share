@@ -10,6 +10,7 @@ import java.util.List;
 public class AppStateModel implements Serializable {
     private AppMode appMode;
     private List<MathOperationModel> operations;
+    private int currentOperationIndex;
 
     public AppStateModel(AppMode appMode, List<MathOperationModel> operations) {
         this.appMode = appMode;
@@ -28,6 +29,18 @@ public class AppStateModel implements Serializable {
         this.appMode = appMode;
     }
 
+    public int getCurrentOperationIndex() {
+        return currentOperationIndex;
+    }
+
+    public void setCurrentOperationIndex(int currentOperationIndex) {
+        this.currentOperationIndex = currentOperationIndex;
+    }
+
+    public MathOperationModel getCurrentOperation() {
+        return operations.get(currentOperationIndex);
+    }
+
     public static AppStateModel getDefault() {
         List<MathOperationModel> operations = new ArrayList<>();
         operations.add(MathOperationModel.createStandard(new BigDecimal(0)));
@@ -41,7 +54,9 @@ public class AppStateModel implements Serializable {
             return false;
 
         AppStateModel state = (AppStateModel) obj;
-        return operations.equals(state.operations) && appMode == state.appMode;
+        return operations.equals(state.operations) &&
+                appMode == state.appMode &&
+                currentOperationIndex == state.currentOperationIndex;
     }
 
     public enum AppMode {

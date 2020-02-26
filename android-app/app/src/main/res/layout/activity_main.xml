@@ -52,6 +52,30 @@
         app:layout_constraintBottom_toBottomOf="@id/counting_table"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <ImageView
+        android:id="@+id/right_history_button"
+        android:layout_width="128dp"
+        android:layout_height="64dp"
+        android:src="@drawable/bridge_right"
+        app:layout_constraintBottom_toBottomOf="@id/counting_table"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/left_history_button"
+        android:layout_width="128dp"
+        android:layout_height="64dp"
+        android:src="@drawable/bridge_left"
+        app:layout_constraintBottom_toBottomOf="@id/counting_table"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <ImageView
+        android:id="@+id/enter_history_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/highway"
+        app:layout_constraintBottom_toBottomOf="@id/counting_table"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
