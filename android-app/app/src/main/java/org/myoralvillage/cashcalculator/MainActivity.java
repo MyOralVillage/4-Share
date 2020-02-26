@@ -37,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     private ImageView calculateButton;
     private ImageView clearButton;
 
+    private ImageView enterHistoryButton;
+    private ImageView rightHistoryButton;
+    private ImageView leftHistoryButton;
+
+
     CountingService countingService = new CountingService();
 
     @Override
@@ -73,8 +78,10 @@ public class MainActivity extends AppCompatActivity {
 
         calculateButton = findViewById(R.id.calculate_button);
         calculateButton.setOnClickListener((e) -> {
-            service.calculate();
-            refreshCountingTable();
+            if (!service.isInHistorySlideshow()) {
+                service.calculate();
+                refreshCountingTable();
+            }
         });
 
         clearButton = findViewById(R.id.clear_button);
@@ -87,19 +94,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void swipeLeft() {
                 // Dragging towards the right
-                service.add();
-                switchState();
-                overridePendingTransition(R.anim.activity_left_in,R.anim.activity_left_out);
-                finish();
+                if (!service.isInHistorySlideshow()) {
+                    service.add();
+                    switchState();
+                    overridePendingTransition(R.anim.activity_left_in,R.anim.activity_left_out);
+                    finish();
+
+                }
             }
 
             @Override
             public void swipeRight() {
                 // Dragging towards the left
-                service.subtract();
-                switchState();
-                overridePendingTransition(R.anim.activity_right_in,R.anim.activity_right_out);
-                finish();
+                if (!service.isInHistorySlideshow()) {
+                    service.subtract();
+                    switchState();
+                    overridePendingTransition(R.anim.activity_right_in,R.anim.activity_right_out);
+                    finish();
+                }
             }
 
             @Override
@@ -115,10 +127,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void swipeDown() {
                 // Dragging towards the top
-                service.multiply();
-                switchState();
-                overridePendingTransition(R.anim.activity_down_in,R.anim.activity_down_out);
-                finish();
+                if (!service.isInHistorySlideshow()) {
+                    service.multiply();
+                    switchState();
+                    overridePendingTransition(R.anim.activity_down_in,R.anim.activity_down_out);
+                    finish();
+                }
             }
         });
 
@@ -154,6 +168,48 @@ public class MainActivity extends AppCompatActivity {
                     currCurrency.getCurrency().getSymbol(),
                     stringBuilder.length() > 0 ? stringBuilder.toString() : "0"));
         });
+
+        initializeHistoryButtons();
+    }
+
+    private void initializeHistoryButtons() {
+        enterHistoryButton = findViewById(R.id.enter_history_button);
+        rightHistoryButton = findViewById(R.id.right_history_button);
+        leftHistoryButton = findViewById(R.id.left_history_button);
+
+        enterHistoryButton.setOnClickListener((e) -> {
+            service.enterHistorySlideshow();
+            refreshCountingTable();
+        });
+
+        rightHistoryButton.setOnClickListener((e) -> {
+            service.gotoNextHistorySlide();
+            refreshCountingTable();
+        });
+
+        leftHistoryButton.setOnClickListener((e) -> {
+            service.gotoPreviousHistorySlide();
+            refreshCountingTable();
+        });
+
+        refreshHistoryButtons();
+    }
+
+    private void refreshHistoryButtons() {
+        if (enterHistoryButton != null && rightHistoryButton != null && leftHistoryButton != null) {
+            if (service.isInHistorySlideshow()) {
+                enterHistoryButton.setVisibility(View.INVISIBLE);
+                leftHistoryButton.setVisibility(View.VISIBLE);
+                rightHistoryButton.setVisibility(View.VISIBLE);
+            } else {
+                if (service.getAppState().getOperations().size() == 1)
+                    enterHistoryButton.setVisibility(View.INVISIBLE);
+                else enterHistoryButton.setVisibility(View.VISIBLE);
+
+                rightHistoryButton.setVisibility(View.INVISIBLE);
+                leftHistoryButton.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     private void refreshCountingTable() {
@@ -172,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
                 calculateButton.setImageResource(R.drawable.operator_times);
                 break;
         }
+
+        refreshHistoryButtons();
 
         if (service.getOperationMode() == MathOperationModel.MathOperationMode.STANDARD && service.getValue().equals(BigDecimal.ZERO))
             clearButton.setVisibility(View.INVISIBLE);
