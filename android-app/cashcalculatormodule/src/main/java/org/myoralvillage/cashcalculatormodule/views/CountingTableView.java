@@ -25,7 +25,7 @@ import java.util.TreeMap;
 public class CountingTableView extends View {
 
     private static final int OFFSET_VALUE_DENO = 50;
-    private static final int OFFSET_VALUE_NUM = 50;
+    private static final int OFFSET_VALUE_NUM = 100;
 
     //Value to scale the initial denominations location
     private static final float INITIAL_OFFSET_LEFT = (float) 0.005;
@@ -77,8 +77,6 @@ public class CountingTableView extends View {
         int top = (int) Math.floor((getHeight() * INITIAL_OFFSET_TOP) / 10.0) * 10;
         int columnIndex;
         int cellIndex = 0;
-        int locateX;
-        int locateY;
 
         //Variable used to keep track of top or bottom level
         int level = 0;
@@ -93,21 +91,21 @@ public class CountingTableView extends View {
             }
 
             if (entry.getValue() > 4) {
-                locateX = columnIndex * cellWidth + OFFSET_VALUE_DENO;
-                locateY = (top * 3) + level;
-                canvas.drawBitmap(bmp, locateX, locateY, null);
-                locateX = columnIndex * cellWidth + OFFSET_VALUE_NUM;
+                canvas.drawBitmap(bmp, columnIndex * cellWidth + OFFSET_VALUE_DENO,
+                        (top * 3) + level, null);
+
                 denoNumber.setStyle(Paint.Style.FILL);
                 denoNumber.setColor(Color.WHITE);
-                canvas.drawText(Integer.toString(entry.getValue()), locateX, locateY + getHeight() / 4, denoNumber);
+                canvas.drawText(Integer.toString(entry.getValue()), columnIndex * cellWidth +
+                        OFFSET_VALUE_NUM, (top * 3) + level + getHeight() / 4, denoNumber);
                 denoNumber.setStyle(Paint.Style.STROKE);
                 denoNumber.setColor(Color.BLACK);
-                canvas.drawText(Integer.toString(entry.getValue()), locateX, locateY + getHeight() / 4, denoNumber);
+                canvas.drawText(Integer.toString(entry.getValue()), columnIndex * cellWidth +
+                        OFFSET_VALUE_NUM, (top * 3) + level + getHeight() / 4, denoNumber);
             } else {
                 for (int i = 1; i < entry.getValue() + 1; i++) {
-                    locateX = columnIndex * cellWidth + 20 * i;
-                    locateY = (top * i) + level;
-                    canvas.drawBitmap(bmp, locateX, locateY, null);
+                    canvas.drawBitmap(bmp, columnIndex * cellWidth + 20 * i,
+                            (top * i) + level, null);
                 }
             }
 
