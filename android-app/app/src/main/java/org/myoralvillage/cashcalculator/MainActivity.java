@@ -224,8 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
         countingTableView.setCountingTableListener((model, oldCount, newCount) -> {
             BigDecimal diff = new BigDecimal(oldCount - newCount);
-            int compare = service.getValue().compareTo(BigDecimal.ZERO);
-            if (compare >= 0) {
+            if (service.getValue().compareTo(BigDecimal.ZERO) >= 0) {
                 service.setValue(service.getValue().subtract(model.getValue().multiply(diff)));
             } else {
                 service.setValue(service.getValue().add(model.getValue().multiply(diff)));
