@@ -26,6 +26,7 @@ public class CountingTableView extends View {
 
     private static final int OFFSET_VALUE_DENO = 50;
     private static final int OFFSET_VALUE_NUM = 100;
+    private static final int THRESHOLD_NUM = 4;
 
     //Value to scale the initial denominations location
     private static final float INITIAL_OFFSET_LEFT = (float) 0.005;
@@ -72,9 +73,10 @@ public class CountingTableView extends View {
         denoNumber.setTextSize(160);
         denoNumber.setStrokeWidth(10);
         int width = getWidth();
+        int top = (int) Math.floor((getHeight() * INITIAL_OFFSET_TOP) / 10.0) * 10;
+        int left = (int) Math.floor((getHeight() * INITIAL_OFFSET_LEFT) / 10.0) * 10;
         int columnNumber = bitmaps.size() / 2 + 1;
         int cellWidth = width / columnNumber;
-        int top = (int) Math.floor((getHeight() * INITIAL_OFFSET_TOP) / 10.0) * 10;
         int columnIndex;
         int cellIndex = 0;
 
@@ -88,25 +90,11 @@ public class CountingTableView extends View {
 
             if (entry.getValue() == 0) {
                 continue;
-            }
-
-            if (entry.getValue() > 4) {
-                canvas.drawBitmap(bmp, columnIndex * cellWidth + OFFSET_VALUE_DENO,
-                        (top * 3) + level, null);
-
-                denoNumber.setStyle(Paint.Style.FILL);
-                denoNumber.setColor(Color.WHITE);
-                canvas.drawText(Integer.toString(entry.getValue()), columnIndex * cellWidth +
-                        OFFSET_VALUE_NUM, (top * 3) + level + getHeight() / 4, denoNumber);
-                denoNumber.setStyle(Paint.Style.STROKE);
-                denoNumber.setColor(Color.BLACK);
-                canvas.drawText(Integer.toString(entry.getValue()), columnIndex * cellWidth +
-                        OFFSET_VALUE_NUM, (top * 3) + level + getHeight() / 4, denoNumber);
+            } else if (entry.getValue() > THRESHOLD_NUM) {
+                drawDenoNum(canvas, entry.getValue(), bmp, columnIndex * cellWidth - left,
+                        level + top);
             } else {
-                for (int i = 1; i < entry.getValue() + 1; i++) {
-                    canvas.drawBitmap(bmp, columnIndex * cellWidth + 20 * i,
-                            (top * i) + level, null);
-                }
+                drawDeno(canvas, entry.getValue(), bmp, columnIndex * cellWidth, level, top);
             }
 
             cellIndex += 1;
@@ -115,6 +103,24 @@ public class CountingTableView extends View {
                 level = (int) (getHeight() / 2.0);
             }
         }
+    }
+
+    private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY, int top) {
+        for (int i = 1; i < num + 1; i++) {
+            canvas.drawBitmap(bmp, originX + 20 * i, top * i + originY, null);
+        }
+    }
+
+    private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY) {
+        canvas.drawBitmap(bmp, originX + OFFSET_VALUE_DENO, originY, null);
+        denoNumber.setStyle(Paint.Style.FILL);
+        denoNumber.setColor(Color.WHITE);
+        canvas.drawText(Integer.toString(num), originX +
+                OFFSET_VALUE_NUM, originY + getHeight() / 4, denoNumber);
+        denoNumber.setStyle(Paint.Style.STROKE);
+        denoNumber.setColor(Color.BLACK);
+        canvas.drawText(Integer.toString(num), originX +
+                OFFSET_VALUE_NUM, originY + getHeight() / 4, denoNumber);
     }
 
     private Bitmap invertBitmap(Bitmap bmp) {
