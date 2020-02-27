@@ -14,10 +14,12 @@ public class AppService {
 
     public AppService() {
         appState = AppStateModel.getDefault();
+        resetCurrentOperation();
     }
 
     public AppService(AppStateModel appState) {
         this.appState = appState;
+        resetCurrentOperation();
     }
 
     public AppStateModel getAppState() {
@@ -28,46 +30,72 @@ public class AppService {
         AppStateModel.AppMode mode = appState.getAppMode();
         appState = AppStateModel.getDefault();
         appState.setAppMode(mode);
+        resetCurrentOperation();
+    }
+
+    private void resetCurrentOperation() {
+        appState.setCurrentOperationIndex(appState.getOperations().size() - 1);
     }
 
     public MathOperationMode getOperationMode() {
-        int currentIndex = appState.getOperations().size() - 1;
-        return appState.getOperations().get(currentIndex).getMode();
+        return appState.getCurrentOperation().getMode();
     }
 
     public BigDecimal getValue() {
-        int currentIndex = appState.getOperations().size() - 1;
-        return appState.getOperations().get(currentIndex).getValue();
+        return appState.getCurrentOperation().getValue();
     }
 
     public void setValue(BigDecimal value) {
-        int currentIndex = appState.getOperations().size() - 1;
-        MathOperationModel currentOperation = appState.getOperations().get(currentIndex);
+        MathOperationModel currentOperation = appState.getCurrentOperation();
         currentOperation.setValue(value);
     }
 
+    public boolean isInHistorySlideshow() {
+        return appState.getCurrentOperationIndex() < (appState.getOperations().size() - 1);
+    }
+
+    public void enterHistorySlideshow() {
+        appState.setCurrentOperationIndex(0);
+    }
+
+    public void gotoNextHistorySlide() {
+        if (isInHistorySlideshow())
+            appState.setCurrentOperationIndex(appState.getCurrentOperationIndex() + 1);
+
+        if (!isInHistorySlideshow())
+            changeCalculation();
+    }
+
+    private void changeCalculation() {
+        appState.getOperations().remove(appState.getOperations().size() - 1);
+        calculate();
+    }
+
+    public void gotoPreviousHistorySlide() {
+        if (isInHistorySlideshow() && appState.getCurrentOperationIndex() > 0)
+            appState.setCurrentOperationIndex(appState.getCurrentOperationIndex() - 1);
+    }
+
     public void add() {
-        this.appState
-                .getOperations()
-                .add(MathOperationModel.createAdd(INITIAL_VALUE));
+        addOperation(MathOperationModel.createAdd(INITIAL_VALUE));
     }
 
     public void subtract() {
-        this.appState
-                .getOperations()
-                .add(MathOperationModel.createSubtract(INITIAL_VALUE));
+        addOperation(MathOperationModel.createSubtract(INITIAL_VALUE));
     }
 
     public void multiply() {
-        this.appState
-                .getOperations()
-                .add(MathOperationModel.createMultiply(INITIAL_VALUE));
+        addOperation(MathOperationModel.createMultiply(INITIAL_VALUE));
     }
 
     public void calculate() {
-        List<MathOperationModel> operations = this.appState.getOperations();
-        BigDecimal result = calculateOperationsResult(operations);
-        operations.add(MathOperationModel.createStandard(result));
+        BigDecimal result = calculateOperationsResult(appState.getOperations());
+        addOperation(MathOperationModel.createStandard(result));
+    }
+
+    private void addOperation(MathOperationModel operation) {
+        this.appState.getOperations().add(operation);
+        resetCurrentOperation();
     }
 
     private static BigDecimal calculateOperationsResult(List<MathOperationModel> operations) {
