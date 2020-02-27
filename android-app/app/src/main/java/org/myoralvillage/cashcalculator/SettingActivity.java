@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SettingActivity extends AppCompatActivity {
     private ArrayList<Button> currency = new ArrayList<>();
+    private ArrayList<String> currencyName = new ArrayList<>();
     private static SettingService settingService = new SettingService();
 
     @Override
@@ -26,6 +27,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         currency.add(findViewById(R.id.PKR));
+        currencyName.add("PKR");
         currencyButtonListener();
     }
 
@@ -35,9 +37,11 @@ public class SettingActivity extends AppCompatActivity {
 
     private void currencyButtonListener() {
         //Button pkr = findViewById(R.id.pkr);
-        for (Button button:currency){
+        for (int i = 0; i < currency.size(); i++){
+            Button button= currency.get(i);
+            String currCurrencyName = currencyName.get(i);
             button.setOnClickListener((e) -> {
-                settingService.setCurrencyName("PKR");
+                settingService.setCurrencyName(currCurrencyName);
                 switchToMainActivity();
             });
         }
