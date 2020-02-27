@@ -162,8 +162,8 @@ public class CountingTableView extends View {
     private void callEvent(DenominationModel deno, int newCount) {
         if (counts.containsKey(deno)) {
             int oldCount = counts.get(deno);
-            if (oldCount != newCount && countingTableListener != null) {
-                countingTableListener.onTableChange(deno, oldCount, newCount);
+            if (oldCount > newCount && countingTableListener != null) {
+                countingTableListener.onTableRemove(deno, oldCount, newCount);
             }
         }
         counts.put(deno, newCount);
@@ -172,9 +172,7 @@ public class CountingTableView extends View {
     public void setDenominations(Iterator<DenominationModel> iterator, List<Integer> allocations,
                                  BigDecimal value) {
         for (int i = 0; i < allocations.size(); i++) {
-            DenominationModel deno = iterator.next();
-            int newCount = allocations.get(i);
-            callEvent(deno, newCount);
+            counts.put(iterator.next(), allocations.get(i));
         }
 
         isNegative = value.compareTo(BigDecimal.ZERO) < 0;
