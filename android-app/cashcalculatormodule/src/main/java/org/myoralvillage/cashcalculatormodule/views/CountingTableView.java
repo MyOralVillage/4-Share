@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.view.View;
 
+import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListener;
 
@@ -32,8 +33,9 @@ public class CountingTableView extends View {
     private CountingTableListener countingTableListener;
     private Map<DenominationModel, Integer> counts;
     private Map<DenominationModel, Bitmap> bitmaps;
+    private Map<DenominationModel, AreaModel> areas;
     private boolean initialized;
-    private boolean isNegative = false;
+    private boolean isNegative;
 
     public CountingTableView(Context context) {
         super(context);
@@ -48,8 +50,10 @@ public class CountingTableView extends View {
     private void init() {
         counts = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
         bitmaps = new HashMap<>();
+        areas = new HashMap<>();
         countingTableListener = null;
         initialized = false;
+        isNegative = false;
     }
 
     @Override
@@ -77,12 +81,17 @@ public class CountingTableView extends View {
             Bitmap bmp = bitmaps.get(entry.getKey());
             if (isNegative) bmp = invertBitmap(bmp);
 
-            if(entry.getValue() == 0){
+            if (entry.getValue() == 0) {
                 continue;
             }
 
+            AreaModel areaModel = areas.get(entry.getKey());
+            areaModel.clearArea();
             for (int i = 1; i < entry.getValue() + 1; i++) {
-                canvas.drawBitmap(bmp, left + 20 * i, (top * i) + level, null);
+                int minX = left + 20 * i;
+                int minY = (top * i) + level;
+                areaModel.addBox(new AreaModel.Box(minX, minY, bmp.getWidth(), bmp.getHeight()));
+                canvas.drawBitmap(bmp, minX, minY, null);
                 sum_left += 20;
             }
 
@@ -135,11 +144,13 @@ public class CountingTableView extends View {
         return Bitmap.createScaledBitmap(bmp, width, height, false);
     }
 
-    public void initDenominationModels(Set<DenominationModel> denominationModels, int width, int height) {
+    public void initDenominationModels(Set<DenominationModel> denominationModels,
+                                       int width,int height) {
         for (DenominationModel deno : denominationModels) {
             bitmaps.put(deno, scaleBitmap(BitmapFactory.decodeResource(getResources(),
                     deno.getImageResourceFolded()), width, height));
             counts.put(deno, 0);
+            areas.put(deno, new AreaModel());
         }
         initialized = true;
     }
@@ -158,7 +169,8 @@ public class CountingTableView extends View {
         counts.put(deno, newCount);
     }
 
-    public void setDenominations(Iterator<DenominationModel> iterator, List<Integer> allocations, BigDecimal value) {
+    public void setDenominations(Iterator<DenominationModel> iterator, List<Integer> allocations,
+                                 BigDecimal value) {
         for (int i = 0; i < allocations.size(); i++) {
             DenominationModel deno = iterator.next();
             int newCount = allocations.get(i);
@@ -187,6 +199,17 @@ public class CountingTableView extends View {
                 counts.put(deno, counts.get(deno));
                 callEvent(deno, value);
                 invalidate();
+            }
+        }
+    }
+
+    public void handleLongPress(float x, float y) {
+        for (Map.Entry<DenominationModel, AreaModel> entry : areas.entrySet()) {
+            AreaModel.Box box = entry.getValue().getBoxFromPoint(x, y);
+            if (box != null) {
+                removeDenomination(entry.getKey());
+                entry.getValue().removeBox(box);
+                break;
             }
         }
     }
