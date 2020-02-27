@@ -39,7 +39,8 @@ public class CountingTableView extends View {
     private Map<DenominationModel, Bitmap> bitmaps;
     private boolean initialized;
     private boolean isNegative = false;
-    private Paint denoNumber = new Paint();
+    Paint denoNumber;
+
 
     public CountingTableView(Context context) {
         super(context);
@@ -56,6 +57,7 @@ public class CountingTableView extends View {
         bitmaps = new HashMap<>();
         countingTableListener = null;
         initialized = false;
+        denoNumber = new Paint();
     }
 
     @Override
@@ -73,8 +75,10 @@ public class CountingTableView extends View {
         int columnNumber = bitmaps.size() / 2 + 1;
         int cellWidth = width / columnNumber;
         int top = (int) Math.floor((getHeight() * INITIAL_OFFSET_TOP) / 10.0) * 10;
-        int columnIndex, cellIndex = 0;
-        int locateX, locateY;
+        int columnIndex;
+        int cellIndex = 0;
+        int locateX;
+        int locateY;
 
         //Variable used to keep track of top or bottom level
         int level = 0;
