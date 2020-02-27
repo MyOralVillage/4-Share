@@ -49,7 +49,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         Bundle extras = getIntent().getExtras();
@@ -143,7 +144,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateClearButton() {
-        if (service.getOperationMode() == MathOperationModel.MathOperationMode.STANDARD && service.getValue().equals(BigDecimal.ZERO))
+        if (service.getOperationMode() == MathOperationModel.MathOperationMode.STANDARD
+                && service.getValue().equals(BigDecimal.ZERO))
             clearButton.setVisibility(View.INVISIBLE);
         else
             clearButton.setVisibility(View.VISIBLE);
@@ -194,6 +196,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
+            public void longPress(float x, float y) {
+                countingTableView.handleLongPress(x, y);
+            }
+
+            @Override
             public void swipeUp() {
                 // Dragging towards the bottom
                 // TODO: Enter numeric/image mode
@@ -213,6 +220,17 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 }
             }
+        });
+
+        countingTableView.setCountingTableListener((model, oldCount, newCount) -> {
+            BigDecimal amount = model.getValue().multiply(new BigDecimal(oldCount - newCount));
+            if (service.getValue().compareTo(BigDecimal.ZERO) >= 0) {
+                service.setValue(service.getValue().subtract(amount));
+            } else {
+                service.setValue(service.getValue().add(amount));
+            }
+            updateSumView();
+            updateClearButton();
         });
     }
 

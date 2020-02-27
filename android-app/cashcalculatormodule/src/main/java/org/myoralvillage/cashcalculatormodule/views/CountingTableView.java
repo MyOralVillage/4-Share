@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
+import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListener;
 
@@ -38,10 +39,10 @@ public class CountingTableView extends View {
     private CountingTableListener countingTableListener;
     private Map<DenominationModel, Integer> counts;
     private Map<DenominationModel, Bitmap> bitmaps;
+    private Map<DenominationModel, AreaModel> areas;
     private boolean initialized;
-    private boolean isNegative = false;
+    private boolean isNegative;
     Paint denoNumber;
-
 
     public CountingTableView(Context context) {
         super(context);
@@ -56,8 +57,10 @@ public class CountingTableView extends View {
     private void init() {
         counts = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
         bitmaps = new HashMap<>();
+        areas = new HashMap<>();
         countingTableListener = null;
         initialized = false;
+        isNegative = false;
         denoNumber = new Paint();
     }
 
@@ -88,13 +91,16 @@ public class CountingTableView extends View {
             Bitmap bmp = bitmaps.get(entry.getKey());
             if (isNegative) bmp = invertBitmap(bmp);
 
+            AreaModel areaModel = areas.get(entry.getKey());
+            areaModel.clearArea();
             if (entry.getValue() == 0) {
                 continue;
             } else if (entry.getValue() > THRESHOLD_NUM) {
                 drawDenoNum(canvas, entry.getValue(), bmp, columnIndex * cellWidth - left,
-                        level + top);
+                        level + top, areaModel);
             } else {
-                drawDeno(canvas, entry.getValue(), bmp, columnIndex * cellWidth, level, top);
+                drawDeno(canvas, entry.getValue(), bmp, columnIndex * cellWidth, level, top,
+                         areaModel);
             }
 
             cellIndex += 1;
@@ -105,14 +111,19 @@ public class CountingTableView extends View {
         }
     }
 
-    private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY, int top) {
+    private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY, int top,
+                          AreaModel areaModel) {
         for (int i = 1; i < num + 1; i++) {
+            areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
             canvas.drawBitmap(bmp, originX + 20 * i, top * i + originY, null);
         }
     }
 
-    private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY) {
-        canvas.drawBitmap(bmp, originX + OFFSET_VALUE_DENO, originY, null);
+    private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
+                             AreaModel areaModel) {
+        int minX = originX + OFFSET_VALUE_DENO;
+        areaModel.addBox(new AreaModel.Box(minX, originY, bmp.getWidth(), bmp.getHeight()));
+        canvas.drawBitmap(bmp, minX, originY, null);
         denoNumber.setStyle(Paint.Style.FILL);
         denoNumber.setColor(Color.WHITE);
         canvas.drawText(Integer.toString(num), originX +
@@ -157,11 +168,13 @@ public class CountingTableView extends View {
         return Bitmap.createScaledBitmap(bmp, width, height, false);
     }
 
-    public void initDenominationModels(Set<DenominationModel> denominationModels, int width, int height) {
+    public void initDenominationModels(Set<DenominationModel> denominationModels,
+                                       int width,int height) {
         for (DenominationModel deno : denominationModels) {
             bitmaps.put(deno, scaleBitmap(BitmapFactory.decodeResource(getResources(),
                     deno.getImageResourceFolded()), width, height));
             counts.put(deno, 0);
+            areas.put(deno, new AreaModel());
         }
         initialized = true;
     }
@@ -173,18 +186,17 @@ public class CountingTableView extends View {
     private void callEvent(DenominationModel deno, int newCount) {
         if (counts.containsKey(deno)) {
             int oldCount = counts.get(deno);
-            if (oldCount != newCount && countingTableListener != null) {
-                countingTableListener.onTableChange(deno, oldCount, newCount);
+            if (oldCount > newCount && countingTableListener != null) {
+                countingTableListener.onTableRemove(deno, oldCount, newCount);
             }
         }
         counts.put(deno, newCount);
     }
 
-    public void setDenominations(Iterator<DenominationModel> iterator, List<Integer> allocations, BigDecimal value) {
+    public void setDenominations(Iterator<DenominationModel> iterator, List<Integer> allocations,
+                                 BigDecimal value) {
         for (int i = 0; i < allocations.size(); i++) {
-            DenominationModel deno = iterator.next();
-            int newCount = allocations.get(i);
-            callEvent(deno, newCount);
+            counts.put(iterator.next(), allocations.get(i));
         }
 
         isNegative = value.compareTo(BigDecimal.ZERO) < 0;
@@ -198,7 +210,7 @@ public class CountingTableView extends View {
         } else {
             newCount = 1;
         }
-        callEvent(deno, newCount);
+        counts.put(deno, newCount);
         invalidate();
     }
 
@@ -209,6 +221,17 @@ public class CountingTableView extends View {
                 counts.put(deno, counts.get(deno));
                 callEvent(deno, value);
                 invalidate();
+            }
+        }
+    }
+
+    public void handleLongPress(float x, float y) {
+        for (Map.Entry<DenominationModel, AreaModel> entry : areas.entrySet()) {
+            AreaModel.Box box = entry.getValue().getBoxFromPoint(x, y);
+            if (box != null) {
+                removeDenomination(entry.getKey());
+                entry.getValue().removeLastBox();
+                break;
             }
         }
     }
