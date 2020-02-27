@@ -4,6 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -21,7 +25,9 @@ import java.util.TreeMap;
 
 public class CountingTableView extends View {
 
-    private static final int OFFSET_VALUE = 50;
+    private static final int OFFSET_VALUE_DENO = 50;
+    private static final int OFFSET_VALUE_NUM = 100;
+    private static final int THRESHOLD_NUM = 4;
 
     //Value to scale the initial denominations location
     private static final float INITIAL_OFFSET_LEFT = (float) 0.005;
@@ -36,6 +42,7 @@ public class CountingTableView extends View {
     private Map<DenominationModel, AreaModel> areas;
     private boolean initialized;
     private boolean isNegative;
+    Paint denoNumber;
 
     public CountingTableView(Context context) {
         super(context);
@@ -54,6 +61,7 @@ public class CountingTableView extends View {
         countingTableListener = null;
         initialized = false;
         isNegative = false;
+        denoNumber = new Paint();
     }
 
     @Override
@@ -63,51 +71,67 @@ public class CountingTableView extends View {
             return;
         }
 
-        boolean first = true;
+        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
+        denoNumber.setTypeface(font);
+        denoNumber.setTextSize(160);
+        denoNumber.setStrokeWidth(10);
         int width = getWidth();
-        for (Bitmap bmp : bitmaps.values()) {
-            width -= bmp.getWidth();
-        }
-        int left = 20;
-        int initialLeft = (int) Math.floor((getWidth() * INITIAL_OFFSET_LEFT) / 10.0) * 10;
-        int cut =  (int) (width / ((float) counts.size()));
         int top = (int) Math.floor((getHeight() * INITIAL_OFFSET_TOP) / 10.0) * 10;
+        int left = (int) Math.floor((getHeight() * INITIAL_OFFSET_LEFT) / 10.0) * 10;
+        int columnNumber = bitmaps.size() / 2 + 1;
+        int cellWidth = width / columnNumber;
+        int columnIndex;
+        int cellIndex = 0;
 
         //Variable used to keep track of top or bottom level
         int level = 0;
 
         for (Map.Entry<DenominationModel, Integer> entry : counts.entrySet()) {
-            int sum_left = initialLeft;
+            columnIndex = cellIndex % columnNumber;
             Bitmap bmp = bitmaps.get(entry.getKey());
             if (isNegative) bmp = invertBitmap(bmp);
 
-            if (entry.getValue() == 0) {
-                continue;
-            }
-
             AreaModel areaModel = areas.get(entry.getKey());
             areaModel.clearArea();
-            for (int i = 1; i < entry.getValue() + 1; i++) {
-                int minX = left + 20 * i;
-                int minY = (top * i) + level;
-                areaModel.addBox(new AreaModel.Box(minX, minY, bmp.getWidth(), bmp.getHeight()));
-                canvas.drawBitmap(bmp, minX, minY, null);
-                sum_left += 20;
+            if (entry.getValue() == 0) {
+                continue;
+            } else if (entry.getValue() > THRESHOLD_NUM) {
+                drawDenoNum(canvas, entry.getValue(), bmp, columnIndex * cellWidth - left,
+                        level + top, areaModel);
+            } else {
+                drawDeno(canvas, entry.getValue(), bmp, columnIndex * cellWidth, level, top,
+                         areaModel);
             }
 
-            left += sum_left + cut + (OFFSET_VALUE) + bmp.getWidth();
-            if (left >= (getWidth()- bmp.getWidth())){
-                //Reached end of the screen width, so display below current bills
+            cellIndex += 1;
+
+            if (cellIndex + 1 > columnNumber) {
                 level = (int) (getHeight() / 2.0);
-                if (first){
-                    left = (int) (getWidth() * 0.35);
-                    first = false;
-                }
-                else{
-                    left = initialLeft;
-                }
             }
         }
+    }
+
+    private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY, int top,
+                          AreaModel areaModel) {
+        for (int i = 1; i < num + 1; i++) {
+            areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
+            canvas.drawBitmap(bmp, originX + 20 * i, top * i + originY, null);
+        }
+    }
+
+    private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
+                             AreaModel areaModel) {
+        int minX = originX + OFFSET_VALUE_DENO;
+        areaModel.addBox(new AreaModel.Box(minX, originY, bmp.getWidth(), bmp.getHeight()));
+        canvas.drawBitmap(bmp, minX, originY, null);
+        denoNumber.setStyle(Paint.Style.FILL);
+        denoNumber.setColor(Color.WHITE);
+        canvas.drawText(Integer.toString(num), originX +
+                OFFSET_VALUE_NUM, originY + getHeight() / 4, denoNumber);
+        denoNumber.setStyle(Paint.Style.STROKE);
+        denoNumber.setColor(Color.BLACK);
+        canvas.drawText(Integer.toString(num), originX +
+                OFFSET_VALUE_NUM, originY + getHeight() / 4, denoNumber);
     }
 
     private Bitmap invertBitmap(Bitmap bmp) {
