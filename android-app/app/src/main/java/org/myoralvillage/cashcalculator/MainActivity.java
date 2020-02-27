@@ -223,11 +223,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         countingTableView.setCountingTableListener((model, oldCount, newCount) -> {
-            BigDecimal diff = new BigDecimal(oldCount - newCount);
+            BigDecimal amount = model.getValue().multiply(new BigDecimal(oldCount - newCount));
             if (service.getValue().compareTo(BigDecimal.ZERO) >= 0) {
-                service.setValue(service.getValue().subtract(model.getValue().multiply(diff)));
+                service.setValue(service.getValue().subtract(amount));
             } else {
-                service.setValue(service.getValue().add(model.getValue().multiply(diff)));
+                service.setValue(service.getValue().add(amount));
             }
             updateSumView();
             updateClearButton();

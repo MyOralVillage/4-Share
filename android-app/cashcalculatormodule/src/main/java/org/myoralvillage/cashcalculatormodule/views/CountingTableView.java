@@ -210,7 +210,7 @@ public class CountingTableView extends View {
         } else {
             newCount = 1;
         }
-        callEvent(deno, newCount);
+        counts.put(deno, newCount);
         invalidate();
     }
 
