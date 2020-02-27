@@ -4,6 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -20,7 +24,8 @@ import java.util.TreeMap;
 
 public class CountingTableView extends View {
 
-    private static final int OFFSET_VALUE = 50;
+    private static final int OFFSET_VALUE_DENO = 50;
+    private static final int OFFSET_VALUE_NUM = 50;
 
     //Value to scale the initial denominations location
     private static final float INITIAL_OFFSET_LEFT = (float) 0.005;
@@ -34,6 +39,7 @@ public class CountingTableView extends View {
     private Map<DenominationModel, Bitmap> bitmaps;
     private boolean initialized;
     private boolean isNegative = false;
+    private Paint denoNumber = new Paint();
 
     public CountingTableView(Context context) {
         super(context);
@@ -59,44 +65,52 @@ public class CountingTableView extends View {
             return;
         }
 
-        boolean first = true;
+        Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
+        denoNumber.setTypeface(font);
+        denoNumber.setTextSize(160);
+        denoNumber.setStrokeWidth(10);
         int width = getWidth();
-        for (Bitmap bmp : bitmaps.values()) {
-            width -= bmp.getWidth();
-        }
-        int left = 20;
-        int initialLeft = (int) Math.floor((getWidth() * INITIAL_OFFSET_LEFT) / 10.0) * 10;
-        int cut =  (int) (width / ((float) counts.size()));
+        int columnNumber = bitmaps.size() / 2 + 1;
+        int cellWidth = width / columnNumber;
         int top = (int) Math.floor((getHeight() * INITIAL_OFFSET_TOP) / 10.0) * 10;
+        int columnIndex, cellIndex = 0;
+        int locateX, locateY;
 
         //Variable used to keep track of top or bottom level
         int level = 0;
 
         for (Map.Entry<DenominationModel, Integer> entry : counts.entrySet()) {
-            int sum_left = initialLeft;
+            columnIndex = cellIndex % columnNumber;
             Bitmap bmp = bitmaps.get(entry.getKey());
             if (isNegative) bmp = invertBitmap(bmp);
 
-            if(entry.getValue() == 0){
+            if (entry.getValue() == 0) {
                 continue;
             }
 
-            for (int i = 1; i < entry.getValue() + 1; i++) {
-                canvas.drawBitmap(bmp, left + 20 * i, (top * i) + level, null);
-                sum_left += 20;
+            if (entry.getValue() > 4) {
+                locateX = columnIndex * cellWidth + OFFSET_VALUE_DENO;
+                locateY = (top * 3) + level;
+                canvas.drawBitmap(bmp, locateX, locateY, null);
+                locateX = columnIndex * cellWidth + OFFSET_VALUE_NUM;
+                denoNumber.setStyle(Paint.Style.FILL);
+                denoNumber.setColor(Color.WHITE);
+                canvas.drawText(Integer.toString(entry.getValue()), locateX, locateY + getHeight() / 4, denoNumber);
+                denoNumber.setStyle(Paint.Style.STROKE);
+                denoNumber.setColor(Color.BLACK);
+                canvas.drawText(Integer.toString(entry.getValue()), locateX, locateY + getHeight() / 4, denoNumber);
+            } else {
+                for (int i = 1; i < entry.getValue() + 1; i++) {
+                    locateX = columnIndex * cellWidth + 20 * i;
+                    locateY = (top * i) + level;
+                    canvas.drawBitmap(bmp, locateX, locateY, null);
+                }
             }
 
-            left += sum_left + cut + (OFFSET_VALUE) + bmp.getWidth();
-            if (left >= (getWidth()- bmp.getWidth())){
-                //Reached end of the screen width, so display below current bills
+            cellIndex += 1;
+
+            if (cellIndex + 1 > columnNumber) {
                 level = (int) (getHeight() / 2.0);
-                if (first){
-                    left = (int) (getWidth() * 0.35);
-                    first = false;
-                }
-                else{
-                    left = initialLeft;
-                }
             }
         }
     }
