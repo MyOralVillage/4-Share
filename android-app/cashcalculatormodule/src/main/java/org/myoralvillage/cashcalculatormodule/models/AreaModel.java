@@ -2,15 +2,15 @@ package org.myoralvillage.cashcalculatormodule.models;
 
 import androidx.annotation.Nullable;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AreaModel {
 
-    private Set<Box> boxes;
+    private List<Box> boxes;
 
     public AreaModel() {
-        this.boxes = new HashSet<>();
+        this.boxes = new ArrayList<>();
     }
 
     public void clearArea() {
@@ -21,8 +21,10 @@ public class AreaModel {
         boxes.add(box);
     }
 
-    public void removeBox(Box box) {
-        boxes.remove(box);
+    public void removeLastBox() {
+        if (boxes.size() > 0) {
+            boxes.remove(boxes.get(boxes.size() - 1));
+        }
     }
 
     public Box getBoxFromPoint(float x, float y) {

@@ -208,7 +208,7 @@ public class CountingTableView extends View {
             AreaModel.Box box = entry.getValue().getBoxFromPoint(x, y);
             if (box != null) {
                 removeDenomination(entry.getKey());
-                entry.getValue().removeBox(box);
+                entry.getValue().removeLastBox();
                 break;
             }
         }
