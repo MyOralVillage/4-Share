@@ -9,17 +9,17 @@
 
 
     <Button
-        android:id="@+id/pkr"
-        android:layout_width="322dp"
-        android:layout_height="169dp"
+        android:id="@+id/PKR"
+        android:layout_width="234dp"
+        android:layout_height="146dp"
         android:layout_marginStart="44dp"
         android:layout_marginLeft="44dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="22dp"
         android:layout_marginRight="22dp"
         android:background="@drawable/set_pkr"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.396"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

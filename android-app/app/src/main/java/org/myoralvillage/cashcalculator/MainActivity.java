@@ -27,7 +27,6 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    private static String currencyName = "PKR";
     private final String APP_STATE_KEY = "appState";
     private AppService service;
     private CurrencyModel currCurrency;
@@ -65,13 +64,9 @@ public class MainActivity extends AppCompatActivity {
         initializeClearButton();
         initializeHistoryButtons();
         initializeNumberpad();
-        settingButtonListener();
+        initializeSettingsButton();
 
         updateAll();
-    }
-
-    public static void setCurrencyName(String newName){
-        currencyName = newName;
     }
 
     private void initializeHistoryButtons() {
@@ -229,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeCurrencyScrollbar() {
         final CurrencyScrollbarView currencyScrollbarView = findViewById(R.id.currency_scrollbar);
-        currencyScrollbarView.setCurrency(currencyName);
+        currencyScrollbarView.setCurrency(SettingActivity.getSettingService().getCurrencyName());
         this.currCurrency = currencyScrollbarView.getCurrency();
 
         currencyScrollbarView.setCurrencyTapListener(denomination -> {
@@ -285,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void settingButtonListener() {
+    private void initializeSettingsButton() {
         ImageView setting = findViewById(R.id.setting);
         setting.setOnClickListener((e) -> {
             switchToSetting();
@@ -294,8 +289,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void switchToSetting(){
         service.reset();
-        Intent tmp;
-        tmp = new Intent(this, SettingActivity.class);
-        startActivity(tmp);
+        startActivity(new Intent(this, SettingActivity.class));
     }
 }
