@@ -49,5 +49,6 @@ public class SettingActivity extends AppCompatActivity {
 
     private void switchToMainActivity(){
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }

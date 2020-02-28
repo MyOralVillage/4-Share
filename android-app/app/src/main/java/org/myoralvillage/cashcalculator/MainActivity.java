@@ -308,5 +308,6 @@ public class MainActivity extends AppCompatActivity {
     private void switchToSetting(){
         service.reset();
         startActivity(new Intent(this, SettingActivity.class));
+        finish();
     }
 }
