@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         initializeClearButton();
         initializeHistoryButtons();
         initializeNumberpad();
+        initializeSettingsButton();
 
         updateAll();
     }
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeCurrencyScrollbar() {
         final CurrencyScrollbarView currencyScrollbarView = findViewById(R.id.currency_scrollbar);
-        currencyScrollbarView.setCurrency("PKR");
+        currencyScrollbarView.setCurrency(SettingActivity.getSettingService().getCurrencyName());
         this.currCurrency = currencyScrollbarView.getCurrency();
 
         currencyScrollbarView.setCurrencyTapListener(denomination -> {
@@ -295,5 +296,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, MainActivity.class);
         intent.putExtra(APP_STATE_KEY, service.getAppState());
         startActivity(intent);
+    }
+
+    private void initializeSettingsButton() {
+        ImageView setting = findViewById(R.id.setting);
+        setting.setOnClickListener((e) -> {
+            switchToSetting();
+        });
+    }
+
+    private void switchToSetting(){
+        service.reset();
+        startActivity(new Intent(this, SettingActivity.class));
+        finish();
     }
 }
