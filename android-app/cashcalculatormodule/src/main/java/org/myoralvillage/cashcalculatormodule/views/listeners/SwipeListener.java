@@ -21,6 +21,11 @@ public abstract class SwipeListener implements View.OnTouchListener {
         private static final int THRESHOLD_VELOCITY = 100;
 
         @Override
+        public void onLongPress(MotionEvent e) {
+            longPress(e.getX(), e.getY());
+        }
+
+        @Override
         public boolean onDown(MotionEvent e) {
             return true;
         }
@@ -69,4 +74,5 @@ public abstract class SwipeListener implements View.OnTouchListener {
     public abstract void swipeDown();
     public abstract void swipeLeft();
     public abstract void swipeRight();
+    public abstract void longPress(float x, float y);
 }
