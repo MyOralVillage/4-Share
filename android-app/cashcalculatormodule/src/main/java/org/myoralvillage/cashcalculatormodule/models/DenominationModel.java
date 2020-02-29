@@ -8,11 +8,13 @@ public class DenominationModel implements Comparable<DenominationModel> {
     private BigDecimal value;
     private int imageResource;
     private int imageResourceFolded;
+    private float scaleFactor;
 
-    public DenominationModel(BigDecimal value, int imageResource, int imageResourceFolded) {
+    public DenominationModel(BigDecimal value, int imageResource, int imageResourceFolded, float scaleFactor) {
         this.value = value;
         this.imageResource = imageResource;
         this.imageResourceFolded = imageResourceFolded;
+        this.scaleFactor = scaleFactor;
     }
 
     public BigDecimal getValue() {
@@ -25,6 +27,10 @@ public class DenominationModel implements Comparable<DenominationModel> {
 
     public int getImageResourceFolded(){
         return imageResourceFolded;
+    }
+
+    public float getScaleFactor() {
+        return scaleFactor;
     }
 
     @Override

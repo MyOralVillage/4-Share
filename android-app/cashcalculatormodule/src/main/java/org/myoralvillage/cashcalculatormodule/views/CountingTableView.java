@@ -149,7 +149,7 @@ public class CountingTableView extends View {
         return output;
     }
 
-    private Bitmap scaleBitmap(Bitmap bmp,int widthApp, int heightApp) {
+    private Bitmap scaleBitmap(Bitmap bmp,int widthApp, int heightApp, float scaleFactor) {
         int scale;
         int width, height;
 
@@ -157,20 +157,22 @@ public class CountingTableView extends View {
             scale = (int) Math.floor((heightApp * DENOM_SIZE) / 100.0) * 100;
             width = scale;
             height = (int) Math.floor(scale * (bmp.getHeight() * 4 / (5 * (float) bmp.getWidth())));
-        }else{
+        }else {
             scale = (int) Math.floor((widthApp * DENOM_SIZE) / 100.0) * 100;
             width = scale;
             height = (int) Math.floor(scale * (bmp.getHeight() / ((float) bmp.getWidth())));
         }
+
+        width = (int)(width * scaleFactor);
+        height = (int)(height * scaleFactor);
         return Bitmap.createScaledBitmap(bmp, width, height, false);
     }
-
 
     public void initDenominationModels(Set<DenominationModel> denominationModels,
                                        int width,int height) {
         for (DenominationModel deno : denominationModels) {
             bitmaps.put(deno, scaleBitmap(BitmapFactory.decodeResource(getResources(),
-                    deno.getImageResourceFolded()), width, height));
+                    deno.getImageResourceFolded()), width, height, deno.getScaleFactor()));
             counts.put(deno, 0);
             areas.put(deno, new AreaModel());
         }
