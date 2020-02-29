@@ -111,11 +111,13 @@ public class CountingTableView extends View {
         }
     }
 
+
+
     private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY, int top,
                           AreaModel areaModel) {
         for (int i = 1; i < num + 1; i++) {
             areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
-            canvas.drawBitmap(bmp, originX + 20 * i, top * i + originY, null);
+            canvas.drawBitmap(bmp, originX + 10 * i, top * i + originY, null);
         }
     }
 
@@ -151,22 +153,18 @@ public class CountingTableView extends View {
         int scale;
         int width, height;
 
-        if (bmp.getHeight() > bmp.getWidth()) {
-            scale = (int) Math.floor((widthApp * DENOM_SIZE) / 100.0) * 100;
-            width = (int) Math.floor(scale * (bmp.getWidth() / ((float) bmp.getHeight())));
-            height = scale;
-        } else if (bmp.getHeight() < bmp.getWidth()) {
+        if (bmp.getHeight() > 2 * bmp.getWidth()) {
             scale = (int) Math.floor((heightApp * DENOM_SIZE) / 100.0) * 100;
+            width = scale;
+            height = (int) Math.floor(scale * (bmp.getHeight() * 4 / (5 * (float) bmp.getWidth())));
+        }else{
+            scale = (int) Math.floor((widthApp * DENOM_SIZE) / 100.0) * 100;
             width = scale;
             height = (int) Math.floor(scale * (bmp.getHeight() / ((float) bmp.getWidth())));
         }
-        else{
-            scale = (int) Math.floor((widthApp * DENOM_SIZE) / 100.0) * 100;
-            width = scale;
-            height = scale;
-        }
         return Bitmap.createScaledBitmap(bmp, width, height, false);
     }
+
 
     public void initDenominationModels(Set<DenominationModel> denominationModels,
                                        int width,int height) {
