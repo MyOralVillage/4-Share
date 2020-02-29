@@ -154,11 +154,11 @@ public class CountingTableView extends View {
         int width, height;
 
         if (bmp.getHeight() > 2 * bmp.getWidth()) {
-            scale = (int) Math.floor((heightApp * DENOM_SIZE) / 100.0) * 100;
+            scale = (int)(heightApp * DENOM_SIZE);
             width = scale;
             height = (int) Math.floor(scale * (bmp.getHeight() * 4 / (5 * (float) bmp.getWidth())));
         }else {
-            scale = (int) Math.floor((widthApp * DENOM_SIZE) / 100.0) * 100;
+            scale = (int) (widthApp * DENOM_SIZE);
             width = scale;
             height = (int) Math.floor(scale * (bmp.getHeight() / ((float) bmp.getWidth())));
         }
