@@ -130,7 +130,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         public void addBitmap(Bitmap bmp, float scaleFactor) {
             int screenWidth = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
 
-            int targetWidth = (int) Math.floor(((0.2 * screenWidth) / 100.0)) * 100;
+            int targetWidth = (int)(0.1 * screenWidth);
             float scale = (float) targetWidth / bmp.getWidth();
             targetWidth = (int) (targetWidth * scaleFactor);
 
