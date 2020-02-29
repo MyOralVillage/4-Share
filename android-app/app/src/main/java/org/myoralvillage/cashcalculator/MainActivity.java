@@ -8,7 +8,9 @@ import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +22,6 @@ import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
-import org.myoralvillage.cashcalculatormodule.views.NumberPadView;
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import java.math.BigDecimal;
@@ -31,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private AppService service;
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
-    private NumberPadView numberPadView;
-    private TextView entryView;
+    private CurrencyScrollbarView currencyScrollbarView;
+    private TableLayout numberPadView;
     private TextView sumView;
     private ImageView calculateButton;
     private ImageView clearButton;
@@ -205,10 +206,10 @@ public class MainActivity extends AppCompatActivity {
             public void swipeUp() {
                 // Dragging towards the bottom
                 // TODO: Enter numeric/image mode
+                service.setValue(BigDecimal.ZERO);
+                updateAll();
                 numberPadView.setVisibility(View.VISIBLE);
-                entryView.setVisibility(View.VISIBLE);
-                entryView.setText(String.format(Locale.CANADA, "%s 0",
-                        currCurrency.getCurrency().getSymbol()));
+                currencyScrollbarView.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -241,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeCurrencyScrollbar() {
-        final CurrencyScrollbarView currencyScrollbarView = findViewById(R.id.currency_scrollbar);
+        currencyScrollbarView = findViewById(R.id.currency_scrollbar);
         currencyScrollbarView.setCurrency(SettingActivity.getSettingService().getCurrencyName());
         this.currCurrency = currencyScrollbarView.getCurrency();
 
@@ -253,35 +254,49 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeNumberpad() {
         numberPadView = findViewById(R.id.number_pad);
-        entryView = findViewById(R.id.entry);
-        entryView.setVisibility(View.INVISIBLE);
+        numberPadView.setVisibility(View.INVISIBLE);
+
         final StringBuilder stringBuilder = new StringBuilder();
-        numberPadView.setOnItemClickListener((parent, view, position, id) -> {
-            String text = ((TextView) view).getText().toString();
-            switch (position) {
-                case 0:
-                    if (stringBuilder.length() == 0) {
-                        return;
-                    }
-                    service.setValue(new BigDecimal(Integer.valueOf(stringBuilder.toString())));
+        View.OnClickListener listener = v -> {
+            String text;
+
+            if (v instanceof Button) {
+                text = ((Button) v).getText().toString();
+            } else {
+                text = v.getContentDescription().toString();
+            }
+
+            switch (text) {
+                case "check":
                     stringBuilder.setLength(0);
-                    entryView.setVisibility(View.INVISIBLE);
                     numberPadView.setVisibility(View.INVISIBLE);
+                    currencyScrollbarView.setVisibility(View.VISIBLE);
                     updateAll();
                     return;
-                case 2:
+                case "back":
                     if (stringBuilder.length() > 0) {
                         stringBuilder.setLength(stringBuilder.length() - 1);
                     }
                     break;
                 default:
+                    if (stringBuilder.length() == 0 && text.equals("0")) {
+                        return;
+                    }
                     stringBuilder.append(text);
                     break;
             }
-            entryView.setText(String.format(Locale.CANADA, "%s %s",
-                    currCurrency.getCurrency().getSymbol(),
-                    stringBuilder.length() > 0 ? stringBuilder.toString() : "0"));
-        });
+            service.setValue(stringBuilder.length() > 0 ?
+                    new BigDecimal(Integer.valueOf(stringBuilder.toString())) : BigDecimal.ZERO);
+            updateSumView();
+        };
+
+        for (View button : new View[] {findViewById(R.id.zero), findViewById(R.id.one),
+                findViewById(R.id.two), findViewById(R.id.three), findViewById(R.id.four),
+                findViewById(R.id.five), findViewById(R.id.six), findViewById(R.id.seven),
+                findViewById(R.id.eight), findViewById(R.id.nine), findViewById(R.id.check),
+                findViewById(R.id.back)}) {
+            button.setOnClickListener(listener);
+        }
     }
 
     private void updateAll() {
