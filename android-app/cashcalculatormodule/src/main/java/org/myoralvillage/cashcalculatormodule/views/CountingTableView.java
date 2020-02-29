@@ -157,7 +157,7 @@ public class CountingTableView extends View {
             scale = (int) Math.floor((heightApp * DENOM_SIZE) / 100.0) * 100;
             width = scale;
             height = (int) Math.floor(scale * (bmp.getHeight() * 4 / (5 * (float) bmp.getWidth())));
-        }else{
+        }else {
             scale = (int) Math.floor((widthApp * DENOM_SIZE) / 100.0) * 100;
             width = scale;
             height = (int) Math.floor(scale * (bmp.getHeight() / ((float) bmp.getWidth())));

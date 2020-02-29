@@ -27,13 +27,19 @@ public class AreaModel {
         }
     }
 
-    public Box getBoxFromPoint(float x, float y) {
-        for (Box box : boxes) {
-            if (box.isPointInBox(x, y)) {
-                return box;
+    public int getBoxIndexFromPoint(float x, float y) {
+        for (int i = 0; i < boxes.size(); i++) {
+            if (boxes.get(i).isPointInBox(x, y)) {
+                return i;
             }
         }
 
+        return -1;
+    }
+
+    public Box getBoxFromPoint(float x, float y) {
+        int index = getBoxIndexFromPoint(x, y);
+        if (index >= 0) return boxes.get(index);
         return null;
     }
 
