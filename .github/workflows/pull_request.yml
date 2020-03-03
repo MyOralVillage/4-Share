@@ -16,7 +16,3 @@ jobs:
     - name: Build and Test with Gradle
       working-directory: android-app
       run: chmod +x ./gradlew && ./gradlew build
-    - name: Generate Javadocs
-      uses: eskatos/gradle-command-action@v1
-      with:
-        build-root-directory: android-app/cashcalculatormodule
