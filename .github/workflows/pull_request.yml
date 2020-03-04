@@ -16,3 +16,6 @@ jobs:
     - name: Build and Test with Gradle
       working-directory: android-app
       run: chmod +x ./gradlew && ./gradlew build
+    - name: Generate Javadoc with Gradle
+      working-directory: android-app
+      run: chmod +x ./gradlew javadoc
