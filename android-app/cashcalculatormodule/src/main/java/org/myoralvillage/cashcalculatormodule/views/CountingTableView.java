@@ -25,16 +25,10 @@ import java.util.TreeMap;
 
 public class CountingTableView extends View {
 
-    private static final int OFFSET_VALUE_DENO = 50;
-    private static final int OFFSET_VALUE_NUM = 100;
+    private static final int SCROLL_BAR_HEIGHT = 100;
     private static final int THRESHOLD_NUM = 4;
-
-    //Value to scale the initial denominations location
-    private static final float INITIAL_OFFSET_LEFT = (float) 0.005;
-    private static final float INITIAL_OFFSET_TOP = (float) 0.04;
-
-    //Value to scale the size of the denominations
-    private static final float DENOM_SIZE = (float) 0.2;
+    private static final float OFFSET_PERCENTAGE = (float) 0.07;
+    private static final float OFFSET_VALUE_GAP = (float) 1.8;
 
     private CountingTableListener countingTableListener;
     private Map<DenominationModel, Integer> counts;
@@ -73,13 +67,11 @@ public class CountingTableView extends View {
 
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         denoNumber.setTypeface(font);
-        denoNumber.setTextSize(160);
-        denoNumber.setStrokeWidth(10);
-        int width = getWidth();
-        int top = (int) Math.floor((getHeight() * INITIAL_OFFSET_TOP) / 10.0) * 10;
-        int left = (int) Math.floor((getHeight() * INITIAL_OFFSET_LEFT) / 10.0) * 10;
-        int columnNumber = bitmaps.size() / 2 + 1;
-        int cellWidth = width / columnNumber;
+        denoNumber.setTextSize((float) getWidth() / 10);
+        denoNumber.setStrokeWidth((float) getWidth() / 150);
+        int columnNumber = (bitmaps.size() + 1) / 2;
+        int cellWidth = (int) Math.ceil((float) getWidth() / columnNumber);
+        int cellHeight = (int) Math.ceil((float) getHeight() / 2);
         int columnIndex;
         int cellIndex = 0;
 
@@ -96,44 +88,48 @@ public class CountingTableView extends View {
             if (entry.getValue() == 0) {
                 continue;
             } else if (entry.getValue() > THRESHOLD_NUM) {
-                drawDenoNum(canvas, entry.getValue(), bmp, columnIndex * cellWidth - left,
-                        level + top, areaModel);
+                drawDenoNum(canvas, entry.getValue(), bmp, columnIndex * cellWidth,
+                        level, areaModel, cellWidth, cellHeight);
             } else {
-                drawDeno(canvas, entry.getValue(), bmp, columnIndex * cellWidth, level, top,
+                drawDeno(canvas, entry.getValue(), bmp, columnIndex * cellWidth, level,
                          areaModel);
             }
 
             cellIndex += 1;
 
             if (cellIndex + 1 > columnNumber) {
-                level = (int) (getHeight() / 2.0);
+                level = (int) (getHeight() / OFFSET_VALUE_GAP);
             }
         }
     }
 
 
 
-    private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY, int top,
+    private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
                           AreaModel areaModel) {
-        for (int i = 1; i < num + 1; i++) {
+        int localX;
+        int localY;
+        for (int i = 0; i < num; i++) {
+            localX = originX + (int)(getWidth() / 8 * OFFSET_PERCENTAGE) * i;
+            localY = originY + (int)(getHeight() / 2 * OFFSET_PERCENTAGE) * i;
             areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
-            canvas.drawBitmap(bmp, originX + 10 * i, top * i + originY, null);
+            canvas.drawBitmap(bmp, localX, localY, null);
         }
     }
 
     private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
-                             AreaModel areaModel) {
-        int minX = originX + OFFSET_VALUE_DENO;
+                             AreaModel areaModel, int cellWidth, int cellHeight) {
+        int minX = originX + (int) Math.floor(cellWidth * OFFSET_PERCENTAGE * 2);
         areaModel.addBox(new AreaModel.Box(minX, originY, bmp.getWidth(), bmp.getHeight()));
         canvas.drawBitmap(bmp, minX, originY, null);
         denoNumber.setStyle(Paint.Style.FILL);
         denoNumber.setColor(Color.WHITE);
         canvas.drawText(Integer.toString(num), originX +
-                OFFSET_VALUE_NUM, originY + getHeight() / 4, denoNumber);
+                cellWidth / 2, originY + cellHeight / 2, denoNumber);
         denoNumber.setStyle(Paint.Style.STROKE);
         denoNumber.setColor(Color.BLACK);
         canvas.drawText(Integer.toString(num), originX +
-                OFFSET_VALUE_NUM, originY + getHeight() / 4, denoNumber);
+                cellWidth / 2, originY + cellHeight / 2, denoNumber);
     }
 
     private Bitmap invertBitmap(Bitmap bmp) {
@@ -149,30 +145,28 @@ public class CountingTableView extends View {
         return output;
     }
 
-    private Bitmap scaleBitmap(Bitmap bmp,int widthApp, int heightApp, float scaleFactor) {
-        int scale;
+
+    private Bitmap scaleBitmap(Bitmap bmp,int cellWidth, int cellHeight) {
         int width, height;
 
-        if (bmp.getHeight() > 2 * bmp.getWidth()) {
-            scale = (int)(heightApp * DENOM_SIZE);
-            width = scale;
-            height = (int) Math.floor(scale * (bmp.getHeight() * 4 / (5 * (float) bmp.getWidth())));
-        }else {
-            scale = (int) (widthApp * DENOM_SIZE);
-            width = scale;
-            height = (int) Math.floor(scale * (bmp.getHeight() / ((float) bmp.getWidth())));
+        if (bmp.getWidth() > bmp.getHeight()) {
+            width = (int) Math.floor(cellWidth * (1 - 5 * OFFSET_PERCENTAGE));
+            height = (int) Math.floor(width * (((float) bmp.getHeight()) / bmp.getWidth()));
+        } else {
+            height = (int) Math.floor(cellHeight * (1 - 5 * OFFSET_PERCENTAGE));
+            width = (int) Math.floor(height * (((float) bmp.getWidth()) / bmp.getHeight()));
         }
-
-        width = (int)(width * scaleFactor);
-        height = (int)(height * scaleFactor);
         return Bitmap.createScaledBitmap(bmp, width, height, false);
     }
 
     public void initDenominationModels(Set<DenominationModel> denominationModels,
                                        int width,int height) {
+        int cellHeight = (height - SCROLL_BAR_HEIGHT) / 2;
+        int rowCellNum = (denominationModels.size() + 1) / 2;
+        int cellWidth = width / rowCellNum;
         for (DenominationModel deno : denominationModels) {
             bitmaps.put(deno, scaleBitmap(BitmapFactory.decodeResource(getResources(),
-                    deno.getImageResourceFolded()), width, height, deno.getScaleFactor()));
+                    deno.getImageResourceFolded()), cellWidth, cellHeight));
             counts.put(deno, 0);
             areas.put(deno, new AreaModel());
         }
