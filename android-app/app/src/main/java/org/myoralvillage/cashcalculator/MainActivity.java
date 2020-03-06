@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private CurrencyScrollbarView currencyScrollbarView;
     private TableLayout numberPadView;
     private TextView sumView;
+    private TextView numberInputView;
     private ImageView calculateButton;
     private ImageView clearButton;
 
@@ -60,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
         else service = new AppService();
 
         sumView = findViewById(R.id.sum_view);
+        numberInputView = findViewById(R.id.number_input_view);
+        numberInputView.setVisibility(View.INVISIBLE);
+
         initializeCurrencyScrollbar();
         initializeCountingView();
         initializeCalculateButton();
@@ -90,8 +94,6 @@ public class MainActivity extends AppCompatActivity {
             service.gotoPreviousHistorySlide();
             updateAll();
         });
-
-        updateAll();
     }
 
     private void updateHistoryButtons() {
@@ -205,11 +207,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void swipeUp() {
                 // Dragging towards the bottom
-                // TODO: Enter numeric/image mode
-                service.setValue(BigDecimal.ZERO);
+                service.switchAppMode();
+                if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC)
+                    service.setValue(BigDecimal.ZERO);
+
                 updateAll();
-                numberPadView.setVisibility(View.VISIBLE);
-                currencyScrollbarView.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -268,14 +270,17 @@ public class MainActivity extends AppCompatActivity {
 
             switch (text) {
                 case "check":
+                    service.setValue(stringBuilder.length() > 0 ?
+                            new BigDecimal(Integer.valueOf(stringBuilder.toString())) : BigDecimal.ZERO);
                     stringBuilder.setLength(0);
-                    numberPadView.setVisibility(View.INVISIBLE);
-                    currencyScrollbarView.setVisibility(View.VISIBLE);
+                    numberInputView.setVisibility(View.INVISIBLE);
                     updateAll();
                     return;
                 case "back":
                     if (stringBuilder.length() > 0) {
                         stringBuilder.setLength(stringBuilder.length() - 1);
+                        numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                                currCurrency.getCurrency().getSymbol(), stringBuilder.toString()));
                     }
                     break;
                 default:
@@ -283,10 +288,12 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     stringBuilder.append(text);
+                    numberInputView.setVisibility(View.VISIBLE);
+                    numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                            currCurrency.getCurrency().getSymbol(), stringBuilder.toString()));
                     break;
             }
-            service.setValue(stringBuilder.length() > 0 ?
-                    new BigDecimal(Integer.valueOf(stringBuilder.toString())) : BigDecimal.ZERO);
+
             updateSumView();
         };
 
@@ -299,12 +306,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void updateAppMode() {
+        switch(service.getAppState().getAppMode()) {
+            case IMAGE:
+                numberPadView.setVisibility(View.INVISIBLE);
+                currencyScrollbarView.setVisibility(View.VISIBLE);
+                break;
+            case NUMERIC:
+                numberPadView.setVisibility(View.VISIBLE);
+                currencyScrollbarView.setVisibility(View.INVISIBLE);
+                break;
+        }
+    }
+
     private void updateAll() {
         updateCalculateButton();
         updateHistoryButtons();
         updateClearButton();
         updateSumView();
         updateCountingTable();
+        updateAppMode();
     }
 
     private void switchState() {
