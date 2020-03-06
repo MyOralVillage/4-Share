@@ -279,6 +279,8 @@ public class MainActivity extends AppCompatActivity {
                 case "back":
                     if (stringBuilder.length() > 0) {
                         stringBuilder.setLength(stringBuilder.length() - 1);
+                        numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                                currCurrency.getCurrency().getSymbol(), stringBuilder.toString()));
                     }
                     break;
                 default:
