@@ -13,3 +13,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    - name: Build and Test with Gradle
+      working-directory: android-app
+      run: chmod +x ./gradlew && ./gradlew build
