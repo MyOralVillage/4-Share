@@ -205,11 +205,22 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void swipeUp() {
                 // Dragging towards the bottom
-                // TODO: Enter numeric/image mode
-                service.setValue(BigDecimal.ZERO);
+                service.switchAppMode();
+
+                switch(service.getAppState().getAppMode()) {
+                    case IMAGE:
+                        numberPadView.setVisibility(View.INVISIBLE);
+                        currencyScrollbarView.setVisibility(View.VISIBLE);
+                        break;
+                    case NUMERIC:
+                        service.setValue(BigDecimal.ZERO);
+                        numberPadView.setVisibility(View.VISIBLE);
+                        currencyScrollbarView.setVisibility(View.INVISIBLE);
+                        break;
+                }
+
                 updateAll();
-                numberPadView.setVisibility(View.VISIBLE);
-                currencyScrollbarView.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
@@ -269,8 +280,6 @@ public class MainActivity extends AppCompatActivity {
             switch (text) {
                 case "check":
                     stringBuilder.setLength(0);
-                    numberPadView.setVisibility(View.INVISIBLE);
-                    currencyScrollbarView.setVisibility(View.VISIBLE);
                     updateAll();
                     return;
                 case "back":
