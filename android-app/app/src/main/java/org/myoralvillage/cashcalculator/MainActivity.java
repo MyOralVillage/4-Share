@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private CurrencyScrollbarView currencyScrollbarView;
     private TableLayout numberPadView;
     private TextView sumView;
+    private TextView numberInputView;
     private ImageView calculateButton;
     private ImageView clearButton;
 
@@ -60,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
         else service = new AppService();
 
         sumView = findViewById(R.id.sum_view);
+        numberInputView = findViewById(R.id.number_input_view);
+        numberInputView.setVisibility(View.INVISIBLE);
+
         initializeCurrencyScrollbar();
         initializeCountingView();
         initializeCalculateButton();
@@ -266,7 +270,10 @@ public class MainActivity extends AppCompatActivity {
 
             switch (text) {
                 case "check":
+                    service.setValue(stringBuilder.length() > 0 ?
+                            new BigDecimal(Integer.valueOf(stringBuilder.toString())) : BigDecimal.ZERO);
                     stringBuilder.setLength(0);
+                    numberInputView.setVisibility(View.INVISIBLE);
                     updateAll();
                     return;
                 case "back":
@@ -279,10 +286,12 @@ public class MainActivity extends AppCompatActivity {
                         return;
                     }
                     stringBuilder.append(text);
+                    numberInputView.setVisibility(View.VISIBLE);
+                    numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                            currCurrency.getCurrency().getSymbol(), stringBuilder.toString()));
                     break;
             }
-            service.setValue(stringBuilder.length() > 0 ?
-                    new BigDecimal(Integer.valueOf(stringBuilder.toString())) : BigDecimal.ZERO);
+
             updateSumView();
         };
 
