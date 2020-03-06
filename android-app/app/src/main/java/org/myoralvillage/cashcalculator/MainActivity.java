@@ -90,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
             service.gotoPreviousHistorySlide();
             updateAll();
         });
-
-        updateAll();
     }
 
     private void updateHistoryButtons() {
@@ -206,21 +204,10 @@ public class MainActivity extends AppCompatActivity {
             public void swipeUp() {
                 // Dragging towards the bottom
                 service.switchAppMode();
-
-                switch(service.getAppState().getAppMode()) {
-                    case IMAGE:
-                        numberPadView.setVisibility(View.INVISIBLE);
-                        currencyScrollbarView.setVisibility(View.VISIBLE);
-                        break;
-                    case NUMERIC:
-                        service.setValue(BigDecimal.ZERO);
-                        numberPadView.setVisibility(View.VISIBLE);
-                        currencyScrollbarView.setVisibility(View.INVISIBLE);
-                        break;
-                }
+                if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC)
+                    service.setValue(BigDecimal.ZERO);
 
                 updateAll();
-
             }
 
             @Override
@@ -308,12 +295,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void updateAppMode() {
+        switch(service.getAppState().getAppMode()) {
+            case IMAGE:
+                numberPadView.setVisibility(View.INVISIBLE);
+                currencyScrollbarView.setVisibility(View.VISIBLE);
+                break;
+            case NUMERIC:
+                numberPadView.setVisibility(View.VISIBLE);
+                currencyScrollbarView.setVisibility(View.INVISIBLE);
+                break;
+        }
+    }
+
     private void updateAll() {
         updateCalculateButton();
         updateHistoryButtons();
         updateClearButton();
         updateSumView();
         updateCountingTable();
+        updateAppMode();
     }
 
     private void switchState() {
