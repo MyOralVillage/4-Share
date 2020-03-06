@@ -26,6 +26,12 @@ public class AppService {
         return appState;
     }
 
+    public void switchAppMode() {
+        if (appState.getAppMode() == AppStateModel.AppMode.IMAGE)
+            appState.setAppMode(AppStateModel.AppMode.NUMERIC);
+        else appState.setAppMode(AppStateModel.AppMode.IMAGE);
+    }
+
     public void reset() {
         AppStateModel.AppMode mode = appState.getAppMode();
         appState = AppStateModel.getDefault();
