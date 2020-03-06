@@ -22,9 +22,21 @@ public class SplashActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+        mainActivityButtonListener();
         settingButtonListener();
-        tmp = new Intent(this, MainActivity.class);
-        timer.start();
+    }
+
+    private void mainActivityButtonListener() {
+        Button setting = findViewById(R.id.main);
+        setting.setOnClickListener((e) -> {
+            exit = true;
+            switchToMain();
+        });
+    }
+
+    private void switchToMain(){
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     private void settingButtonListener() {
@@ -34,21 +46,6 @@ public class SplashActivity extends AppCompatActivity {
             switchToSetting();
         });
     }
-
-    Thread timer = new Thread() {
-        public void run() {
-            try {
-                sleep(7000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } finally {
-                if (! exit){
-                    startActivity(tmp);
-                    finish();
-                }
-            }
-        }
-    };
 
     private void switchToSetting(){
         startActivity(new Intent(this, SettingActivity.class));
