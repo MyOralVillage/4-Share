@@ -1,7 +1,7 @@
 package org.myoralvillage.cashcalculatormodule.services;
 
 public class SettingService {
-    private static String currencyName = "PKR";
+    private static String currencyName = "KES";
 
     public String getCurrencyName(){
         return currencyName;

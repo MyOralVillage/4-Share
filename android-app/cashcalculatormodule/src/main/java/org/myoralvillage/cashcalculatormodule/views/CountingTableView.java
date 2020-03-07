@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
@@ -146,7 +145,7 @@ public class CountingTableView extends View {
     }
 
 
-    private Bitmap scaleBitmap(Bitmap bmp,int cellWidth, int cellHeight) {
+    private Bitmap scaleBitmap(Bitmap bmp,int cellWidth, int cellHeight, float scaleFactor) {
         int width, height;
 
         if (bmp.getWidth() > bmp.getHeight()) {
@@ -156,6 +155,10 @@ public class CountingTableView extends View {
             height = (int) Math.floor(cellHeight * (1 - 5 * OFFSET_PERCENTAGE));
             width = (int) Math.floor(height * (((float) bmp.getWidth()) / bmp.getHeight()));
         }
+
+        width = (int) (width * scaleFactor);
+        height = (int) (height * scaleFactor);
+
         return Bitmap.createScaledBitmap(bmp, width, height, false);
     }
 
@@ -166,7 +169,7 @@ public class CountingTableView extends View {
         int cellWidth = width / rowCellNum;
         for (DenominationModel deno : denominationModels) {
             bitmaps.put(deno, scaleBitmap(BitmapFactory.decodeResource(getResources(),
-                    deno.getImageResourceFolded()), cellWidth, cellHeight));
+                    deno.getImageResourceFolded()), cellWidth, cellHeight, deno.getScaleFactor()));
             counts.put(deno, 0);
             areas.put(deno, new AreaModel());
         }

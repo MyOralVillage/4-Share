@@ -29,7 +29,7 @@ public class SettingActivity extends AppCompatActivity {
         currency.add(findViewById(R.id.PKR));
         currency.add(findViewById(R.id.KEN));
         currencyName.add("PKR");
-        currencyName.add("KEN");
+        currencyName.add("KES");
         currencyButtonListener();
     }
 
