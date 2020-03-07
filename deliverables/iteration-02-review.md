@@ -33,7 +33,7 @@ We created different GitHub branches for each task so that once a member finishe
 #### Q3. Planned changes
 
  1. Write javadocs
- In our documentation, we planned to clarify what a function does and clarify any ambiguities. For any more complex algorithms, we will briefly explain how they work. Documentation also will double as a future deliverable for our partner, in an upcoming user story.
+ In our documentation, we plan to clarify what a function does and clarify any ambiguities. For any more complex algorithms, we will briefly explain how they work. Documentation also will double as a future deliverable for our partner, in an upcoming user story.
  
  2. Try another communication mode  
  In previous, we decided that if the teammate didn't reply the message sent to him, we will have a consult in person during next team meeting. Now, to assign some work to somebody or post a notification, we will mention the target team member and the mentioned team member needs to reply within 4 hours. If there is no response, we will send E-mail through utMail to notice that team member.  
