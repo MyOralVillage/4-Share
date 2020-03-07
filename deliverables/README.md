@@ -22,6 +22,20 @@ the cash value.
 
 ## Instructions
 
+### Getting Started
+
+#### Option 1: Installation on an Android device
+  1. Download the apk on your device: https://github.com/csc301-winter-2020/team-project-18-my-oral-village/raw/readme-d2/deliverables/CashCalculator-Week3.apk
+  2. Follow these instructions to enable APK installs on your device: https://www.expressvpn.com/support/vpn-setup/enable-apk-installs-android/
+  3. Install the APK by opening it via a file explorer on your phone
+  
+#### Option 2: Use a web-based Android emulator that is already preconfigured with the application
+
+https://appetize.io/app/ajk9nndhbr9747h9tdxqnju2z8?device=nexus5&scale=100&orientation=landscape&osVersion=8.1
+
+
+### Using the features
+
  * Use the app with Kenyan currency
    1. Open the app
    2. Tap the hand icon
