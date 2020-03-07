@@ -21,12 +21,11 @@ We created different GitHub branches for each task so that once a member finishe
  
  
 #### Q2. Decisions that did not turn out as well as we hoped
-List **process-related** (i.e. team organization and how you work) decisions that, in retrospect, were not as successful as you thought they would be.
 
  1. Use Discord as a form of communication  
  Since one of our team members cannot use facebook, we decided to Discord as our communication platform. Although Discord allows us to display the important meeting information and have online group meetings, it is usually unknown when the message is seen and if they are seen. And it happened several times that some of us ignored the message and have no idea whether the message was received or not.
  
- 2. Use uniform coding style and have no documentation  
+ 2. We don't use a uniform coding style and don't have any documentation  
  We always need to spend a bunch of time to learn how to use code written by others, which is really time-consuming.
 
 
