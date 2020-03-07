@@ -14,9 +14,7 @@ import java.math.BigDecimal;
  */
 public class MathOperationModel implements Serializable {
     /**
-     * The mathematical operations that the Cash Calculator can perform. The available modes are
-     * addition, subtraction, multiplication and a standard mode, where the standard mode is the
-     * screen when after or before each operation is being performed.
+     * The mathematical operations that the Cash Calculator can perform.
      *
      * @see MathOperationMode
      */
@@ -41,8 +39,7 @@ public class MathOperationModel implements Serializable {
     }
 
     /**
-     * Returns the <code>MathOperationMode</code> associated with this model. The available modes
-     * are ADD, SUBTRACT, MULTIPLY STANDARD.
+     * Returns the <code>MathOperationMode</code> associated with this model.
      *
      * @return the mode of this model.
      * @see MathOperationMode
@@ -72,11 +69,11 @@ public class MathOperationModel implements Serializable {
 
     /**
      * Constructs a new <code>MathOperationModel</code> with the same mode of this model and
-     * possibly a different value.
+     * new value.
      *
      * @param value The value of the new <code>MathOperationModel</code> with the same mode as this
      *              model
-     * @return a new <code>MathOperationModel</code> (copy of this model) with possibly a new value.
+     * @return a new <code>MathOperationModel</code> (copy of this model) with a new value.
      */
     public MathOperationModel copyWithValue(BigDecimal value) {
         return new MathOperationModel(mode, value);
@@ -150,21 +147,9 @@ public class MathOperationModel implements Serializable {
      * An enum class that highlights the operation that can be performed.
      */
     public enum MathOperationMode {
-        /**
-         * The state allows for addition.
-         */
         ADD,
-        /**
-         * The state allows for subtraction.
-         */
         SUBTRACT,
-        /**
-         * The state allows for multiplication.
-         */
         MULTIPLY,
-        /**
-         * The state allows for no operations.
-         */
         STANDARD
     }
 }
