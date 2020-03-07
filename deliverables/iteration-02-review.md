@@ -56,10 +56,18 @@ List any **process-related** (i.e. team organization and how you work) changes y
 
 #### Q4. How was your product demo?
  * How did you prepare your demo?  
- Every week, our partner can check what are we doing from Trello and we will send the APK of latest version to the partner. He can use this APK to test functions and provide feedback.  
+ Every week, our partner can check what are we doing from Trello and we will send the APK of latest version to the partner. He can use this APK to test functions and provide feedback.   
  * What did you manage to demo to your partner?
- * Did your partner accept the features?
- * Were there change requests?
+ * Did your partner accept the features?  
+ * Were there change requests?  
+ Up to now, we already provided 3 demo to our partner.  
+ In the first deno, we finished basic functions, including have both counting table and scroll bar, user can select denomination from scroll bar and show on conuting table with the minimum number of denomations, can swipe left/right/down to perform basic operation. Our partner accepted the demo and gave us some change suggestion. First, scale factor for currency denominations. On the scrollbar, all Pakistan notes should appear to be the same width. For display of notes and coins on the table, keep them identical in size to their appearance on the scrollbar.
+ ![Sample_599989](https://user-images.githubusercontent.com/46569172/76153112-79ea1900-6095-11ea-8139-baad812e02e8.png)  
+ 
+ In the second demo, we resized the denominations on counting table and adjest the arrangement and added a numeric mode, which user can input a written number, and the number automatically be displayed as currency in the counting area. And User can also select different currency. We had a more integrated gesture detection that user can long press the denomination on counting table to remove that. When the number of certain denomination is greater than 4, it will automatically folding and show the number over it. Our partner also accept this demo and the change request is, take screen size into consideration when offsetting denominations in the counting table, add a splash screen to let the user choose currency and fix the problem that the application crashed on small RAM smart phone.  
+ 
+ In the latest demo, we built a splash screen to choose currence, add one more currency (Kenyan Shilling) to our application and resize the denomination in counting table again. And user can also use the memory mode to check the previous process he made. We also built the library for our project and can run javadoc as part of CI. Our partner also accepted the demo but have some bugs need to fix. And the change request this time is, larger the notes in both counting table and scroll bar, swith numeric mood by sweeping the scrool bar, fix the bug in memory mode and change the operation way in numeric mode.
  * What did you learn from the demo from either a process or product perspective?
+ From the process of developing, we learned that sometimes what we understand can be different from what our partner want, which highlight the importance of weekly meeting with the partner. The development enviornment can also differ from the real enviornment, which means there can be many unexpected issue during the development. Like we never met the crash problem when we tested ourselves, but it crashed at the first time when we use the test device. And we also find the importance of teamwork and communication. Sometimes one team member picked certain task to finish but found it's hard to finish it by himself, then he can post his demand in the group then others can help him out.
  * *This section will be marked very leniently so keep it brief and just make sure the points are addressed*
 
