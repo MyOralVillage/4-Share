@@ -32,7 +32,7 @@ We created different GitHub branches for each task so that once a member finishe
 
 #### Q3. Planned changes
 
- 1. Write javadocs
+ 1. Write javadocs  
  In our documentation, we plan to clarify what a function does and clarify any ambiguities. For any more complex algorithms, we will briefly explain how they work. Documentation also will double as a future deliverable for our partner, in an upcoming user story.
  
  2. Try another communication mode  
