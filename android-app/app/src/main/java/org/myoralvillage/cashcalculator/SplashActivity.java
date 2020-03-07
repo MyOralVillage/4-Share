@@ -7,6 +7,7 @@ import android.view.WindowManager;
 import android.content.Intent;
 
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +28,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void mainActivityButtonListener() {
-        Button setting = findViewById(R.id.main);
+        ImageView setting = findViewById(R.id.main);
         setting.setOnClickListener((e) -> {
             exit = true;
             switchToMain();
