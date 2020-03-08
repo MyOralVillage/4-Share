@@ -28,6 +28,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     private LinearLayout linearLayout;
     private CurrencyTapListener currencyTapListener;
     private CurrencyModel currCurrency;
+    private static final float OFFSET_PERCENTAGE = (float) 0.07;
 
     private ScrollbarDenominationsView denominationsView;
 
@@ -86,8 +87,11 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
                 currencyCode, getResources(), getContext());
 
         this.currCurrency = currency;
+        float widthFactor = (( currency.getDenominations().size() + 1) / 2);
+
         for (DenominationModel denomination : currency.getDenominations()) {
-            denominationsView.addBitmap(BitmapFactory.decodeResource(getResources(), denomination.getImageResource()), denomination.getScaleFactor());
+            denominationsView.addBitmap(BitmapFactory.decodeResource(getResources(), denomination.getImageResource()),
+                    denomination.getScaleFactor(), widthFactor);
         }
     }
 
@@ -127,10 +131,11 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
             }
         }
 
-        public void addBitmap(Bitmap bmp, float scaleFactor) {
+        public void addBitmap(Bitmap bmp, float scaleFactor, float widthFactor) {
             int screenWidth = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
-
-            int targetWidth = (int)(0.17 * screenWidth);
+            float widthRatio = 1/widthFactor;
+            int adjustWidth = (int)((widthRatio * screenWidth) * OFFSET_PERCENTAGE);
+            int targetWidth = (int)((widthRatio * screenWidth) - PADDING - adjustWidth);
             float scale = (float) targetWidth / bmp.getWidth();
             targetWidth = (int) (targetWidth * scaleFactor);
 
