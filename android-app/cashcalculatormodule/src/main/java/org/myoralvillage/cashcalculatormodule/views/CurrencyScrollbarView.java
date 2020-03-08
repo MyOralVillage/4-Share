@@ -136,6 +136,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
             float widthRatio = 1/widthFactor;
             int adjustWidth = (int)((widthRatio * screenWidth) * OFFSET_PERCENTAGE);
             int targetWidth = (int)((widthRatio * screenWidth) - PADDING - adjustWidth);
+
             float scale = (float) targetWidth / bmp.getWidth();
             targetWidth = (int) (targetWidth * scaleFactor);
 

@@ -1,0 +1,22 @@
+name: Generate Javadoc
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Generate Javadoc with Gradle
+        working-directory: android-app
+        run: chmod +x ./gradlew && ./gradlew javadoc
+      - name: Upload Javadoc as an artifact
+        uses: actions/upload-artifact@v1.0.0
+        with:
+          # Artifact name
+          name: Javadocs for Cash Calculator
+          # Directory containing files to upload
+          path: ./android-app/javadoc/

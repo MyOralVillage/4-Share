@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         initializeClearButton();
         initializeHistoryButtons();
         initializeNumberpad();
-        initializeSettingsButton();
 
         updateAll();
     }
@@ -334,16 +333,4 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void initializeSettingsButton() {
-        ImageView setting = findViewById(R.id.setting);
-        setting.setOnClickListener((e) -> {
-            switchToSetting();
-        });
-    }
-
-    private void switchToSetting(){
-        service.reset();
-        startActivity(new Intent(this, SettingActivity.class));
-        finish();
-    }
 }
