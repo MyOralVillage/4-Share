@@ -5,56 +5,67 @@
         <item>@drawable/currency_pkr_100000</item>
         <item>@drawable/currency_pkr_100000</item>
         <item>0.5</item>
+        <item>0.0</item>
 
         <item>10000</item>
         <item>@drawable/currency_pkr_10000</item>
         <item>@drawable/currency_pkr_10000_folded</item>
         <item>1.0</item>
+        <item>0.0</item>
 
         <item>5000</item>
         <item>@drawable/currency_pkr_5000</item>
         <item>@drawable/currency_pkr_5000_folded</item>
         <item>1.0</item>
+        <item>0.0</item>
 
         <item>1000</item>
         <item>@drawable/currency_pkr_1000</item>
         <item>@drawable/currency_pkr_1000_folded</item>
         <item>1.0</item>
+        <item>0.031</item>
 
         <item>500</item>
         <item>@drawable/currency_pkr_500</item>
         <item>@drawable/currency_pkr_500_folded</item>
         <item>1.0</item>
+        <item>0.062</item>
 
         <item>100</item>
         <item>@drawable/currency_pkr_100</item>
         <item>@drawable/currency_pkr_100_folded</item>
         <item>1.0</item>
+        <item>0.093</item>
 
         <item>50</item>
         <item>@drawable/currency_pkr_50</item>
         <item>@drawable/currency_pkr_50_folded</item>
         <item>1.0</item>
+        <item>0.124</item>
 
         <item>20</item>
         <item>@drawable/currency_pkr_20</item>
         <item>@drawable/currency_pkr_20_folded</item>
         <item>1.0</item>
+        <item>0.155</item>
 
         <item>10</item>
         <item>@drawable/currency_pkr_10</item>
         <item>@drawable/currency_pkr_10_folded</item>
         <item>1.0</item>
+        <item>0.186</item>
 
         <item>5</item>
         <item>@drawable/currency_pkr_5</item>
         <item>@drawable/currency_pkr_5_folded</item>
         <item>0.85</item>
+        <item>0.0</item>
 
         <item>2</item>
         <item>@drawable/currency_pkr_2</item>
         <item>@drawable/currency_pkr_2_folded</item>
         <item>0.75</item>
+        <item>0.0</item>
     </array>
 
     <array name="currency_KES">
@@ -62,50 +73,60 @@
         <item>@drawable/currency_kes_10000</item>
         <item>@drawable/currency_kes_10000</item>
         <item>0.6</item>
+        <item>0.0</item>
 
         <item>1000</item>
         <item>@drawable/currency_kes_1000</item>
         <item>@drawable/currency_kes_1000_folded</item>
         <item>1.0</item>
+        <item>0.0</item>
 
         <item>500</item>
         <item>@drawable/currency_kes_500</item>
         <item>@drawable/currency_kes_500_folded</item>
         <item>1.0</item>
+        <item>0.0</item>
 
         <item>200</item>
         <item>@drawable/currency_kes_200</item>
         <item>@drawable/currency_kes_200_folded</item>
         <item>1.0</item>
+        <item>0.0</item>
 
         <item>100</item>
         <item>@drawable/currency_kes_100</item>
         <item>@drawable/currency_kes_100_folded</item>
         <item>1.0</item>
+        <item>0.0</item>
 
         <item>50</item>
         <item>@drawable/currency_kes_50</item>
         <item>@drawable/currency_kes_50_folded</item>
         <item>1.0</item>
+        <item>0.0</item>
 
         <item>20</item>
         <item>@drawable/currency_kes_20</item>
         <item>@drawable/currency_kes_20</item>
         <item>0.75</item>
+        <item>0.0</item>
 
         <item>10</item>
         <item>@drawable/currency_kes_10</item>
         <item>@drawable/currency_kes_10</item>
         <item>0.65</item>
+        <item>0.0</item>
 
         <item>5</item>
         <item>@drawable/currency_kes_5</item>
         <item>@drawable/currency_kes_5</item>
         <item>0.55</item>
+        <item>0.0</item>
 
         <item>1</item>
         <item>@drawable/currency_kes_1</item>
         <item>@drawable/currency_kes_1</item>
         <item>0.85</item>
+        <item>0.0</item>
     </array>
 </resources>

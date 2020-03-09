@@ -37,6 +37,12 @@ public class DenominationModel implements Comparable<DenominationModel> {
     private float scaleFactor;
 
     /**
+     * How much of an offset there should be from the top of the scrollbar when drawing
+     * currency on the scrollbar (to demonstrate bills of differing heights.
+     */
+    private float verticalOffsetInInches;
+
+    /**
      * Constricts a new <code>DenominationModel</code> given its image resources and the value for
      * this bill or coin.
      *
@@ -48,11 +54,12 @@ public class DenominationModel implements Comparable<DenominationModel> {
      *
      * @see BigDecimal
      */
-    public DenominationModel(BigDecimal value, int imageResource, int imageResourceFolded, float scaleFactor) {
+    public DenominationModel(BigDecimal value, int imageResource, int imageResourceFolded, float scaleFactor, float verticalOffsetInInches) {
         this.value = value;
         this.imageResource = imageResource;
         this.imageResourceFolded = imageResourceFolded;
         this.scaleFactor = scaleFactor;
+        this.verticalOffsetInInches = verticalOffsetInInches;
     }
 
     /**
@@ -91,6 +98,14 @@ public class DenominationModel implements Comparable<DenominationModel> {
      */
     public float getScaleFactor() {
         return scaleFactor;
+    }
+
+    /**
+     * Returns vertical offset in inches associated with this model.
+     * @return vertical offset in inches
+     */
+    public float getVerticalOffsetInInches() {
+        return verticalOffsetInInches;
     }
 
     /**
