@@ -79,31 +79,31 @@
         <item>@drawable/currency_kes_1000</item>
         <item>@drawable/currency_kes_1000_folded</item>
         <item>1.0</item>
-        <item>0.0</item>
+        <item>0.012</item>
 
         <item>500</item>
         <item>@drawable/currency_kes_500</item>
         <item>@drawable/currency_kes_500_folded</item>
         <item>1.0</item>
-        <item>0.0</item>
+        <item>0.024</item>
 
         <item>200</item>
         <item>@drawable/currency_kes_200</item>
         <item>@drawable/currency_kes_200_folded</item>
         <item>1.0</item>
-        <item>0.0</item>
+        <item>0.036</item>
 
         <item>100</item>
         <item>@drawable/currency_kes_100</item>
         <item>@drawable/currency_kes_100_folded</item>
         <item>1.0</item>
-        <item>0.0</item>
+        <item>0.048</item>
 
         <item>50</item>
         <item>@drawable/currency_kes_50</item>
         <item>@drawable/currency_kes_50_folded</item>
         <item>1.0</item>
-        <item>0.0</item>
+        <item>0.06</item>
 
         <item>20</item>
         <item>@drawable/currency_kes_20</item>
