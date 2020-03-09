@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.WindowManager;
 
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
@@ -143,7 +144,8 @@ public class CountingTableView extends View {
 
 
     private Bitmap scaleBitmap(Bitmap bmp, float scaleFactor) {
-        return bitmapService.resizeCashBitmap(bmp, getResources(), scaleFactor);
+        int screenWidth = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
+        return bitmapService.resizeCashBitmap(bmp, getResources(), scaleFactor, screenWidth);
     }
 
     public void initDenominationModels(Set<DenominationModel> denominationModels) {

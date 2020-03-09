@@ -7,8 +7,10 @@ public class BitmapService {
     private static BitmapService bitmapService = null;
     private static final float CURRENCY_WIDTH_IN_INCHES = 0.75f;
 
-    public Bitmap resizeCashBitmap(Bitmap bitmap, Resources resources, float scaleFactor) {
-        int targetWidth = (int)(resources.getDisplayMetrics().xdpi * CURRENCY_WIDTH_IN_INCHES);
+    public Bitmap resizeCashBitmap(Bitmap bitmap, Resources resources, float scaleFactor, int screenWidth) {
+        int idealWidth = (int)(resources.getDisplayMetrics().xdpi * CURRENCY_WIDTH_IN_INCHES);
+        int maxWidth = screenWidth / 6;
+        int targetWidth = idealWidth < maxWidth ? idealWidth : maxWidth;
 
         float scale = (float) targetWidth / bitmap.getWidth();
         int targetHeight = (int) (bitmap.getHeight() * scale);

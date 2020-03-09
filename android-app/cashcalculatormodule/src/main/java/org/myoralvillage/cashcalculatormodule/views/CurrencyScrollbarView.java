@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -130,7 +131,8 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         }
 
         public void addBitmap(Bitmap bmp, float scaleFactor) {
-            Bitmap scaledBitmap = bitmapService.resizeCashBitmap(bmp, getResources(), scaleFactor);
+            int screenWidth = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
+            Bitmap scaledBitmap = bitmapService.resizeCashBitmap(bmp, getResources(), scaleFactor, screenWidth);
 
             width += scaledBitmap.getWidth() + PADDING;
             setLayoutParams(new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT));
