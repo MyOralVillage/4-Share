@@ -12,6 +12,7 @@ import android.view.View;
 
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
+import org.myoralvillage.cashcalculatormodule.services.BitmapService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListener;
 
 import java.math.BigDecimal;
@@ -23,8 +24,6 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class CountingTableView extends View {
-
-    private static final int SCROLL_BAR_HEIGHT = 100;
     private static final int THRESHOLD_NUM = 4;
     private static final float OFFSET_PERCENTAGE = (float) 0.07;
     private static final float OFFSET_VALUE_GAP = (float) 1.8;
@@ -35,7 +34,8 @@ public class CountingTableView extends View {
     private Map<DenominationModel, AreaModel> areas;
     private boolean initialized;
     private boolean isNegative;
-    Paint denoNumber;
+    private BitmapService bitmapService;
+    private Paint denoNumber;
 
     public CountingTableView(Context context) {
         super(context);
@@ -48,6 +48,7 @@ public class CountingTableView extends View {
     }
 
     private void init() {
+        bitmapService = BitmapService.getInstance();
         counts = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
         bitmaps = new HashMap<>();
         areas = new HashMap<>();
@@ -145,34 +146,18 @@ public class CountingTableView extends View {
     }
 
 
-    private Bitmap scaleBitmap(Bitmap bmp,int cellWidth, int cellHeight, float scaleFactor) {
-        int width, height;
-
-        if (bmp.getWidth() > bmp.getHeight()) {
-            width = (int) Math.floor(cellWidth * (1 - 5 * OFFSET_PERCENTAGE));
-            height = (int) Math.floor(width * (((float) bmp.getHeight()) / bmp.getWidth()));
-        } else {
-            height = (int) Math.floor(cellHeight * (1 - 5 * OFFSET_PERCENTAGE));
-            width = (int) Math.floor(height * (((float) bmp.getWidth()) / bmp.getHeight()));
-        }
-
-        width = (int) (width * scaleFactor);
-        height = (int) (height * scaleFactor);
-
-        return Bitmap.createScaledBitmap(bmp, width, height, false);
+    private Bitmap scaleBitmap(Bitmap bmp, float scaleFactor) {
+        return bitmapService.resizeCashBitmap(bmp, getResources(), scaleFactor);
     }
 
-    public void initDenominationModels(Set<DenominationModel> denominationModels,
-                                       int width,int height) {
-        int cellHeight = (height - SCROLL_BAR_HEIGHT) / 2;
-        int rowCellNum = (denominationModels.size() + 1) / 2;
-        int cellWidth = width / rowCellNum;
+    public void initDenominationModels(Set<DenominationModel> denominationModels) {
         for (DenominationModel deno : denominationModels) {
             bitmaps.put(deno, scaleBitmap(BitmapFactory.decodeResource(getResources(),
-                    deno.getImageResourceFolded()), cellWidth, cellHeight, deno.getScaleFactor()));
+                    deno.getImageResourceFolded()), deno.getScaleFactor()));
             counts.put(deno, 0);
             areas.put(deno, new AreaModel());
         }
+
         initialized = true;
     }
 

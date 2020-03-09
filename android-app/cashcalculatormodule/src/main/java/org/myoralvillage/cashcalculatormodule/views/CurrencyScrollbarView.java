@@ -1,7 +1,6 @@
 package org.myoralvillage.cashcalculatormodule.views;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,7 +9,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -18,6 +16,7 @@ import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
+import org.myoralvillage.cashcalculatormodule.services.BitmapService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyTapListener;
 
 import java.util.ArrayList;
@@ -28,7 +27,6 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     private LinearLayout linearLayout;
     private CurrencyTapListener currencyTapListener;
     private CurrencyModel currCurrency;
-    private static final float OFFSET_PERCENTAGE = (float) 0.07;
 
     private ScrollbarDenominationsView denominationsView;
 
@@ -87,11 +85,10 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
                 currencyCode, getResources(), getContext());
 
         this.currCurrency = currency;
-        float widthFactor = (( currency.getDenominations().size() + 1) / 2);
 
         for (DenominationModel denomination : currency.getDenominations()) {
             denominationsView.addBitmap(BitmapFactory.decodeResource(getResources(), denomination.getImageResource()),
-                    denomination.getScaleFactor(), widthFactor);
+                    denomination.getScaleFactor());
         }
     }
 
@@ -100,6 +97,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         private List<Bitmap> bitmaps = new ArrayList<>();
         private int width = 0;
         private AreaModel areaModel = new AreaModel();
+        private BitmapService bitmapService = BitmapService.getInstance();
 
         public ScrollbarDenominationsView(Context context) {
             super(context);
@@ -131,21 +129,13 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
             }
         }
 
-        public void addBitmap(Bitmap bmp, float scaleFactor, float widthFactor) {
-            int screenWidth = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
-            float widthRatio = 1/widthFactor;
-            int adjustWidth = (int)((widthRatio * screenWidth) * OFFSET_PERCENTAGE);
-            int targetWidth = (int)((widthRatio * screenWidth) - PADDING - adjustWidth);
+        public void addBitmap(Bitmap bmp, float scaleFactor) {
+            Bitmap scaledBitmap = bitmapService.resizeCashBitmap(bmp, getResources(), scaleFactor);
 
-            float scale = (float) targetWidth / bmp.getWidth();
-            targetWidth = (int) (targetWidth * scaleFactor);
-
-            int targetHeight = (int) (bmp.getHeight() * scaleFactor * scale);
-
-            width += targetWidth + PADDING;
+            width += scaledBitmap.getWidth() + PADDING;
             setLayoutParams(new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT));
 
-            bitmaps.add(Bitmap.createScaledBitmap(bmp, targetWidth, targetHeight, false));
+            bitmaps.add(scaledBitmap);
         }
 
         @Override
