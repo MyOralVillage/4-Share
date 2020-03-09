@@ -9,7 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.WindowManager;
 
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
@@ -27,7 +26,6 @@ import java.util.TreeMap;
 public class CountingTableView extends View {
     private static final int THRESHOLD_NUM = 4;
     private static final float OFFSET_PERCENTAGE = (float) 0.07;
-    private static final float OFFSET_VALUE_GAP = (float) 1.8;
 
     private CountingTableListener countingTableListener;
     private Map<DenominationModel, Integer> counts;
@@ -144,8 +142,7 @@ public class CountingTableView extends View {
 
 
     private Bitmap scaleBitmap(Bitmap bmp, float scaleFactor) {
-        int screenWidth = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
-        return bitmapService.resizeCashBitmap(bmp, getResources(), scaleFactor, screenWidth);
+        return bitmapService.resizeCashBitmap(bmp, getContext(), scaleFactor);
     }
 
     public void initDenominationModels(Set<DenominationModel> denominationModels) {
@@ -184,17 +181,6 @@ public class CountingTableView extends View {
         }
 
         isNegative = value.compareTo(BigDecimal.ZERO) < 0;
-        invalidate();
-    }
-
-    public void addDenomination(DenominationModel deno) {
-        int newCount;
-        if (counts.containsKey(deno)) {
-            newCount = counts.get(deno) + 1;
-        } else {
-            newCount = 1;
-        }
-        counts.put(deno, newCount);
         invalidate();
     }
 
