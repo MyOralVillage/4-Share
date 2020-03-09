@@ -1,7 +1,6 @@
 package org.myoralvillage.cashcalculatormodule.views;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,7 +9,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -18,6 +16,7 @@ import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
+import org.myoralvillage.cashcalculatormodule.services.BitmapService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyTapListener;
 
 import java.util.ArrayList;
@@ -86,16 +85,23 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
                 currencyCode, getResources(), getContext());
 
         this.currCurrency = currency;
+
+        float inchesToPixels = getResources().getDisplayMetrics().ydpi;
+
         for (DenominationModel denomination : currency.getDenominations()) {
-            denominationsView.addBitmap(BitmapFactory.decodeResource(getResources(), denomination.getImageResource()), denomination.getScaleFactor());
+            denominationsView.addBitmap(BitmapFactory.decodeResource(getResources(), denomination.getImageResource()),
+                    denomination.getScaleFactor(), (int) (denomination.getVerticalOffsetInInches() * inchesToPixels));
         }
     }
 
     private static class ScrollbarDenominationsView extends View {
         private static final int PADDING = 8;
         private List<Bitmap> bitmaps = new ArrayList<>();
+        private List<Integer> verticalOffsetsInPixels = new ArrayList<>();
+
         private int width = 0;
         private AreaModel areaModel = new AreaModel();
+        private BitmapService bitmapService = BitmapService.getInstance();
 
         public ScrollbarDenominationsView(Context context) {
             super(context);
@@ -107,8 +113,11 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
             areaModel.clearArea();
 
             int currentOffset = 0;
-            for (Bitmap bmp : bitmaps) {
-                drawDenomination(bmp, canvas, currentOffset);
+            for (int i = 0; i < bitmaps.size(); i++) {
+                Bitmap bmp = bitmaps.get(i);
+                Integer verticalOffset = verticalOffsetsInPixels.get(i);
+
+                drawDenomination(bmp, canvas, currentOffset, verticalOffset);
                 currentOffset += bmp.getWidth() + PADDING;
             }
         }
@@ -117,29 +126,25 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
             return areaModel;
         }
 
-        private void drawDenomination(Bitmap bmp, Canvas canvas, int currentOffset) {
+        private void drawDenomination(Bitmap bmp, Canvas canvas, int currentOffset, int verticalOffset) {
             if (bmp.getHeight() > getHeight()) {
-                areaModel.addBox(new AreaModel.Box(currentOffset, 0, bmp.getWidth(), bmp.getHeight()));
-                canvas.drawBitmap(bmp, currentOffset, 0, null);
+                areaModel.addBox(new AreaModel.Box(currentOffset, verticalOffset, bmp.getWidth(), bmp.getHeight()));
+                canvas.drawBitmap(bmp, currentOffset, verticalOffset, null);
             } else {
-                areaModel.addBox(new AreaModel.Box(currentOffset, getHeight() - bmp.getHeight(), bmp.getWidth(), bmp.getHeight()));
-                canvas.drawBitmap(bmp, currentOffset, getHeight() - bmp.getHeight(), null);
+                int minY = getHeight() - bmp.getHeight() + verticalOffset;
+                areaModel.addBox(new AreaModel.Box(currentOffset, minY, bmp.getWidth(), bmp.getHeight()));
+                canvas.drawBitmap(bmp, currentOffset, minY, null);
             }
         }
 
-        public void addBitmap(Bitmap bmp, float scaleFactor) {
-            int screenWidth = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
+        public void addBitmap(Bitmap bmp, float scaleFactor, int verticalOffsetInPixels) {
+            Bitmap scaledBitmap = bitmapService.resizeCashBitmap(bmp, getContext(), scaleFactor);
 
-            int targetWidth = (int)(0.1 * screenWidth);
-            float scale = (float) targetWidth / bmp.getWidth();
-            targetWidth = (int) (targetWidth * scaleFactor);
-
-            int targetHeight = (int) (bmp.getHeight() * scaleFactor * scale);
-
-            width += targetWidth + PADDING;
+            width += scaledBitmap.getWidth() + PADDING;
             setLayoutParams(new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT));
 
-            bitmaps.add(Bitmap.createScaledBitmap(bmp, targetWidth, targetHeight, false));
+            verticalOffsetsInPixels.add(verticalOffsetInPixels);
+            bitmaps.add(scaledBitmap);
         }
 
         @Override

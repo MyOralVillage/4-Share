@@ -143,7 +143,7 @@ public class CashCalculatorFragment extends Fragment {
         int height = size.y;
 
         countingTableView = view.findViewById(R.id.counting_table);
-        countingTableView.initDenominationModels(currCurrency.getDenominations(), width, height);
+        countingTableView.initDenominationModels(currCurrency.getDenominations());
 
         countingTableView.setOnTouchListener(new SwipeListener(getActivity()) {
             @Override

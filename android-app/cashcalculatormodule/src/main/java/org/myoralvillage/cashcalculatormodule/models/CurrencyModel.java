@@ -60,8 +60,8 @@ public class CurrencyModel {
      * @see DenominationModel
      * @see BigDecimal
      */
-    public void addDenomination(BigDecimal value, int imageResource, int imageResourceFolded, float scaleFactor) {
-        this.denominations.add(new DenominationModel(value, imageResource, imageResourceFolded, scaleFactor));
+    public void addDenomination(BigDecimal value, int imageResource, int imageResourceFolded, float scaleFactor, float verticalOffsetInInches) {
+        this.denominations.add(new DenominationModel(value, imageResource, imageResourceFolded, scaleFactor, verticalOffsetInInches));
     }
 
     /**
@@ -103,15 +103,16 @@ public class CurrencyModel {
         if (arrayId != 0) {
             TypedArray array = resources.obtainTypedArray(arrayId);
             try {
-                for (int i = 0; i < array.length(); i += 4) {
+                for (int i = 0; i < array.length(); i += 5) {
                     // Build CurrencyModel instance from the values in the xml
                     String value = array.getString(i);
                     int imageResourceId = array.getResourceId(i + 1, 0);
                     int imageResourceIDFolded = array.getResourceId(i + 2, 0);
                     float scaleFactor = array.getFloat(i + 3, 1.0f);
+                    float verticalOffsetInInches = array.getFloat(i + 4, 0.0f);
 
                     if (value != null && imageResourceId != 0)
-                        model.addDenomination(new BigDecimal(value), imageResourceId, imageResourceIDFolded, scaleFactor);
+                        model.addDenomination(new BigDecimal(value), imageResourceId, imageResourceIDFolded, scaleFactor, verticalOffsetInInches);
                 }
             } finally {
                 // Required to call as part of the TypedArray lifecycle
