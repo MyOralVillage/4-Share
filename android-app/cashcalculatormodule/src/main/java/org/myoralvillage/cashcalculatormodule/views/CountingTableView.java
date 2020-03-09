@@ -68,10 +68,15 @@ public class CountingTableView extends View {
 
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         denoNumber.setTypeface(font);
-        denoNumber.setTextSize((float) getWidth() / 10);
+        denoNumber.setTextSize((float) getWidth() / 14);
         denoNumber.setStrokeWidth((float) getWidth() / 150);
+        denoNumber.setAntiAlias(true);
 
         int currentPosition = 0;
+
+        float verticalPaddingInInches = STACKED_DENOMINATION_OFFSET_IN_INCHES * (THRESHOLD_NUM - 1);
+        int verticalPaddingInPixels = (int) (verticalPaddingInInches * getResources().getDisplayMetrics().ydpi);
+        int rowHeight = maxDenominationHeight + verticalPaddingInPixels;
 
         for (Map.Entry<DenominationModel, Integer> entry : counts.entrySet()) {
             Bitmap bmp = bitmaps.get(entry.getKey());
@@ -92,9 +97,9 @@ public class CountingTableView extends View {
             if (denominationCount == 0) {
                 continue;
             } else if (denominationCount > THRESHOLD_NUM) {
-                drawDenoNum(canvas, denominationCount, bmp, positionX, currencyRow * maxDenominationHeight, areaModel);
+                drawDenoNum(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel);
             } else {
-                drawDeno(canvas, denominationCount, bmp, positionX, currencyRow * maxDenominationHeight, areaModel);
+                drawDeno(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel);
             }
 
             float horizontalPaddingInInches = STACKED_DENOMINATION_OFFSET_IN_INCHES * (denominationCount <= THRESHOLD_NUM ? (denominationCount - 1) : 1);
@@ -123,7 +128,7 @@ public class CountingTableView extends View {
         areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
         canvas.drawBitmap(bmp, originX, originY, null);
 
-        int textPositionX = originX + bmp.getWidth() / 4;
+        int textPositionX = originX + (int)(STACKED_DENOMINATION_OFFSET_IN_INCHES / 2.0f * getResources().getDisplayMetrics().xdpi);
         int textPositionY = originY + bmp.getHeight() / 2;
 
         denoNumber.setStyle(Paint.Style.FILL);
