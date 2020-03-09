@@ -25,7 +25,7 @@ import java.util.TreeMap;
 
 public class CountingTableView extends View {
     private static final int THRESHOLD_NUM = 4;
-    private static final float OFFSET_PERCENTAGE = (float) 0.07;
+    private static final float STACKED_DENOMINATION_OFFSET_IN_INCHES = 0.05f;
 
     private CountingTableListener countingTableListener;
     private Map<DenominationModel, Integer> counts;
@@ -87,24 +87,31 @@ public class CountingTableView extends View {
             }
 
             int currencyRow = currentPosition / getWidth();
+            int denominationCount = entry.getValue();
 
-            if (entry.getValue() == 0) {
+            if (denominationCount == 0) {
                 continue;
-            } else if (entry.getValue() > THRESHOLD_NUM) {
-                drawDenoNum(canvas, entry.getValue(), bmp, positionX, currencyRow * maxDenominationHeight, areaModel);
+            } else if (denominationCount > THRESHOLD_NUM) {
+                drawDenoNum(canvas, denominationCount, bmp, positionX, currencyRow * maxDenominationHeight, areaModel);
             } else {
-                drawDeno(canvas, entry.getValue(), bmp, positionX, currencyRow * maxDenominationHeight, areaModel);
+                drawDeno(canvas, denominationCount, bmp, positionX, currencyRow * maxDenominationHeight, areaModel);
             }
 
-            currentPosition += bmp.getWidth();
+            float horizontalPaddingInInches = STACKED_DENOMINATION_OFFSET_IN_INCHES * (denominationCount <= THRESHOLD_NUM ? (denominationCount - 1) : 1);
+            int horizontalPixelPadding = (int) (horizontalPaddingInInches * getResources().getDisplayMetrics().xdpi);
+            currentPosition += bmp.getWidth() + horizontalPixelPadding;
         }
     }
 
     private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
                           AreaModel areaModel) {
+
+        int offsetX = (int)(STACKED_DENOMINATION_OFFSET_IN_INCHES * getResources().getDisplayMetrics().xdpi);
+        int offsetY = (int)(STACKED_DENOMINATION_OFFSET_IN_INCHES * getResources().getDisplayMetrics().ydpi);
+
         for (int i = 0; i < num; i++) {
-            int localX = originX + (int)(getWidth() / 8 * OFFSET_PERCENTAGE) * i;
-            int localY = originY + (int)(getHeight() / 2 * OFFSET_PERCENTAGE) * i;
+            int localX = originX + offsetX * i;
+            int localY = originY + offsetY * i;
             canvas.drawBitmap(bmp, localX, localY, null);
         }
 
@@ -116,7 +123,7 @@ public class CountingTableView extends View {
         areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
         canvas.drawBitmap(bmp, originX, originY, null);
 
-        int textPositionX = originX + bmp.getWidth() / 2;
+        int textPositionX = originX + bmp.getWidth() / 4;
         int textPositionY = originY + bmp.getHeight() / 2;
 
         denoNumber.setStyle(Paint.Style.FILL);
