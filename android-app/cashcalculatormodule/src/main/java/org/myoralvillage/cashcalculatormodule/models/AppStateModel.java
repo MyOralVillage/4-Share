@@ -149,14 +149,7 @@ public class AppStateModel implements Serializable {
      * @see AppStateModel
      */
     public enum AppMode {
-        /**
-         * Cash Calculator is in image mode.
-         */
         IMAGE,
-
-        /**
-         * Cash Calculator is in numeric mode.
-         */
         NUMERIC
     }
 }
