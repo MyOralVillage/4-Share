@@ -37,6 +37,8 @@ public class CountingTableView extends View {
     private BitmapService bitmapService;
     private Paint denoNumber;
 
+    private int maxDenominationHeight = Integer.MIN_VALUE;
+
     public CountingTableView(Context context) {
         super(context);
         init();
@@ -69,67 +71,61 @@ public class CountingTableView extends View {
         denoNumber.setTypeface(font);
         denoNumber.setTextSize((float) getWidth() / 10);
         denoNumber.setStrokeWidth((float) getWidth() / 150);
-        int columnNumber = (bitmaps.size() + 1) / 2;
-        int cellWidth = (int) Math.ceil((float) getWidth() / columnNumber);
-        int cellHeight = (int) Math.ceil((float) getHeight() / 2);
-        int columnIndex;
-        int cellIndex = 0;
 
-        //Variable used to keep track of top or bottom level
-        int level = 0;
+        int currentPosition = 0;
 
         for (Map.Entry<DenominationModel, Integer> entry : counts.entrySet()) {
-            columnIndex = cellIndex % columnNumber;
             Bitmap bmp = bitmaps.get(entry.getKey());
             if (isNegative) bmp = invertBitmap(bmp);
 
             AreaModel areaModel = areas.get(entry.getKey());
             areaModel.clearArea();
+
+            int positionX = currentPosition % getWidth();
+            if ((positionX + bmp.getWidth()) > getWidth()) {
+                currentPosition = getWidth();
+                positionX = currentPosition % getWidth();
+            }
+
+            int currencyRow = currentPosition / getWidth();
+
             if (entry.getValue() == 0) {
                 continue;
             } else if (entry.getValue() > THRESHOLD_NUM) {
-                drawDenoNum(canvas, entry.getValue(), bmp, columnIndex * cellWidth,
-                        level, areaModel, cellWidth, cellHeight);
+                drawDenoNum(canvas, entry.getValue(), bmp, positionX, currencyRow * maxDenominationHeight, areaModel);
             } else {
-                drawDeno(canvas, entry.getValue(), bmp, columnIndex * cellWidth, level,
-                         areaModel);
+                drawDeno(canvas, entry.getValue(), bmp, positionX, currencyRow * maxDenominationHeight, areaModel);
             }
 
-            cellIndex += 1;
-
-            if (cellIndex + 1 > columnNumber) {
-                level = (int) (getHeight() / OFFSET_VALUE_GAP);
-            }
+            currentPosition += bmp.getWidth();
         }
     }
-
-
 
     private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
                           AreaModel areaModel) {
-        int localX;
-        int localY;
         for (int i = 0; i < num; i++) {
-            localX = originX + (int)(getWidth() / 8 * OFFSET_PERCENTAGE) * i;
-            localY = originY + (int)(getHeight() / 2 * OFFSET_PERCENTAGE) * i;
-            areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
+            int localX = originX + (int)(getWidth() / 8 * OFFSET_PERCENTAGE) * i;
+            int localY = originY + (int)(getHeight() / 2 * OFFSET_PERCENTAGE) * i;
             canvas.drawBitmap(bmp, localX, localY, null);
         }
+
+        areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
     }
 
     private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
-                             AreaModel areaModel, int cellWidth, int cellHeight) {
-        int minX = originX + (int) Math.floor(cellWidth * OFFSET_PERCENTAGE * 2);
-        areaModel.addBox(new AreaModel.Box(minX, originY, bmp.getWidth(), bmp.getHeight()));
-        canvas.drawBitmap(bmp, minX, originY, null);
+                             AreaModel areaModel) {
+        areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
+        canvas.drawBitmap(bmp, originX, originY, null);
+
+        int textPositionX = originX + bmp.getWidth() / 2;
+        int textPositionY = originY + bmp.getHeight() / 2;
+
         denoNumber.setStyle(Paint.Style.FILL);
         denoNumber.setColor(Color.WHITE);
-        canvas.drawText(Integer.toString(num), originX +
-                cellWidth / 2, originY + cellHeight / 2, denoNumber);
+        canvas.drawText(Integer.toString(num), textPositionX, textPositionY, denoNumber);
         denoNumber.setStyle(Paint.Style.STROKE);
         denoNumber.setColor(Color.BLACK);
-        canvas.drawText(Integer.toString(num), originX +
-                cellWidth / 2, originY + cellHeight / 2, denoNumber);
+        canvas.drawText(Integer.toString(num), textPositionX, textPositionY, denoNumber);
     }
 
     private Bitmap invertBitmap(Bitmap bmp) {
@@ -152,10 +148,14 @@ public class CountingTableView extends View {
 
     public void initDenominationModels(Set<DenominationModel> denominationModels) {
         for (DenominationModel deno : denominationModels) {
-            bitmaps.put(deno, scaleBitmap(BitmapFactory.decodeResource(getResources(),
-                    deno.getImageResourceFolded()), deno.getScaleFactor()));
+            Bitmap scaledBitmap = scaleBitmap(BitmapFactory.decodeResource(getResources(),
+                    deno.getImageResourceFolded()), deno.getScaleFactor());
+            bitmaps.put(deno, scaledBitmap);
             counts.put(deno, 0);
             areas.put(deno, new AreaModel());
+
+            if (scaledBitmap.getHeight() > maxDenominationHeight)
+                maxDenominationHeight = scaledBitmap.getHeight();
         }
 
         initialized = true;
