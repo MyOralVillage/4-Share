@@ -114,7 +114,8 @@ public class CashCalculatorFragment extends Fragment {
                 service.calculate();
                 updateAll();
             }
-        });}
+        });
+    }
 
     private void updateCalculateButton() {
         calculateButton.setVisibility(View.VISIBLE);
@@ -203,7 +204,8 @@ public class CashCalculatorFragment extends Fragment {
             }
             updateSumView();
             updateClearButton();
-        });}
+        });
+    }
 
     private void updateCountingTable() {
         countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
@@ -225,7 +227,8 @@ public class CashCalculatorFragment extends Fragment {
         clearButton.setOnClickListener((e) -> {
             service.reset();
             updateAll();
-        });}
+        });
+    }
 
     private void updateClearButton() {
         if (service.getOperationMode() == MathOperationModel.MathOperationMode.STANDARD
