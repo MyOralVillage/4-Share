@@ -178,22 +178,6 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void swipeUp() {
                 // Dragging towards the bottom
-                service.switchAppMode();
-                TextView sum = view.findViewById(R.id.sum_view);
-                TextView num_input = view.findViewById(R.id.number_input_view);
-
-                switch(service.getAppState().getAppMode()) {
-                    case IMAGE:
-                        sum.setVisibility(View.VISIBLE);
-                        num_input.setVisibility(View.INVISIBLE);
-                        break;
-                    case NUMERIC:
-                        sum.setVisibility(View.INVISIBLE);
-
-                        service.setValue(BigDecimal.ZERO);
-                        break;
-                }
-                updateAll();
             }
 
             @Override
@@ -266,6 +250,20 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void onVerticalSwipe() {
                 switchAppMode();
+                TextView sum = view.findViewById(R.id.sum_view);
+                TextView num_input = view.findViewById(R.id.number_input_view);
+
+                switch(service.getAppState().getAppMode()) {
+                    case IMAGE:
+                        sum.setVisibility(View.VISIBLE);
+                        num_input.setVisibility(View.INVISIBLE);
+                        break;
+                    case NUMERIC:
+                        sum.setVisibility(View.INVISIBLE);
+
+                        service.setValue(BigDecimal.ZERO);
+                        break;
+                }
             }
         });
     }
@@ -311,6 +309,20 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void onVerticalSwipe() {
                 switchAppMode();
+                TextView sum = view.findViewById(R.id.sum_view);
+                TextView num_input = view.findViewById(R.id.number_input_view);
+
+                switch(service.getAppState().getAppMode()) {
+                    case IMAGE:
+                        sum.setVisibility(View.VISIBLE);
+                        num_input.setVisibility(View.INVISIBLE);
+                        break;
+                    case NUMERIC:
+                        sum.setVisibility(View.INVISIBLE);
+
+                        service.setValue(BigDecimal.ZERO);
+                        break;
+                }
             }
         });
     }
