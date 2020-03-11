@@ -189,7 +189,6 @@ public class CashCalculatorFragment extends Fragment {
                         break;
                     case NUMERIC:
                         sum.setVisibility(View.INVISIBLE);
-                        //num_input.setVisibility(View.VISIBLE);
 
                         service.setValue(BigDecimal.ZERO);
                         break;
