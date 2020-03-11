@@ -209,4 +209,9 @@ public class CountingTableView extends RelativeLayout {
         this.appState = appState;
         updateAll();
     }
+
+    @Override
+    public void setBackgroundResource(int resid) {
+        countingTableSurfaceView.setBackgroundResource(resid);
+    }
 }
