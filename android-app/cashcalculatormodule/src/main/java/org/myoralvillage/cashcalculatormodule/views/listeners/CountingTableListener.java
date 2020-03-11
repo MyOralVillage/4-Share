@@ -7,5 +7,7 @@ public interface CountingTableListener {
     void onSwipeSubtraction();
     void onSwipeMultiplication();
 
+    void onTapCalculateButton();
+
     void onDenominationChange(DenominationModel denomination, int oldCount, int newCount);
 }

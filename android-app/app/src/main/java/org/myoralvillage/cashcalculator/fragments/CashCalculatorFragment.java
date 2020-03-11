@@ -41,7 +41,6 @@ public class CashCalculatorFragment extends Fragment {
     private TextView sumView;
     private TextView numberInputView;
     private NumberPadView numberPadView;
-    private ImageView calculateButton;
     private ImageView clearButton;
     private ImageView enterHistoryButton;
     private ImageView rightHistoryButton;
@@ -64,7 +63,6 @@ public class CashCalculatorFragment extends Fragment {
 
         initializeCurrencyScrollbar(view);
         initializeCountingView(view);
-        initializeCalculateButton(view);
         initializeClearButton(view);
         initializeHistoryButtons(view);
         initializeNumberPad(view);
@@ -108,37 +106,9 @@ public class CashCalculatorFragment extends Fragment {
         }
     }
 
-    private void initializeCalculateButton(View view){
-        calculateButton = view.findViewById(R.id.calculate_button);
-        calculateButton.setOnClickListener((e) -> {
-            if (!service.isInHistorySlideshow()) {
-                service.calculate();
-                updateAll();
-            }
-        });
-    }
-
-    private void updateCalculateButton() {
-        calculateButton.setVisibility(View.VISIBLE);
-        switch (service.getOperationMode()) {
-            case STANDARD:
-                calculateButton.setVisibility(View.INVISIBLE);
-                break;
-            case ADD:
-                calculateButton.setImageResource(R.drawable.operator_plus);
-                break;
-            case SUBTRACT:
-                calculateButton.setImageResource(R.drawable.operator_minus);
-                break;
-            case MULTIPLY:
-                calculateButton.setImageResource(R.drawable.operator_times);
-                break;
-        }
-    }
-
     private void initializeCountingView(View view) {
         countingTableView = view.findViewById(R.id.counting_table);
-        countingTableView.initialize(currCurrency);
+        countingTableView.initialize(currCurrency, service.getAppState());
         countingTableView.setListener(new CountingTableListener() {
             @Override
             public void onSwipeAddition() {
@@ -183,11 +153,17 @@ public class CashCalculatorFragment extends Fragment {
                 updateSumView();
                 updateClearButton();
             }
+
+            @Override
+            public void onTapCalculateButton() {
+                service.calculate();
+                updateAll();
+            }
         });
     }
 
     private void updateCountingTable() {
-        countingTableView.setValue(service.getValue());
+        countingTableView.setAppState(service.getAppState());
     }
 
     private void updateSumView() {
@@ -296,7 +272,6 @@ public class CashCalculatorFragment extends Fragment {
 
     private void updateAll() {
         updateCountingTable();
-        updateCalculateButton();
         updateHistoryButtons();
         updateClearButton();
         updateSumView();
