@@ -8,6 +8,11 @@ public interface CountingTableListener {
     void onSwipeMultiplication();
 
     void onTapCalculateButton();
+    void onTapClearButton();
+
+    void onTapEnterHistory();
+    void onTapNextHistory();
+    void onTapPreviousHistory();
 
     void onDenominationChange(DenominationModel denomination, int oldCount, int newCount);
 }

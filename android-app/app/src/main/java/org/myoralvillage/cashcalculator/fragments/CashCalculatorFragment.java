@@ -17,9 +17,7 @@ import org.myoralvillage.cashcalculator.SettingActivity;
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
-import org.myoralvillage.cashcalculatormodule.models.MathOperationModel;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
-import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 import org.myoralvillage.cashcalculatormodule.views.NumberPadView;
@@ -38,16 +36,8 @@ public class CashCalculatorFragment extends Fragment {
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
     private CurrencyScrollbarView currencyScrollbarView;
-    private TextView sumView;
-    private TextView numberInputView;
     private NumberPadView numberPadView;
-    private ImageView clearButton;
-    private ImageView enterHistoryButton;
-    private ImageView rightHistoryButton;
-    private ImageView leftHistoryButton;
-
-
-    private CountingService countingService = new CountingService();
+    private TextView numberInputView;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -57,53 +47,15 @@ public class CashCalculatorFragment extends Fragment {
         else service = new AppService();
 
         View view = inflater.inflate(R.layout.fragment_activity, parent, false);
-        sumView = view.findViewById(R.id.sum_view);
         numberInputView = view.findViewById(R.id.number_input_view);
         numberInputView.setVisibility(View.INVISIBLE);
 
         initializeCurrencyScrollbar(view);
         initializeCountingView(view);
-        initializeClearButton(view);
-        initializeHistoryButtons(view);
         initializeNumberPad(view);
 
         updateAll();
         return view;
-    }
-
-    private void initializeHistoryButtons(View view){
-        enterHistoryButton = view.findViewById(R.id.enter_history_button);
-        rightHistoryButton = view.findViewById(R.id.right_history_button);
-        leftHistoryButton = view.findViewById(R.id.left_history_button);
-
-        enterHistoryButton.setOnClickListener((e) -> {
-            service.enterHistorySlideshow();
-            updateAll();
-        });
-
-        rightHistoryButton.setOnClickListener((e) -> {
-            service.gotoNextHistorySlide();
-            updateAll();
-        });
-
-        leftHistoryButton.setOnClickListener((e) -> {
-            service.gotoPreviousHistorySlide();
-            updateAll();
-        });}
-
-    private void updateHistoryButtons() {
-        if (service.isInHistorySlideshow()) {
-            enterHistoryButton.setVisibility(View.INVISIBLE);
-            leftHistoryButton.setVisibility(View.VISIBLE);
-            rightHistoryButton.setVisibility(View.VISIBLE);
-        } else {
-            if (service.getAppState().getOperations().size() == 1)
-                enterHistoryButton.setVisibility(View.INVISIBLE);
-            else enterHistoryButton.setVisibility(View.VISIBLE);
-
-            rightHistoryButton.setVisibility(View.INVISIBLE);
-            leftHistoryButton.setVisibility(View.INVISIBLE);
-        }
     }
 
     private void initializeCountingView(View view) {
@@ -150,8 +102,7 @@ public class CashCalculatorFragment extends Fragment {
                 } else {
                     service.setValue(service.getValue().add(amount));
                 }
-                updateSumView();
-                updateClearButton();
+                updateAll();
             }
 
             @Override
@@ -159,37 +110,35 @@ public class CashCalculatorFragment extends Fragment {
                 service.calculate();
                 updateAll();
             }
+
+            @Override
+            public void onTapClearButton() {
+                service.reset();
+                updateAll();
+            }
+
+            @Override
+            public void onTapEnterHistory() {
+                service.enterHistorySlideshow();
+                updateAll();
+            }
+
+            @Override
+            public void onTapNextHistory() {
+                service.gotoNextHistorySlide();
+                updateAll();
+            }
+
+            @Override
+            public void onTapPreviousHistory() {
+                service.gotoPreviousHistorySlide();
+                updateAll();
+            }
         });
     }
 
     private void updateCountingTable() {
         countingTableView.setAppState(service.getAppState());
-    }
-
-    private void updateSumView() {
-        if (service.getValue().compareTo(BigDecimal.ZERO) < 0)
-            sumView.setTextColor(getResources().getColor(R.color.negativeSum));
-        else
-            sumView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
-
-        sumView.setText(String.format(Locale.CANADA, "%s %s",
-                currCurrency.getCurrency().getSymbol(), service.getValue()));
-    }
-
-    private void initializeClearButton(View view){
-        clearButton = view.findViewById(R.id.clear_button);
-        clearButton.setOnClickListener((e) -> {
-            service.reset();
-            updateAll();
-        });
-    }
-
-    private void updateClearButton() {
-        if (service.getOperationMode() == MathOperationModel.MathOperationMode.STANDARD
-                && service.getValue().equals(BigDecimal.ZERO))
-            clearButton.setVisibility(View.INVISIBLE);
-        else
-            clearButton.setVisibility(View.VISIBLE);
     }
 
     private void initializeCurrencyScrollbar(View view){
@@ -232,7 +181,6 @@ public class CashCalculatorFragment extends Fragment {
             public void onBack(BigDecimal value) {
                 numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                         currCurrency.getCurrency().getSymbol(), value));
-                updateSumView();
             }
 
             @Override
@@ -240,7 +188,6 @@ public class CashCalculatorFragment extends Fragment {
                 numberInputView.setVisibility(View.VISIBLE);
                 numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                         currCurrency.getCurrency().getSymbol(), value));
-                updateSumView();
             }
 
             @Override
@@ -263,7 +210,7 @@ public class CashCalculatorFragment extends Fragment {
         }
     }
 
-    public void switchState() {
+    private void switchState() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra(APP_STATE_KEY, service.getAppState());
         startActivity(intent);
@@ -272,10 +219,6 @@ public class CashCalculatorFragment extends Fragment {
 
     private void updateAll() {
         updateCountingTable();
-        updateHistoryButtons();
-        updateClearButton();
-        updateSumView();
         updateAppMode();
     }
 }
-
