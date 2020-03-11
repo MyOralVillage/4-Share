@@ -68,8 +68,8 @@ public class CountingTableSurfaceView extends View {
 
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         denoNumber.setTypeface(font);
-        denoNumber.setTextSize((float) getWidth() / 14);
-        denoNumber.setStrokeWidth((float) getWidth() / 150);
+        denoNumber.setTextSize((float) getWidth() / 12);
+        denoNumber.setStrokeWidth((float) getWidth() / 180);
         denoNumber.setAntiAlias(true);
 
         int currentPosition = 0;
@@ -127,9 +127,14 @@ public class CountingTableSurfaceView extends View {
                              AreaModel areaModel) {
         areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
         canvas.drawBitmap(bmp, originX, originY, null);
+        int textPositionX;
 
-        int textPositionX = originX + (int)(STACKED_DENOMINATION_OFFSET_IN_INCHES / 2.0f * getResources().getDisplayMetrics().xdpi);
-        int textPositionY = originY + bmp.getHeight() / 2;
+        if (getWidth() / 12 > bmp.getWidth() / 2) {
+            textPositionX = originX + (int)(STACKED_DENOMINATION_OFFSET_IN_INCHES / 2.0f * getResources().getDisplayMetrics().xdpi);
+        } else {
+            textPositionX = originX + (int)(bmp.getWidth() / 3.0f);
+        }
+        int textPositionY = originY + (int)(bmp.getHeight() / 1.5f);
 
         denoNumber.setStyle(Paint.Style.FILL);
         denoNumber.setColor(Color.WHITE);
