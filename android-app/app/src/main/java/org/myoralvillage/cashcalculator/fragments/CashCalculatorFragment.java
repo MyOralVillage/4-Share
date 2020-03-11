@@ -153,6 +153,20 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void onVerticalSwipe() {
                 switchAppMode();
+                TextView sum = view.findViewById(R.id.sum_view);
+                TextView num_input = view.findViewById(R.id.number_input_view);
+
+                switch(service.getAppState().getAppMode()) {
+                    case IMAGE:
+                        sum.setVisibility(View.VISIBLE);
+                        num_input.setVisibility(View.INVISIBLE);
+                        break;
+                    case NUMERIC:
+                        sum.setVisibility(View.INVISIBLE);
+
+                        service.setValue(BigDecimal.ZERO);
+                        break;
+                }
             }
         });
     }
@@ -165,10 +179,14 @@ public class CashCalculatorFragment extends Fragment {
     }
 
     private void initializeNumberPad(View view) {
+        TextView sum = view.findViewById(R.id.sum_view);
         numberPadView = view.findViewById(R.id.number_pad_view);
+        TextView num_input = view.findViewById(R.id.number_input_view);
         numberPadView.setListener(new NumberPadListener() {
             @Override
             public void onCheck(BigDecimal value) {
+                num_input.setVisibility(View.INVISIBLE);
+                sum.setVisibility(View.VISIBLE);
                 service.setValue(value);
                 numberInputView.setVisibility(View.INVISIBLE);
                 updateAll();
@@ -182,6 +200,8 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onTapNumber(BigDecimal value) {
+
+                sum.setVisibility(View.INVISIBLE);
                 numberInputView.setVisibility(View.VISIBLE);
                 numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                         currCurrency.getCurrency().getSymbol(), value));
@@ -190,6 +210,20 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void onVerticalSwipe() {
                 switchAppMode();
+                TextView sum = view.findViewById(R.id.sum_view);
+                TextView num_input = view.findViewById(R.id.number_input_view);
+
+                switch(service.getAppState().getAppMode()) {
+                    case IMAGE:
+                        sum.setVisibility(View.VISIBLE);
+                        num_input.setVisibility(View.INVISIBLE);
+                        break;
+                    case NUMERIC:
+                        sum.setVisibility(View.INVISIBLE);
+
+                        service.setValue(BigDecimal.ZERO);
+                        break;
+                }
             }
         });
     }
