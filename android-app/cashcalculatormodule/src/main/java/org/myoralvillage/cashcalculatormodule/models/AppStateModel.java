@@ -101,6 +101,14 @@ public class AppStateModel implements Serializable {
     }
 
     /**
+     * Is the application currently in the history slideshow mode?
+     * @return True if it is in the memory mode, return False otherwise.
+     */
+    public boolean isInHistorySlideshow() {
+        return getCurrentOperationIndex() < (getOperations().size() - 1);
+    }
+
+    /**
      * Returns the operation from the list, <code>operations</code>, based on the value of
      * the current Operation Index
      *
