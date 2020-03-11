@@ -17,7 +17,7 @@ import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.services.BitmapService;
-import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyTapListener;
+import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyScrollbarListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -25,7 +25,7 @@ import java.util.List;
 
 public class CurrencyScrollbarView extends HorizontalScrollView {
     private LinearLayout linearLayout;
-    private CurrencyTapListener currencyTapListener;
+    private CurrencyScrollbarListener currencyScrollbarListener;
     private CurrencyModel currCurrency;
 
     private ScrollbarDenominationsView denominationsView;
@@ -45,7 +45,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     }
 
     private void initialize() {
-        currencyTapListener = null;
+        currencyScrollbarListener = null;
         setBackgroundResource(R.drawable.scrollbar_background);
 
         linearLayout = new LinearLayout(getContext());
@@ -69,15 +69,21 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
                 for(int i = 0; i <= index; i++)
                     current = denominationModelIterator.next();
 
-                if (index >= 0) currencyTapListener.onTapDenomination(current);
+                if (index >= 0) currencyScrollbarListener.onTapDenomination(current);
+            }
+
+            @Override
+            void onVerticalSwipe() {
+                if (currencyScrollbarListener != null)
+                    currencyScrollbarListener.onVerticalSwipe();
             }
         });
 
         linearLayout.addView(denominationsView);
     }
 
-    public void setCurrencyTapListener(CurrencyTapListener currencyTapListener) {
-        this.currencyTapListener = currencyTapListener;
+    public void setCurrencyScrollbarListener(CurrencyScrollbarListener currencyScrollbarListener) {
+        this.currencyScrollbarListener = currencyScrollbarListener;
     }
 
     public void setCurrency(String currencyCode) {
@@ -155,15 +161,32 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
     private static abstract class TapDetector implements OnTouchListener {
         private static final long MAX_DURATION = 250;
+        private float downX, downY;
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if ((event.getEventTime() - event.getDownTime()) <= MAX_DURATION && event.getAction() == MotionEvent.ACTION_UP)
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                downX = event.getX();
+                downY = event.getY();
+                return true;
+            }
+            else if (isUpAndInTimespan(event) && Math.abs(event.getY() - downY) > 2 * Math.abs(event.getX() - downX)) {
+                onVerticalSwipe();
+                return true;
+            }
+            else if (isUpAndInTimespan(event)) {
                 onTap(event);
+                return true;
+            }
 
-            return true;
+            return false;
+        }
+
+        private boolean isUpAndInTimespan(MotionEvent event) {
+            return (event.getEventTime() - event.getDownTime()) <= MAX_DURATION && event.getAction() == MotionEvent.ACTION_UP;
         }
 
         abstract void onTap(MotionEvent e);
+        abstract void onVerticalSwipe();
     }
 }

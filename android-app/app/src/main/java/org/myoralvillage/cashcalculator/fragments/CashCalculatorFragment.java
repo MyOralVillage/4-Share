@@ -7,9 +7,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
@@ -18,12 +16,14 @@ import org.myoralvillage.cashcalculator.R;
 import org.myoralvillage.cashcalculator.SettingActivity;
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
+import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.models.MathOperationModel;
 import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 import org.myoralvillage.cashcalculatormodule.views.NumberPadView;
+import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyScrollbarListener;
 import org.myoralvillage.cashcalculatormodule.views.listeners.NumberPadListener;
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
@@ -178,10 +178,6 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void swipeUp() {
                 // Dragging towards the bottom
-                service.switchAppMode();
-                if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC)
-                    service.setValue(BigDecimal.ZERO);
-                updateAll();
             }
 
             @Override
@@ -244,35 +240,55 @@ public class CashCalculatorFragment extends Fragment {
         currencyScrollbarView.setCurrency(SettingActivity.getSettingService().getCurrencyName());
         this.currCurrency = currencyScrollbarView.getCurrency();
 
-        currencyScrollbarView.setCurrencyTapListener(denomination -> {
-            service.setValue(service.getValue().add(denomination.getValue()));
-            updateAll();
+        currencyScrollbarView.setCurrencyScrollbarListener(new CurrencyScrollbarListener() {
+            @Override
+            public void onTapDenomination(DenominationModel denomination) {
+                service.setValue(service.getValue().add(denomination.getValue()));
+                updateAll();
+            }
+
+            @Override
+            public void onVerticalSwipe() {
+                switchAppMode();
+            }
         });
+    }
+
+    private void switchAppMode() {
+        service.switchAppMode();
+        if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC)
+            service.setValue(BigDecimal.ZERO);
+        updateAll();
     }
 
     private void initializeNumberPad(View view) {
         numberPadView = view.findViewById(R.id.number_pad_view);
         numberPadView.setListener(new NumberPadListener() {
             @Override
-            public void check(BigDecimal value) {
+            public void onCheck(BigDecimal value) {
                 service.setValue(value);
                 numberInputView.setVisibility(View.INVISIBLE);
                 updateAll();
             }
 
             @Override
-            public void back(BigDecimal value) {
+            public void onBack(BigDecimal value) {
                 numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                         currCurrency.getCurrency().getSymbol(), value));
                 updateSumView();
             }
 
             @Override
-            public void number(BigDecimal value) {
+            public void onTapNumber(BigDecimal value) {
                 numberInputView.setVisibility(View.VISIBLE);
                 numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                         currCurrency.getCurrency().getSymbol(), value));
                 updateSumView();
+            }
+
+            @Override
+            public void onVerticalSwipe() {
+                switchAppMode();
             }
         });
     }

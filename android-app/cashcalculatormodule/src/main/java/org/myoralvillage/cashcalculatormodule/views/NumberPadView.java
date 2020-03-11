@@ -2,6 +2,7 @@ package org.myoralvillage.cashcalculatormodule.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -13,13 +14,16 @@ import org.myoralvillage.cashcalculatormodule.views.listeners.NumberPadListener;
 
 import java.math.BigDecimal;
 
-public class NumberPadView extends LinearLayout {
+public class NumberPadView extends LinearLayout implements View.OnTouchListener {
     private NumberPadListener listener = null;
+    private static final long MAX_TOUCH_DURATION = 250;
+    private float touchDownX, touchDownY;
 
     public NumberPadView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(getContext(), R.layout.number_pad, this);
         initializeNumberpad();
+        setOnTouchListener(this);
     }
 
     private void initializeNumberpad(){
@@ -65,17 +69,17 @@ public class NumberPadView extends LinearLayout {
 
     private void check(BigDecimal value) {
         if (listener != null)
-            listener.check(value);
+            listener.onCheck(value);
     }
 
     private void back(BigDecimal value) {
         if (listener != null)
-            listener.back(value);
+            listener.onBack(value);
     }
 
     private void number(BigDecimal value) {
         if (listener != null)
-            listener.number(value);
+            listener.onTapNumber(value);
     }
 
     private static BigDecimal stringBuilderToBigDecimal(StringBuilder stringBuilder) {
@@ -85,5 +89,23 @@ public class NumberPadView extends LinearLayout {
 
     public void setListener(NumberPadListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (listener != null) {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                touchDownX = event.getX();
+                touchDownY = event.getY();
+                return true;
+            } else if (event.getAction() == MotionEvent.ACTION_UP &&
+                    (event.getEventTime() - event.getDownTime()) <= MAX_TOUCH_DURATION &&
+                    Math.abs(event.getY() - touchDownY) > 2 * Math.abs(event.getX() - touchDownX)) {
+                listener.onVerticalSwipe();
+                return true;
+            }
+        }
+
+        return false;
     }
 }
