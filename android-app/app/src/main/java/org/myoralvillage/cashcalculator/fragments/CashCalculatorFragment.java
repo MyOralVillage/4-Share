@@ -23,6 +23,8 @@ import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
+import org.myoralvillage.cashcalculatormodule.views.NumberPadView;
+import org.myoralvillage.cashcalculatormodule.views.listeners.NumberPadListener;
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import androidx.annotation.NonNull;
@@ -36,9 +38,9 @@ public class CashCalculatorFragment extends Fragment {
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
     private CurrencyScrollbarView currencyScrollbarView;
-    private TableLayout numberPadView;
     private TextView sumView;
     private TextView numberInputView;
+    private NumberPadView numberPadView;
     private ImageView calculateButton;
     private ImageView clearButton;
     private ImageView enterHistoryButton;
@@ -65,11 +67,10 @@ public class CashCalculatorFragment extends Fragment {
         initializeCalculateButton(view);
         initializeClearButton(view);
         initializeHistoryButtons(view);
-        initializeNumberpad(view);
+        initializeNumberPad(view);
 
         updateAll();
         return view;
-
     }
 
     private void initializeHistoryButtons(View view){
@@ -249,56 +250,31 @@ public class CashCalculatorFragment extends Fragment {
         });
     }
 
-    private void initializeNumberpad(View view){
-        numberPadView = view.findViewById(R.id.number_pad);
-        numberPadView.setVisibility(View.INVISIBLE);
-
-        final StringBuilder stringBuilder = new StringBuilder();
-        View.OnClickListener listener = v -> {
-            String text;
-
-            if (v instanceof Button) {
-                text = ((Button) v).getText().toString();
-            } else {
-                text = v.getContentDescription().toString();
+    private void initializeNumberPad(View view) {
+        numberPadView = view.findViewById(R.id.number_pad_view);
+        numberPadView.setListener(new NumberPadListener() {
+            @Override
+            public void check(BigDecimal value) {
+                service.setValue(value);
+                numberInputView.setVisibility(View.INVISIBLE);
+                updateAll();
             }
 
-            switch (text) {
-                case "check":
-                    service.setValue(stringBuilder.length() > 0 ?
-                            new BigDecimal(Integer.valueOf(stringBuilder.toString())) : BigDecimal.ZERO);
-                    stringBuilder.setLength(0);
-                    numberInputView.setVisibility(View.INVISIBLE);
-                    updateAll();
-                    return;
-                case "back":
-                    if (stringBuilder.length() > 0) {
-                        stringBuilder.setLength(stringBuilder.length() - 1);
-                        numberInputView.setText(String.format(Locale.CANADA, "%s %s",
-                                currCurrency.getCurrency().getSymbol(), stringBuilder.toString()));
-                    }
-                    break;
-                default:
-                    if (stringBuilder.length() == 0 && text.equals("0")) {
-                        return;
-                    }
-                    stringBuilder.append(text);
-                    numberInputView.setVisibility(View.VISIBLE);
-                    numberInputView.setText(String.format(Locale.CANADA, "%s %s",
-                            currCurrency.getCurrency().getSymbol(), stringBuilder.toString()));
-                    break;
+            @Override
+            public void back(BigDecimal value) {
+                numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                        currCurrency.getCurrency().getSymbol(), value));
+                updateSumView();
             }
 
-            updateSumView();
-        };
-
-        for (View button : new View[] {view.findViewById(R.id.zero), view.findViewById(R.id.one),
-                view.findViewById(R.id.two), view.findViewById(R.id.three), view.findViewById(R.id.four),
-                view.findViewById(R.id.five), view.findViewById(R.id.six), view.findViewById(R.id.seven),
-                view.findViewById(R.id.eight), view.findViewById(R.id.nine), view.findViewById(R.id.check),
-                view.findViewById(R.id.back)}) {
-            button.setOnClickListener(listener);
-        }
+            @Override
+            public void number(BigDecimal value) {
+                numberInputView.setVisibility(View.VISIBLE);
+                numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                        currCurrency.getCurrency().getSymbol(), value));
+                updateSumView();
+            }
+        });
     }
 
     private void updateAppMode() {
