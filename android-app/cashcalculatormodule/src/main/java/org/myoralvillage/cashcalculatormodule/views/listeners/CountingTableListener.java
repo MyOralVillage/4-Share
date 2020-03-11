@@ -3,5 +3,9 @@ package org.myoralvillage.cashcalculatormodule.views.listeners;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 
 public interface CountingTableListener {
-    void onTableRemove(DenominationModel model, int oldCount, int newCount);
+    void onSwipeAddition();
+    void onSwipeSubtraction();
+    void onSwipeMultiplication();
+
+    void onDenominationChange(DenominationModel denomination, int oldCount, int newCount);
 }

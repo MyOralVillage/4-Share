@@ -23,9 +23,9 @@ import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 import org.myoralvillage.cashcalculatormodule.views.NumberPadView;
+import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListener;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CurrencyScrollbarListener;
 import org.myoralvillage.cashcalculatormodule.views.listeners.NumberPadListener;
-import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import androidx.annotation.NonNull;
 
@@ -137,19 +137,11 @@ public class CashCalculatorFragment extends Fragment {
     }
 
     private void initializeCountingView(View view) {
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-
         countingTableView = view.findViewById(R.id.counting_table);
-        countingTableView.initDenominationModels(currCurrency.getDenominations());
-
-        countingTableView.setOnTouchListener(new SwipeListener(getActivity()) {
+        countingTableView.initialize(currCurrency);
+        countingTableView.setListener(new CountingTableListener() {
             @Override
-            public void swipeLeft() {
-                // Dragging towards the right
+            public void onSwipeAddition() {
                 if (!service.isInHistorySlideshow()) {
                     service.add();
                     switchState();
@@ -160,8 +152,7 @@ public class CashCalculatorFragment extends Fragment {
             }
 
             @Override
-            public void swipeRight() {
-                // Dragging towards the left
+            public void onSwipeSubtraction() {
                 if (!service.isInHistorySlideshow()) {
                     service.subtract();
                     switchState();
@@ -171,17 +162,7 @@ public class CashCalculatorFragment extends Fragment {
             }
 
             @Override
-            public void longPress(float x, float y) {
-                countingTableView.handleLongPress(x, y);
-            }
-
-            @Override
-            public void swipeUp() {
-                // Dragging towards the bottom
-            }
-
-            @Override
-            public void swipeDown() {
+            public void onSwipeMultiplication() {
                 // Dragging towards the top
                 if (!service.isInHistorySlideshow()) {
                     service.multiply();
@@ -190,23 +171,23 @@ public class CashCalculatorFragment extends Fragment {
                     getActivity().finish();
                 }
             }
-        });
 
-        countingTableView.setCountingTableListener((model, oldCount, newCount) -> {
-            BigDecimal amount = model.getValue().multiply(new BigDecimal(oldCount - newCount));
-            if (service.getValue().compareTo(BigDecimal.ZERO) >= 0) {
-                service.setValue(service.getValue().subtract(amount));
-            } else {
-                service.setValue(service.getValue().add(amount));
+            @Override
+            public void onDenominationChange(DenominationModel denomination, int oldCount, int newCount) {
+                BigDecimal amount = denomination.getValue().multiply(new BigDecimal(oldCount - newCount));
+                if (service.getValue().compareTo(BigDecimal.ZERO) >= 0) {
+                    service.setValue(service.getValue().subtract(amount));
+                } else {
+                    service.setValue(service.getValue().add(amount));
+                }
+                updateSumView();
+                updateClearButton();
             }
-            updateSumView();
-            updateClearButton();
         });
     }
 
     private void updateCountingTable() {
-        countingTableView.setDenominations(currCurrency.getDenominations().iterator(),
-                countingService.allocate(service.getValue(), currCurrency), service.getValue());
+        countingTableView.setValue(service.getValue());
     }
 
     private void updateSumView() {
