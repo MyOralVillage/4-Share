@@ -35,4 +35,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/number_input_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/total"
+        android:textSize="48dp"
+        app:layout_constraintLeft_toLeftOf="@id/counting_table"
+        app:layout_constraintRight_toRightOf="@id/counting_table"
+        app:layout_constraintTop_toTopOf="@id/counting_table"
+        app:layout_constraintBottom_toBottomOf="@id/counting_table"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
