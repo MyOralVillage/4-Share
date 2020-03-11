@@ -80,19 +80,21 @@ public class CountingTableSurfaceView extends View {
 
         for (Map.Entry<DenominationModel, Integer> entry : counts.entrySet()) {
             Bitmap bmp = bitmaps.get(entry.getKey());
+            int denominationCount = entry.getValue();
+            float horizontalPaddingInInches = STACKED_DENOMINATION_OFFSET_IN_INCHES * (denominationCount <= THRESHOLD_NUM ? (denominationCount - 1) : 1);
+            int horizontalPixelPadding = (int) (horizontalPaddingInInches * getResources().getDisplayMetrics().xdpi);
             if (isNegative) bmp = invertBitmap(bmp);
 
             AreaModel areaModel = areas.get(entry.getKey());
             areaModel.clearArea();
 
             int positionX = currentPosition % getWidth();
-            if ((positionX + bmp.getWidth()) > getWidth()) {
+            if ((positionX + bmp.getWidth() + horizontalPixelPadding) > getWidth()) {
                 currentPosition = getWidth();
                 positionX = currentPosition % getWidth();
             }
 
             int currencyRow = currentPosition / getWidth();
-            int denominationCount = entry.getValue();
 
             if (denominationCount == 0) {
                 continue;
@@ -102,8 +104,6 @@ public class CountingTableSurfaceView extends View {
                 drawDeno(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel);
             }
 
-            float horizontalPaddingInInches = STACKED_DENOMINATION_OFFSET_IN_INCHES * (denominationCount <= THRESHOLD_NUM ? (denominationCount - 1) : 1);
-            int horizontalPixelPadding = (int) (horizontalPaddingInInches * getResources().getDisplayMetrics().xdpi);
             currentPosition += bmp.getWidth() + horizontalPixelPadding;
         }
     }
