@@ -113,7 +113,15 @@ public class CashCalculatorFragment extends Fragment {
         calculateButton.setOnClickListener((e) -> {
             if (!service.isInHistorySlideshow()) {
                 service.calculate();
-                updateAll();
+                switch(service.getAppState().getAppMode()) {
+                    case IMAGE:
+                        updateAll();
+                        break;
+                    case NUMERIC:
+                        numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                                currCurrency.getCurrency().getSymbol(), service.getValue()));
+                        break;
+                }
             }
         });
     }
@@ -155,7 +163,6 @@ public class CashCalculatorFragment extends Fragment {
                     switchState();
                     getActivity().overridePendingTransition(R.anim.activity_left_in,R.anim.activity_left_out);
                     getActivity().finish();
-
                 }
             }
 
@@ -294,11 +301,12 @@ public class CashCalculatorFragment extends Fragment {
                 numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                         currCurrency.getCurrency().getSymbol(), value));
                 updateSumView();
+                service.setValue(value);
             }
 
             @Override
             public void onTapNumber(BigDecimal value) {
-
+                service.setValue(value);
                 sum.setVisibility(View.INVISIBLE);
                 numberInputView.setVisibility(View.VISIBLE);
                 numberInputView.setText(String.format(Locale.CANADA, "%s %s",
