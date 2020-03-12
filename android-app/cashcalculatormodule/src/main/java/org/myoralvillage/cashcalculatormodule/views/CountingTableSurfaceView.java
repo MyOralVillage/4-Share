@@ -26,6 +26,7 @@ import java.util.TreeMap;
 public class CountingTableSurfaceView extends View {
     private static final int THRESHOLD_NUM = 4;
     private static final float STACKED_DENOMINATION_OFFSET_IN_INCHES = 0.05f;
+    private static final int OFFSET_STROKE_RATE = 15;
 
     private CountingTableSurfaceListener countingTableSurfaceListener;
     private Map<DenominationModel, Integer> counts;
@@ -66,10 +67,11 @@ public class CountingTableSurfaceView extends View {
             return;
         }
 
+        float numSize = getWidth() / 12;
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         denoNumber.setTypeface(font);
-        denoNumber.setTextSize((float) getWidth() / 12);
-        denoNumber.setStrokeWidth((float) getWidth() / 180);
+        denoNumber.setTextSize(numSize);
+        denoNumber.setStrokeWidth((float) numSize / OFFSET_STROKE_RATE);
         denoNumber.setAntiAlias(true);
 
         int currentPosition = 0;
@@ -99,7 +101,7 @@ public class CountingTableSurfaceView extends View {
             if (denominationCount == 0) {
                 continue;
             } else if (denominationCount > THRESHOLD_NUM) {
-                drawDenoNum(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel);
+                drawDenoNum(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel, numSize);
             } else {
                 drawDeno(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel);
             }
@@ -124,12 +126,12 @@ public class CountingTableSurfaceView extends View {
     }
 
     private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
-                             AreaModel areaModel) {
+                             AreaModel areaModel, float numSize) {
         areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
         canvas.drawBitmap(bmp, originX, originY, null);
         int textPositionX;
 
-        if (getWidth() / 12 > bmp.getWidth() / 2) {
+        if (numSize > (float)(bmp.getWidth() / 2)) {
             textPositionX = originX + (int)(STACKED_DENOMINATION_OFFSET_IN_INCHES / 2.0f * getResources().getDisplayMetrics().xdpi);
         } else {
             textPositionX = originX + (int)(bmp.getWidth() / 3.0f);
