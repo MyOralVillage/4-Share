@@ -1,4 +1,4 @@
-package org.myoralvillage.cashcalculatormodule.views;
+package org.myoralvillage.cashcalculator.views;
 
 import android.content.Context;
 import android.util.AttributeSet;

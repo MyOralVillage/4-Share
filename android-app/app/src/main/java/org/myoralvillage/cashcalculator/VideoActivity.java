@@ -2,17 +2,16 @@ package org.myoralvillage.cashcalculator;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.VideoView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.myoralvillage.cashcalculatormodule.views.CustomVideoView;
+import org.myoralvillage.cashcalculator.views.CustomVideoView;
 
 public class VideoActivity extends AppCompatActivity {
 
@@ -33,16 +32,16 @@ public class VideoActivity extends AppCompatActivity {
         skipButtonListener();
     }
     private void skipButtonListener() {
-        Button setting = findViewById(R.id.skip);
+        ImageView setting = findViewById(R.id.skip);
         setting.setOnClickListener((e) -> {
             switchToSplash();
         });
     }
 
     private void replayButtonListener(VideoView video) {
-        Button setting = findViewById(R.id.rePlay);
+        ImageView setting = findViewById(R.id.replay);
         setting.setOnClickListener((e) -> {
-            video.start();
+            video.resume();
         });
     }
 
