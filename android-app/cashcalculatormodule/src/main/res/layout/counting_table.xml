@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <org.myoralvillage.cashcalculatormodule.views.CountingTableSurfaceView
+        android:id="@+id/counting_table_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/wooden_surface" />
+
+    <TextView
+        android:id="@+id/sum_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="20dp"
+        android:textSize="37dp"
+        android:text="@string/total"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <ImageView
+        android:id="@+id/calculate_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true" />
+
+    <ImageView
+        android:id="@+id/right_history_button"
+        android:layout_width="128dp"
+        android:layout_height="64dp"
+        android:src="@drawable/bridge_right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+    <ImageView
+        android:id="@+id/left_history_button"
+        android:layout_width="128dp"
+        android:layout_height="64dp"
+        android:src="@drawable/bridge_left"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
+
+    <ImageView
+        android:id="@+id/enter_history_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/highway"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true" />
+
+    <ImageView
+        android:id="@+id/clear_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/handshake"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" />
+
+</RelativeLayout>

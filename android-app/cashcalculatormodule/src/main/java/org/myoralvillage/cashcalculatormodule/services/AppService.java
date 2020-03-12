@@ -57,7 +57,7 @@ public class AppService {
     }
 
     public boolean isInHistorySlideshow() {
-        return appState.getCurrentOperationIndex() < (appState.getOperations().size() - 1);
+        return appState.isInHistorySlideshow();
     }
 
     public void enterHistorySlideshow() {
