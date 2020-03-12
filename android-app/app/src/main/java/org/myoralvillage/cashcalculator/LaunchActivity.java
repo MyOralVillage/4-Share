@@ -15,7 +15,7 @@ public class LaunchActivity extends AppCompatActivity {
         boolean isFirst = firstShared.getBoolean("isFirstLaunch", true);
         SharedPreferences.Editor editor = firstShared.edit();
         if (isFirst) {
-            // Need to set a new video activity
+            startActivity(new Intent(this, VideoActivity.class));
             finish();
             editor.putBoolean("isFirstLaunch", false);
             editor.apply();
