@@ -26,6 +26,7 @@ import java.util.TreeMap;
 public class CountingTableSurfaceView extends View {
     private static final int THRESHOLD_NUM = 4;
     private static final float STACKED_DENOMINATION_OFFSET_IN_INCHES = 0.05f;
+    private static final int OFFSET_STROKE_RATE = 15;
 
     private CountingTableSurfaceListener countingTableSurfaceListener;
     private Map<DenominationModel, Integer> counts;
@@ -66,10 +67,11 @@ public class CountingTableSurfaceView extends View {
             return;
         }
 
+        float numSize = getWidth() / 12;
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         denoNumber.setTypeface(font);
-        denoNumber.setTextSize((float) getWidth() / 14);
-        denoNumber.setStrokeWidth((float) getWidth() / 150);
+        denoNumber.setTextSize(numSize);
+        denoNumber.setStrokeWidth((float) numSize / OFFSET_STROKE_RATE);
         denoNumber.setAntiAlias(true);
 
         int currentPosition = 0;
@@ -80,30 +82,30 @@ public class CountingTableSurfaceView extends View {
 
         for (Map.Entry<DenominationModel, Integer> entry : counts.entrySet()) {
             Bitmap bmp = bitmaps.get(entry.getKey());
+            int denominationCount = entry.getValue();
+            float horizontalPaddingInInches = STACKED_DENOMINATION_OFFSET_IN_INCHES * (denominationCount <= THRESHOLD_NUM ? (denominationCount - 1) : 1);
+            int horizontalPixelPadding = (int) (horizontalPaddingInInches * getResources().getDisplayMetrics().xdpi);
             if (isNegative) bmp = invertBitmap(bmp);
 
             AreaModel areaModel = areas.get(entry.getKey());
             areaModel.clearArea();
 
             int positionX = currentPosition % getWidth();
-            if ((positionX + bmp.getWidth()) > getWidth()) {
+            if ((positionX + bmp.getWidth() + horizontalPixelPadding) > getWidth()) {
                 currentPosition = getWidth();
                 positionX = currentPosition % getWidth();
             }
 
             int currencyRow = currentPosition / getWidth();
-            int denominationCount = entry.getValue();
 
             if (denominationCount == 0) {
                 continue;
             } else if (denominationCount > THRESHOLD_NUM) {
-                drawDenoNum(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel);
+                drawDenoNum(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel, numSize);
             } else {
                 drawDeno(canvas, denominationCount, bmp, positionX, currencyRow * rowHeight, areaModel);
             }
 
-            float horizontalPaddingInInches = STACKED_DENOMINATION_OFFSET_IN_INCHES * (denominationCount <= THRESHOLD_NUM ? (denominationCount - 1) : 1);
-            int horizontalPixelPadding = (int) (horizontalPaddingInInches * getResources().getDisplayMetrics().xdpi);
             currentPosition += bmp.getWidth() + horizontalPixelPadding;
         }
     }
@@ -124,12 +126,17 @@ public class CountingTableSurfaceView extends View {
     }
 
     private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
-                             AreaModel areaModel) {
+                             AreaModel areaModel, float numSize) {
         areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
         canvas.drawBitmap(bmp, originX, originY, null);
+        int textPositionX;
 
-        int textPositionX = originX + (int)(STACKED_DENOMINATION_OFFSET_IN_INCHES / 2.0f * getResources().getDisplayMetrics().xdpi);
-        int textPositionY = originY + bmp.getHeight() / 2;
+        if (numSize > (float)(bmp.getWidth() / 2)) {
+            textPositionX = originX + (int)(STACKED_DENOMINATION_OFFSET_IN_INCHES / 2.0f * getResources().getDisplayMetrics().xdpi);
+        } else {
+            textPositionX = originX + (int)(bmp.getWidth() / 3.0f);
+        }
+        int textPositionY = originY + (int)(bmp.getHeight() / 1.5f);
 
         denoNumber.setStyle(Paint.Style.FILL);
         denoNumber.setColor(Color.WHITE);
