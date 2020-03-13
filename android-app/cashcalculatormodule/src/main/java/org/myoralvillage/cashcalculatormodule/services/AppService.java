@@ -21,7 +21,7 @@ public class AppService {
     private final static BigDecimal INITIAL_VALUE = new BigDecimal(0);
 
     /**
-     * This variable is used to store each state of the <code>Cash Calculator</code>.
+     * This variable is used to store the state of the <code>Cash Calculator</code>.
      *
      * @see AppStateModel
      */
