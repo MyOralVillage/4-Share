@@ -201,7 +201,7 @@ public class AppService {
     }
 
     /**
-     * Performs the calculations of the operation that have occurred.
+     * Performs the calculations of the operations that have occurred.
      *
      * @param operations the list of operations performed.
      * @return the result of the operations.
