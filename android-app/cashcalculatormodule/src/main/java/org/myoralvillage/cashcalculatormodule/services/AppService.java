@@ -79,7 +79,7 @@ public class AppService {
     }
 
     /**
-     * Undo the the previous operation performed on the <code>CashCalculator</code>.
+     * Reset the current operation to the latest one performed
      */
     private void resetCurrentOperation() {
         appState.setCurrentOperationIndex(appState.getOperations().size() - 1);
