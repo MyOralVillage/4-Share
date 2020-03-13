@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class AppService {
     /**
-     * A constant variable used whenever the value displayed is zero.
+     * A constant variable used to initialize the value of the app's state before the user does any operations.
      */
     private final static BigDecimal INITIAL_VALUE = new BigDecimal(0);
 
