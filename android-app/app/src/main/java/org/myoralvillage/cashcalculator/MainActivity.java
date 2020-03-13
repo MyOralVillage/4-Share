@@ -25,9 +25,6 @@ public class MainActivity extends AppCompatActivity{
         SettingActivity.getSettingService().getCurrencyName();
         setContentView(R.layout.activity_main);
     }
-    public static void  setCurrency(CurrencyScrollbarView currencyScroll){
-        currencyScroll.setCurrency(getCurrency());
-    }
 
     public static String getCurrency(){
         return SettingActivity.getSettingService().getCurrencyName();

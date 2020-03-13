@@ -142,9 +142,13 @@ public class CashCalculatorFragment extends Fragment {
         countingTableView.setAppState(service.getAppState());
     }
 
+    public static void  setCurrency(CurrencyScrollbarView currencyScroll){
+        currencyScroll.setCurrency(MainActivity.getCurrency());
+    }
+
     private void initializeCurrencyScrollbar(View view){
         currencyScrollbarView = view.findViewById(R.id.currency_scrollbar);
-        MainActivity.setCurrency(currencyScrollbarView);
+        setCurrency(currencyScrollbarView);
         this.currCurrency = currencyScrollbarView.getCurrency();
 
         currencyScrollbarView.setCurrencyScrollbarListener(new CurrencyScrollbarListener() {
