@@ -143,7 +143,7 @@ public class AppService {
     }
 
     /**
-     * Removes the most recent state that occurred and change state to standard mode.
+     * Recalculates the result of previous operations
      */
     private void changeCalculation() {
         appState.getOperations().remove(appState.getOperations().size() - 1);
