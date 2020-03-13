@@ -69,7 +69,7 @@ public class AppService {
     }
 
     /**
-     * Undo the previous change performed on the <code>CashCalculator</code>.
+     * Reset to the initial state of the app while remaining in the current app mode
      */
     public void reset() {
         AppStateModel.AppMode mode = appState.getAppMode();
