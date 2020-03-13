@@ -151,9 +151,7 @@ public class AppService {
     }
 
     /**
-     * Show the previous operation performed on the <code>CashCalculator</code>. Returns nothing if
-     * the current history slide before executing this function is the first operation performed on
-     * the application.
+     * Shows the previous operation performed on the <code>CashCalculator</code>.
      */
     public void gotoPreviousHistorySlide() {
         if (isInHistorySlideshow() && appState.getCurrentOperationIndex() > 0)
@@ -190,9 +188,9 @@ public class AppService {
     }
 
     /**
-     * Helper function used to insert a mathematical operation to the list of operations in the
-     * variable, <code>appState</code>. Used in the functions, <code>add()</code>, <code>subtract()</code>,
-     * <code>multiply()</code> and <code>calculate</code>.
+     * Inserts a mathematical operation to the list of operations in the
+     * variable, <code>appState</code>.
+     *
      * @param operation The mathematical operation to be added
      *
      * @see MathOperationModel
@@ -203,7 +201,7 @@ public class AppService {
     }
 
     /**
-     * Performs the calculations of the operation that has occurred.
+     * Performs the calculations of the operation that have occurred.
      *
      * @param operations the list of operations performed.
      * @return the result of the operations.
