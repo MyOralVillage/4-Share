@@ -59,7 +59,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         addView(linearLayout);
 
         denominationsView = new ScrollbarDenominationsView(getContext());
-        denominationsView.setOnTouchListener(new TapDetector() {
+        denominationsView.setOnTouchListener(new TapDetector(getResources().getDisplayMetrics().ydpi) {
             @Override
             public void onTap(MotionEvent e) {
                 int index = denominationsView.getAreaModel().getBoxIndexFromPoint(e.getX(), e.getY());
@@ -161,7 +161,13 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
     private static abstract class TapDetector implements OnTouchListener {
         private static final long MAX_DURATION = 250;
+        private static final float MIN_SWIPE_DISTANCE_IN_INCHES = 0.2f;
         private float downX, downY;
+        private float ydpi;
+
+        TapDetector(float ydpi) {
+            this.ydpi = ydpi;
+        }
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -170,7 +176,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
                 downY = event.getY();
                 return true;
             }
-            else if (isUpAndInTimespan(event) && Math.abs(event.getY() - downY) > 2 * Math.abs(event.getX() - downX)) {
+            else if (isSwipe(event)) {
                 onVerticalSwipe();
                 return true;
             }
@@ -184,6 +190,12 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
         private boolean isUpAndInTimespan(MotionEvent event) {
             return (event.getEventTime() - event.getDownTime()) <= MAX_DURATION && event.getAction() == MotionEvent.ACTION_UP;
+        }
+
+        private boolean isSwipe(MotionEvent event) {
+            return isUpAndInTimespan(event) &&
+                    Math.abs(event.getY() - downY) > 2 * Math.abs(event.getX() - downX) &&
+                    Math.abs(event.getY() - downY) > (MIN_SWIPE_DISTANCE_IN_INCHES * ydpi);
         }
 
         abstract void onTap(MotionEvent e);
