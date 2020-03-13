@@ -35,7 +35,6 @@ public class CashCalculatorFragment extends Fragment {
     private CurrencyScrollbarView currencyScrollbarView;
     private NumberPadView numberPadView;
     private TextView numberInputView;
-    private int checkDisabled = 0;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -105,20 +104,19 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void onTapCalculateButton() {
                 service.calculate();
-                checkDisabled = 1;
                 switch(service.getAppState().getAppMode()) {
                     case NUMERIC:
                         numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                                 currCurrency.getCurrency().getSymbol(), service.getValue()));
-                        service.getAppState().getCurrentOperation().setValue(service.getValue());
+                        numberPadView.setStringBuilder(service.getValue().toString());
                         break;
+                    case IMAGE:
+                        updateAll();
                 }
-                updateAll();
             }
 
             @Override
             public void onTapClearButton() {
-                checkDisabled = 0;
                 switch(service.getAppState().getAppMode()) {
                     case NUMERIC:
                         numberInputView.setText(String.format(Locale.CANADA, "%s %s",
@@ -201,21 +199,17 @@ public class CashCalculatorFragment extends Fragment {
         numberPadView.setListener(new NumberPadListener() {
             @Override
             public void onCheck(BigDecimal value) {
-                if (checkDisabled == 0){
                     sum.setVisibility(View.VISIBLE);
                     service.setValue(value);
                     numberInputView.setVisibility(View.INVISIBLE);
                     updateAll();
-                }
             }
 
             @Override
             public void onBack(BigDecimal value) {
-                if (checkDisabled == 0){
                     numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                             currCurrency.getCurrency().getSymbol(), value));
                     service.setValue(value);
-                }
             }
 
             @Override

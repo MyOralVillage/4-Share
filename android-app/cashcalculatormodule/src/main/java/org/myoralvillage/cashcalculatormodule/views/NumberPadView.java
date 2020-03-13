@@ -18,6 +18,7 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
     private NumberPadListener listener = null;
     private static final long MAX_TOUCH_DURATION = 250;
     private float touchDownX, touchDownY;
+    final StringBuilder stringBuilder = new StringBuilder();
 
     public NumberPadView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -27,7 +28,6 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
     }
 
     private void initializeNumberpad(){
-        final StringBuilder stringBuilder = new StringBuilder();
         View.OnClickListener listener = v -> {
             String text;
 
@@ -65,6 +65,11 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
                 findViewById(R.id.back)}) {
             button.setOnClickListener(listener);
         }
+    }
+
+    public void setStringBuilder(String value){
+        stringBuilder.setLength(0);
+        stringBuilder.append(value);
     }
 
     private void check(BigDecimal value) {
