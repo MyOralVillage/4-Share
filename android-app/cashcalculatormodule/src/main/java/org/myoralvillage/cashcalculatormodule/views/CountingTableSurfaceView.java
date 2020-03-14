@@ -153,8 +153,7 @@ public class CountingTableSurfaceView extends View {
     }
 
     /**
-     * Draws the bitmap of the denominations to this view when the denominations are stacked. If there
-     * are multiple of the same denomination, this draws on top of its denomination.
+     * Draws the bitmap of the denominations to this view when the denominations are stacked.
      *
      * @param canvas the area to draw the bitmap.
      * @param num the number of the specific denomination.
@@ -183,7 +182,8 @@ public class CountingTableSurfaceView extends View {
 
     /**
      * Draws the bitmap of the denominations to this view when the denominations are greater than
-     * <code>THRESHOLD_NUM</code>.
+     * <code>THRESHOLD_NUM</code>. The denominations are drawn on top of each other if it is the same
+     * denomination.
      *
      * @param canvas the area to draw the bitmap.
      * @param num the number of the specific denomination.

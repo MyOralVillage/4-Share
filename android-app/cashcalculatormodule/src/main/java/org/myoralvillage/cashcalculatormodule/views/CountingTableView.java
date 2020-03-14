@@ -28,7 +28,7 @@ import java.util.Locale;
  */
 public class CountingTableView extends RelativeLayout {
     /**
-     * he view that displays the images of currency.
+     * The view that displays the images of currency.
      *
      * @see CountingTableSurfaceView
      */
