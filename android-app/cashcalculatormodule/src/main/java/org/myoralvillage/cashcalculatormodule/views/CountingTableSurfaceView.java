@@ -23,32 +23,115 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+/**
+ * A surface view of the CountingTable to monitor and render the display of the denominations.
+ *
+ * @author Peter Panagiotis Roubatsis
+ * @author Zhipeng Zhou
+ *
+ * @see CountingTableView
+ */
 public class CountingTableSurfaceView extends View {
+    /**
+     * A constant variable to denote the maximum amount of denominations that can be stacked before
+     * the display changes to a bundle version.
+     */
     private static final int THRESHOLD_NUM = 4;
+
+    /**
+     * A constant variable to set the offset, in inches, for the denominations when they are stacked.
+     */
     private static final float STACKED_DENOMINATION_OFFSET_IN_INCHES = 0.05f;
+
+    /**
+     * A constant variable to scale the stroke rate.
+     */
     private static final int OFFSET_STROKE_RATE = 15;
 
+    /**
+     * A listener for receiving gesture detection on this view class.
+     *
+     * @see CountingTableSurfaceListener
+     */
     private CountingTableSurfaceListener countingTableSurfaceListener;
+
+    /**
+     * A hashmap to map a denomination model to the amount of that denomination.
+     *
+     * @see DenominationModel
+     * @see HashMap
+     */
     private Map<DenominationModel, Integer> counts;
+
+    /**
+     * A hashmap to map a denomination model to a bitmap image of that model.
+     *
+     * @see DenominationModel
+     * @see HashMap
+     */
     private Map<DenominationModel, Bitmap> bitmaps;
+
+    /**
+     * A hashmap to map a denomination model to an area in which to draw the bitmap.
+     *
+     * @see DenominationModel
+     * @see HashMap
+     */
     private Map<DenominationModel, AreaModel> areas;
+
+    /**
+     * A boolean to monitor if the denomination model is initialized.
+     */
     private boolean initialized;
+
+    /**
+     * A boolean to monitor if the total value is less than zero.
+     */
     private boolean isNegative;
+
+    /**
+     * A service class used to assist in the scaling of the denomination images.
+     *
+     * @see BitmapService
+     */
     private BitmapService bitmapService;
+
+    /**
+     * This holds the style and color information about how to draw the denominations.
+     *
+     * @see Paint
+     */
     private Paint denoNumber;
 
+    /**
+     * An integer value to set the maximum height of a denomination to be drawn.
+     */
     private int maxDenominationHeight = Integer.MIN_VALUE;
 
+    /**
+     * Constructs a <code>CountingTableSurfaceView</code> in the given context.
+     *
+     * @param context The context of the application.
+     */
     public CountingTableSurfaceView(Context context) {
         super(context);
         init();
     }
 
+    /**
+     * Constructs a <code>CountingTableSurfaceView</code> in the given context and attributes.
+     *
+     * @param context the context of the application.
+     * @param attrs A collection of attributes found in the xml layout.
+     */
     public CountingTableSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
+    /**
+     * Initializes the variables of this view.
+     */
     private void init() {
         bitmapService = BitmapService.getInstance();
         counts = new TreeMap<>((o1, o2) -> o2.compareTo(o1));
@@ -60,6 +143,11 @@ public class CountingTableSurfaceView extends View {
         denoNumber = new Paint();
     }
 
+    /**
+     * This method performs the drawing on this view.
+     *
+     * @param canvas the area to draw.
+     */
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -110,6 +198,19 @@ public class CountingTableSurfaceView extends View {
         }
     }
 
+    /**
+     * Draws the bitmap of the denominations to this view when the denominations are stacked.
+     *
+     * @param canvas the area to draw the bitmap.
+     * @param num the number of the specific denomination.
+     * @param bmp the bitmap for the specific denomination.
+     * @param originX the x coordinate of the initial x position to draw the denomination.
+     * @param originY the y coordinate of the initial y position to draw the denomination
+     * @param areaModel the area in which to draw the denominations.
+     *
+     * @see Canvas
+     * @see AreaModel
+     */
     private void drawDeno(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
                           AreaModel areaModel) {
 
@@ -125,6 +226,21 @@ public class CountingTableSurfaceView extends View {
         areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
     }
 
+    /**
+     * Draws the bitmap of the denominations to this view when the denominations are greater than
+     * <code>THRESHOLD_NUM</code>.
+     *
+     * @param canvas the area to draw the bitmap.
+     * @param num the number of the specific denomination.
+     * @param bmp the bitmap for the specific denomination.
+     * @param originX the x coordinate of the initial x position to draw the denomination.
+     * @param originY the y coordinate of the initial y position to draw the denomination
+     * @param areaModel the area in which to draw the denominations.
+     * @param numSize the size area for a denomination.
+     *
+     * @see Canvas
+     * @see AreaModel
+     */
     private void drawDenoNum(Canvas canvas, int num, Bitmap bmp, int originX, int originY,
                              AreaModel areaModel, float numSize) {
         areaModel.addBox(new AreaModel.Box(originX, originY, bmp.getWidth(), bmp.getHeight()));
@@ -146,6 +262,12 @@ public class CountingTableSurfaceView extends View {
         canvas.drawText(Integer.toString(num), textPositionX, textPositionY, denoNumber);
     }
 
+    /**
+     * Changes the colors of the denomination to indicate that the value is less than zero.
+     *
+     * @param bmp the bitmap to be changed.
+     * @return the new bitmap.
+     */
     private Bitmap invertBitmap(Bitmap bmp) {
         Bitmap output = bmp.copy(Bitmap.Config.ARGB_8888, true);
 
@@ -159,11 +281,23 @@ public class CountingTableSurfaceView extends View {
         return output;
     }
 
-
+    /**
+     * Resize the bitmap by a certain scale factor.
+     *
+     * @param bmp the bitmap to be scaled.
+     * @param scaleFactor a float variable to scale the bitmap.
+     * @return the scaled bitmap.
+     */
     private Bitmap scaleBitmap(Bitmap bmp, float scaleFactor) {
         return bitmapService.resizeCashBitmap(bmp, getContext(), scaleFactor);
     }
 
+    /**
+     * Initializes the hashmaps of the denominations.
+     *
+     * @param denominationModels the set of denominations being used by this view.
+     * @see DenominationModel
+     */
     public void initDenominationModels(Set<DenominationModel> denominationModels) {
         for (DenominationModel deno : denominationModels) {
             Bitmap scaledBitmap = scaleBitmap(BitmapFactory.decodeResource(getResources(),
@@ -179,10 +313,22 @@ public class CountingTableSurfaceView extends View {
         initialized = true;
     }
 
+    /**
+     * Sets the listener of this view.
+     *
+     * @param countingTableSurfaceListener the listener of this view.
+     * @see CountingTableSurfaceListener
+     */
     public void setCountingTableSurfaceListener(CountingTableSurfaceListener countingTableSurfaceListener) {
         this.countingTableSurfaceListener = countingTableSurfaceListener;
     }
 
+    /**
+     * Invoked when a denomination is removed from this view.
+     *
+     * @param deno the denomination being affected.
+     * @param newCount the number of denomination items whe this event is called.
+     */
     private void callEvent(DenominationModel deno, int newCount) {
         if (counts.containsKey(deno)) {
             int oldCount = counts.get(deno);
@@ -193,6 +339,13 @@ public class CountingTableSurfaceView extends View {
         counts.put(deno, newCount);
     }
 
+    /**
+     * Setss the <code>counts</code> hashmap.
+     *
+     * @param iterator the denomination model to insert.
+     * @param allocations the amount of that denomination model to insert
+     * @param value the total value displayed on this view.
+     */
     public void setDenominations(Iterator<DenominationModel> iterator, List<Integer> allocations,
                                  BigDecimal value) {
         for (int i = 0; i < allocations.size(); i++) {
@@ -203,6 +356,11 @@ public class CountingTableSurfaceView extends View {
         invalidate();
     }
 
+    /**
+     * Removes a denomination model from this view.
+     *
+     * @param deno the denomination model to be removed.
+     */
     public void removeDenomination(DenominationModel deno) {
         if (counts.containsKey(deno)) {
             int value = counts.get(deno) - 1;
@@ -214,6 +372,12 @@ public class CountingTableSurfaceView extends View {
         }
     }
 
+    /**
+     * Invoked when an on touch down motion event is applied for a certain period of time.
+     *
+     * @param x the x coordinate of this motion event.
+     * @param y the y coordinate of this motion event.
+     */
     public void handleLongPress(float x, float y) {
         for (Map.Entry<DenominationModel, AreaModel> entry : areas.entrySet()) {
             AreaModel.Box box = entry.getValue().getBoxFromPoint(x, y);
@@ -225,6 +389,13 @@ public class CountingTableSurfaceView extends View {
         }
     }
 
+    /**
+     * Calls this view <code>onClickListener</code>
+     *
+     * @return True if there was an assigned OnClickListener that was called; false otherwise.
+     *
+     * @see android.view.View.OnClickListener
+     */
     @Override
     public boolean performClick() {
         return super.performClick();

@@ -14,12 +14,52 @@ import org.myoralvillage.cashcalculatormodule.views.listeners.NumberPadListener;
 
 import java.math.BigDecimal;
 
+/**
+ * A view class used to monitor and render the display of the number pad.
+ *
+ * @author Hamza Mahfooz
+ * @author Peter Panagiotis Roubatsis
+ * @author Yujie Wu
+ *
+ * @see LinearLayout
+ * @see android.view.View.OnTouchListener
+ */
 public class NumberPadView extends LinearLayout implements View.OnTouchListener {
+    /**
+     * The listener of this view.
+     *
+     * @see NumberPadListener
+     */
     private NumberPadListener listener = null;
+
+    /**
+     * A constant variable used to identify a vertical swipe gesture.
+     */
     private static final long MAX_TOUCH_DURATION = 250;
-    private float touchDownX, touchDownY;
+
+    /**
+     * the x coordinate of the down motion event.
+     */
+    private float touchDownX;
+
+    /**
+     * the y coordinate of the down motion event.
+     */
+    private float touchDownY;
+
+    /**
+     * the value that is being entered in this view.
+     *
+     * @see StringBuilder
+     */
     private final StringBuilder stringBuilder = new StringBuilder();
 
+    /**
+     * Constructs a <code>CountingTableSurfaceView</code> in the given context and attributes.
+     *
+     * @param context the context of the application.
+     * @param attrs A collection of attributes found in the xml layout.
+     */
     public NumberPadView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         inflate(getContext(), R.layout.number_pad, this);
@@ -27,6 +67,9 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
         setOnTouchListener(this);
     }
 
+    /**
+     * Initializes the number pad in this view.
+     */
     private void initializeNumberpad(){
         View.OnClickListener listener = v -> {
             String text;
@@ -67,35 +110,75 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
         }
     }
 
+    /**
+     * Sets the value of this view.
+     *
+     * @param value the new value of this view.
+     */
     public void setValue(BigDecimal value){
         stringBuilder.setLength(0);
         stringBuilder.append(value.toString());
     }
 
+    /**
+     * Handles the check operation, which affects the value.
+     *
+     * @param value the value of this view.
+     */
     private void check(BigDecimal value) {
         if (listener != null)
             listener.onCheck(value);
     }
 
+    /**
+     * Handles the back operation, which affects the value.
+     *
+     * @param value the value of this view.
+     */
     private void back(BigDecimal value) {
         if (listener != null)
             listener.onBack(value);
     }
 
+    /**
+     * Handles when a number is tapped.
+     *
+     * @param value the value of this view.
+     */
     private void number(BigDecimal value) {
         if (listener != null)
             listener.onTapNumber(value);
     }
 
+    /**
+     * Converts a <code>StringBuilder</code>, to a <code>BigDecimal</code>.
+     *
+     * @param stringBuilder the <code>StringBuilder</code> to be converted.
+     * @return the <code>StringBuilder</code> in a <code>BigDecimal</code> format.
+     */
     private static BigDecimal stringBuilderToBigDecimal(StringBuilder stringBuilder) {
         return stringBuilder.length() > 0 ?
                 new BigDecimal(Integer.valueOf(stringBuilder.toString())) : BigDecimal.ZERO;
     }
 
+    /**
+     * Sets the listener of this view.
+     *
+     * @param listener the listener of this view.
+     * @see NumberPadListener
+     */
     public void setListener(NumberPadListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Called when a touch event is dispatched to the view, <code>NumberPadView</code>. This
+     * allows listeners to get a chance to respond before the target view.
+     *
+     * @param v the view the touch event has been passed to.
+     * @param event The MotionEvent object containing full information about the event.
+     * @return true if the listener has consumed the event; false otherwise.
+     */
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (listener != null) {
