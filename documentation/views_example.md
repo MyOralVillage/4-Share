@@ -28,7 +28,8 @@ Suppose we want to initialize a CurrencyScrollbarView, a view used to create an 
 currencyScrollbarView = view.findViewById(R.id.currency_scrollbar);
 
 // Sets the currency type to the specified currency. Additionally, the denominations for this currency is added to the view.
-currencyScrollbarView.setCurrency(currency_name);
+String currencyName = "PKR"; // Pakistani Rupee
+currencyScrollbarView.setCurrency(currencyName);
 
 // This listener monitors all gestures received on this view.
 currencyScrollbarView.setCurrencyScrollbarListener(new CurrencyScrollbarListener() {
