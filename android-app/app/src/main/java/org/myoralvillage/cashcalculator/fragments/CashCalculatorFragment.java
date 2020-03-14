@@ -108,11 +108,10 @@ public class CashCalculatorFragment extends Fragment {
                     case NUMERIC:
                         numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                                 currCurrency.getCurrency().getSymbol(), service.getValue()));
-                        numberPadView.setStringBuilder(service.getValue().toString());
+                        numberPadView.setValue(service.getValue());
                         break;
-                    case IMAGE:
-                        updateAll();
                 }
+                updateAll();
             }
 
             @Override
@@ -121,6 +120,7 @@ public class CashCalculatorFragment extends Fragment {
                     case NUMERIC:
                         numberInputView.setText(String.format(Locale.CANADA, "%s %s",
                                 currCurrency.getCurrency().getSymbol(), 0));
+                        numberPadView.setValue(BigDecimal.ZERO);
                         break;
                 }
                 service.reset();
