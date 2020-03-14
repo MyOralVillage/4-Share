@@ -8,8 +8,14 @@ CountingTableView countingtableview;
 // Match the view to the layout area of the xml file of the view. The name_of_view is the id for this view. 
 countingTableView = view.findViewById(R.id.<name_of_view>);
 
-// This initializes the all the denominations for the table.
-countingTableView.initialize(currency_of_denomination, mode_of_the_application);
+// Creates a currency model for the denominations to be initialized to. In this case, the model is Pakistani Rupees, PKR.
+CurrencyModel currency = CurrencyModel.loadCurrencyModel("PKR", getResources(), getContext());
+
+// The default app state of the application where the counting table should be initialized.
+AppStateModel appState = AppStateModel.getDefault();
+
+// This initializes all the denominations for the table
+countingTableView.initialize(currency, appState);
 
 // This listener monitors all the gestures received on this view.
 countingTableView.setListener(new CountingTableListener() {
@@ -27,8 +33,10 @@ Suppose we want to initialize a CurrencyScrollbarView, a view used to create an 
 // Creates a new currencyScrollbarView. Upon initialization, the view layout is created.
 currencyScrollbarView = view.findViewById(R.id.currency_scrollbar);
 
+// The currency code. In this case, Pakistani Rupee was used.
+String currencyName = "PKR";
+
 // Sets the currency type to the specified currency. Additionally, the denominations for this currency is added to the view.
-String currencyName = "PKR"; // Pakistani Rupee
 currencyScrollbarView.setCurrency(currencyName);
 
 // This listener monitors all gestures received on this view.
