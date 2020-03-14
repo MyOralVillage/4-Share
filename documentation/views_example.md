@@ -16,7 +16,7 @@ countingTableView.setListener(new CountingTableListener() {
                     // Handles the countingTableView events.
 }
 ```
-The java snippet above will setup the CountingTableView so that whenever a denomination is tapped in the CurrencyScrollbarView, it will add the denomintation to this view, if the CountingTableListener has such an event.
+The java snippet above will setup the CountingTableView so that you can handle any events that the user performs within the counting table, along with initializing its state and currency.
 
 
 # CurrencyScrollbarView
