@@ -1,5 +1,7 @@
 package org.myoralvillage.cashcalculator;
 
+import java.util.Currency;
+
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Window;
@@ -12,6 +14,9 @@ import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 import java.math.BigDecimal;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.Context;
+
+//import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -25,11 +30,14 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
     }
 
-    public static String getCurrency(){
-        return SettingActivity.getSettingService().getCurrencyName();
+    public  Currency getCurrency(){
+        //CurrencyModel currency = CurrencyModel.loadCurrencyModel(SettingActivity.getSettingService().getCurrencyName(), getResources(), getContext());
+        CurrencyModel currency = new CurrencyModel(SettingActivity.getSettingService().getCurrencyName());
+        return currency.getCurrency();
     }
 
-    public static BigDecimal getCurrentValue(){
-        return CashCalculatorFragment.getValue();
+    public BigDecimal getCurrentValue(){
+        CashCalculatorFragment fragment = new CashCalculatorFragment();
+        return fragment.getValue();
     }
 }
