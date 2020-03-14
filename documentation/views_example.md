@@ -14,7 +14,6 @@ CurrencyModel currency = CurrencyModel.loadCurrencyModel("PKR", getResources(), 
 // The default app state of the application where the counting table should be initialized.
 AppStateModel appState = AppStateModel.getDefault();
 
-// This initializes all the denominations for the table
 countingTableView.initialize(currency, appState);
 
 // This listener monitors all the gestures received on this view.
