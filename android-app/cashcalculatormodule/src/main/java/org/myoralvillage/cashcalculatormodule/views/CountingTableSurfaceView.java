@@ -37,46 +37,11 @@ public class CountingTableSurfaceView extends View {
      * the display changes to a bundle version.
      */
     private static final int THRESHOLD_NUM = 4;
-
-    /**
-     * A constant variable to set the offset, in inches, for the denominations when they are stacked.
-     */
     private static final float STACKED_DENOMINATION_OFFSET_IN_INCHES = 0.05f;
-
-    /**
-     * A constant variable to scale the stroke rate.
-     */
     private static final int OFFSET_STROKE_RATE = 15;
-
-    /**
-     * A listener for receiving gesture detection on this view class.
-     *
-     * @see CountingTableSurfaceListener
-     */
     private CountingTableSurfaceListener countingTableSurfaceListener;
-
-    /**
-     * A hashmap to map a denomination model to the amount of that denomination.
-     *
-     * @see DenominationModel
-     * @see HashMap
-     */
     private Map<DenominationModel, Integer> counts;
-
-    /**
-     * A hashmap to map a denomination model to a bitmap image of that model.
-     *
-     * @see DenominationModel
-     * @see HashMap
-     */
     private Map<DenominationModel, Bitmap> bitmaps;
-
-    /**
-     * A hashmap to map a denomination model to an area in which to draw the bitmap.
-     *
-     * @see DenominationModel
-     * @see HashMap
-     */
     private Map<DenominationModel, AreaModel> areas;
 
     /**
@@ -84,16 +49,8 @@ public class CountingTableSurfaceView extends View {
      */
     private boolean initialized;
 
-    /**
-     * A boolean to monitor if the total value is less than zero.
-     */
     private boolean isNegative;
 
-    /**
-     * A service class used to assist in the scaling of the denomination images.
-     *
-     * @see BitmapService
-     */
     private BitmapService bitmapService;
 
     /**
@@ -102,14 +59,10 @@ public class CountingTableSurfaceView extends View {
      * @see Paint
      */
     private Paint denoNumber;
-
-    /**
-     * An integer value to set the maximum height of a denomination to be drawn.
-     */
     private int maxDenominationHeight = Integer.MIN_VALUE;
 
     /**
-     * Constructs a <code>CountingTableSurfaceView</code> in the given context.
+     * Constructs a <code>CountingTableSurfaceView</code> in the given Android context.
      *
      * @param context The context of the application.
      */
@@ -119,7 +72,8 @@ public class CountingTableSurfaceView extends View {
     }
 
     /**
-     * Constructs a <code>CountingTableSurfaceView</code> in the given context and attributes.
+     * Constructs a <code>CountingTableSurfaceView</code> in the given Android context with the given
+     * attributes.
      *
      * @param context the context of the application.
      * @param attrs A collection of attributes found in the xml layout.
@@ -199,7 +153,8 @@ public class CountingTableSurfaceView extends View {
     }
 
     /**
-     * Draws the bitmap of the denominations to this view when the denominations are stacked.
+     * Draws the bitmap of the denominations to this view when the denominations are stacked. If there
+     * are multiple of the same denomination, this draws on top of its denomination.
      *
      * @param canvas the area to draw the bitmap.
      * @param num the number of the specific denomination.
@@ -263,7 +218,7 @@ public class CountingTableSurfaceView extends View {
     }
 
     /**
-     * Changes the colors of the denomination to indicate that the value is less than zero.
+     * Inverts the colors of the denomination to indicate that the value is less than zero.
      *
      * @param bmp the bitmap to be changed.
      * @return the new bitmap.
@@ -293,7 +248,7 @@ public class CountingTableSurfaceView extends View {
     }
 
     /**
-     * Initializes the hashmaps of the denominations.
+     * Initialize the view with the denominations that will be used.
      *
      * @param denominationModels the set of denominations being used by this view.
      * @see DenominationModel
@@ -340,7 +295,7 @@ public class CountingTableSurfaceView extends View {
     }
 
     /**
-     * Setss the <code>counts</code> hashmap.
+     * Sets the allocation of the denomination to be displayed.
      *
      * @param iterator the denomination model to insert.
      * @param allocations the amount of that denomination model to insert
@@ -389,13 +344,7 @@ public class CountingTableSurfaceView extends View {
         }
     }
 
-    /**
-     * Calls this view <code>onClickListener</code>
-     *
-     * @return True if there was an assigned OnClickListener that was called; false otherwise.
-     *
-     * @see android.view.View.OnClickListener
-     */
+
     @Override
     public boolean performClick() {
         return super.performClick();

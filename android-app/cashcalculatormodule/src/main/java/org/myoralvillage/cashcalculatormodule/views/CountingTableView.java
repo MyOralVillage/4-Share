@@ -19,8 +19,7 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 /**
- *  A view class used to monitor and render the display of the overall layout of the table in the
- *  application.
+ *  A view that displays images of currency to represent a number.
  *
  * @author Alexander Yang
  * @author Hamza Mahfooz
@@ -29,21 +28,21 @@ import java.util.Locale;
  */
 public class CountingTableView extends RelativeLayout {
     /**
-     * The view that monitors and renders the display of the denominations on this view.
+     * he view that displays the images of currency.
      *
      * @see CountingTableSurfaceView
      */
     private CountingTableSurfaceView countingTableSurfaceView;
 
     /**
-     * The mode that this view is displaying.
+     * The application state being rendered by this view
      *
      * @see AppStateModel
      */
     private AppStateModel appState;
 
     /**
-     * A listener for receiving gesture detection on this view.
+     * A listener for handling user events that occur in this view
      *
      * @see CountingTableListener
      */
@@ -64,7 +63,7 @@ public class CountingTableView extends RelativeLayout {
     private CurrencyModel currencyModel;
 
     /**
-     * Displays the total value.
+     * Displays the total value in the top right corner of the view.
      *
      * @see TextView
      */
@@ -109,7 +108,8 @@ public class CountingTableView extends RelativeLayout {
     private ImageView leftHistoryButton;
 
     /**
-     * Constructs a <code>CountingTableSurfaceView</code> in the given context and attributes.
+     * Constructs a <code>CountingTableSurfaceView</code> in the given Android context with the
+     * given attributes.
      *
      * @param context the context of the application.
      * @param attrs A collection of attributes found in the xml layout.
@@ -120,7 +120,7 @@ public class CountingTableView extends RelativeLayout {
     }
 
     /**
-     * Initializes this view and its variables.
+     * Initializes this view with its currency and initial state.
      *
      * @param currencyModel the currencyModel of this view.
      * @param appState the appState of this view.
@@ -139,16 +139,10 @@ public class CountingTableView extends RelativeLayout {
         initializeHistoryButtons();
     }
 
-    /**
-     * Initializes the display of the total value of this view.
-     */
     private void initializeSumView() {
         sumView = findViewById(R.id.sum_view);
     }
 
-    /**
-     * Updates the display of the total value of this view to reflect the denominations on screen.
-     */
     private void updateSumView() {
         if (appState.getCurrentOperation().getValue().compareTo(BigDecimal.ZERO) < 0)
             sumView.setTextColor(getResources().getColor(R.color.negativeSum));
@@ -159,9 +153,6 @@ public class CountingTableView extends RelativeLayout {
                 currencyModel.getCurrency().getSymbol(), appState.getCurrentOperation().getValue()));
     }
 
-    /**
-     * Initializes the display of this view, as well as the listener.
-     */
     private void initializeSurface() {
         countingTableSurfaceView = findViewById(R.id.counting_table_surface);
         countingTableSurfaceView.initDenominationModels(currencyModel.getDenominations());
@@ -205,10 +196,6 @@ public class CountingTableView extends RelativeLayout {
         });
     }
 
-    /**
-     * Initializes the display of the mathematical operation to signify the mode of this application
-     * as well as monitor any gestures performed on this button.
-     */
     private void initializeCalculateButton(){
         calculateButton = findViewById(R.id.calculate_button);
         calculateButton.setOnClickListener((e) -> {
@@ -217,9 +204,6 @@ public class CountingTableView extends RelativeLayout {
         });
     }
 
-    /**
-     * Updates the display of the calculate button.
-     */
     private void updateCalculateButton() {
         calculateButton.setVisibility(View.VISIBLE);
         switch (appState.getCurrentOperation().getMode()) {
@@ -238,10 +222,6 @@ public class CountingTableView extends RelativeLayout {
         }
     }
 
-    /**
-     * Initializes the display of the clear button as well as monitor any gestures performed on this
-     * button.
-     */
     private void initializeClearButton(){
         clearButton = findViewById(R.id.clear_button);
         clearButton.setOnClickListener((e) -> {
@@ -250,9 +230,6 @@ public class CountingTableView extends RelativeLayout {
         });
     }
 
-    /**
-     * Updates the clear button.
-     */
     private void updateClearButton() {
         if ((appState.getCurrentOperation().getMode() == MathOperationModel.MathOperationMode.STANDARD
                 && appState.getCurrentOperation().getValue().equals(BigDecimal.ZERO)) ||
@@ -262,19 +239,12 @@ public class CountingTableView extends RelativeLayout {
             clearButton.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * Updates the denominations on this view.
-     */
     private void updateCountingSurface() {
         countingTableSurfaceView.setDenominations(currencyModel.getDenominations().iterator(),
                 countingService.allocate(appState.getCurrentOperation().getValue(), currencyModel),
                 appState.getCurrentOperation().getValue());
     }
 
-    /**
-     * Initializes the display of the history buttons as well as monitor any gestures performed on
-     * this button.
-     */
     private void initializeHistoryButtons(){
         enterHistoryButton = findViewById(R.id.enter_history_button);
         rightHistoryButton = findViewById(R.id.right_history_button);
@@ -296,9 +266,6 @@ public class CountingTableView extends RelativeLayout {
         });
     }
 
-    /**
-     * Updates the history buttons of this view.
-     */
     private void updateHistoryButtons() {
         if (appState.isInHistorySlideshow()) {
             enterHistoryButton.setVisibility(View.INVISIBLE);
@@ -314,10 +281,6 @@ public class CountingTableView extends RelativeLayout {
         }
     }
 
-    /**
-     * Updates the <code>CountingTableView</code> upon any changes to the total value or application
-     * state.
-     */
     private void updateAll() {
         updateCountingSurface();
         updateCalculateButton();
@@ -327,7 +290,7 @@ public class CountingTableView extends RelativeLayout {
     }
 
     /**
-     * Sets the listener of this view.
+     * Sets the listener to allow handling of the view's events.
      *
      * @param listener the listener of this view
      * @see CountingTableListener
@@ -337,7 +300,7 @@ public class CountingTableView extends RelativeLayout {
     }
 
     /**
-     * Sets the appState of this view.
+     * Sets the appState of this view and render the updated state.
      *
      * @param appState the appState of the application.
      * @see AppStateModel

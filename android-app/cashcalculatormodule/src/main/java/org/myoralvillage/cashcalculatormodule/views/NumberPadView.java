@@ -25,26 +25,9 @@ import java.math.BigDecimal;
  * @see android.view.View.OnTouchListener
  */
 public class NumberPadView extends LinearLayout implements View.OnTouchListener {
-    /**
-     * The listener of this view.
-     *
-     * @see NumberPadListener
-     */
     private NumberPadListener listener = null;
-
-    /**
-     * A constant variable used to identify a vertical swipe gesture.
-     */
     private static final long MAX_TOUCH_DURATION = 250;
-
-    /**
-     * the x coordinate of the down motion event.
-     */
     private float touchDownX;
-
-    /**
-     * the y coordinate of the down motion event.
-     */
     private float touchDownY;
 
     /**
@@ -55,7 +38,8 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
     private final StringBuilder stringBuilder = new StringBuilder();
 
     /**
-     * Constructs a <code>CountingTableSurfaceView</code> in the given context and attributes.
+     * Constructs a <code>CountingTableSurfaceView</code> in the given Android context with the
+     * given attributes.
      *
      * @param context the context of the application.
      * @param attrs A collection of attributes found in the xml layout.
@@ -162,7 +146,7 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
     }
 
     /**
-     * Sets the listener of this view.
+     * Sets the listener to allow the view's events to be handled in the callbacks.
      *
      * @param listener the listener of this view.
      * @see NumberPadListener

@@ -35,28 +35,9 @@ import java.util.List;
  * @see HorizontalScrollView
  */
 public class CurrencyScrollbarView extends HorizontalScrollView {
-    /**
-     * the layout of this view.
-     */
     private LinearLayout linearLayout;
-
-    /**
-     * the listener of this view to handle gestures.
-     *
-     * @see CurrencyScrollbarView
-     */
     private CurrencyScrollbarListener currencyScrollbarListener;
-
-    /**
-     * the currency model of this view.
-     *
-     * @see CurrencyModel
-     */
     private CurrencyModel currCurrency;
-
-    /**
-     * the view of the denominations in this view.
-     */
     private ScrollbarDenominationsView denominationsView;
 
     /**
@@ -69,7 +50,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     }
 
     /**
-     * Constructs a <code>CurrencyScrollbarView</code> in the given context.
+     * Constructs a <code>CurrencyScrollbarView</code> in the given Android context.
      *
      * @param context The context of the application.
      */
@@ -79,7 +60,8 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     }
 
     /**
-     * Constructs a <code>CurrencyScrollbarView</code> in the given context and attributes.
+     * Constructs a <code>CurrencyScrollbarView</code> in the given Android context with the given
+     * attributes.
      *
      * @param context the context of the application.
      * @param attrs A collection of attributes found in the xml layout.
@@ -131,7 +113,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     }
 
     /**
-     * Sets the listener of this view.
+     * Sets the listener to allow handling of the scrollbar's events.
      *
      * @param currencyScrollbarListener the listener of this view.
      * @see CurrencyScrollbarListener
@@ -199,7 +181,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         private BitmapService bitmapService = BitmapService.getInstance();
 
         /**
-         * Constructs a <code>ScrollbarDenominationsView</code> in the given context.
+         * Constructs a <code>ScrollbarDenominationsView</code> in the given Android context.
          *
          * @param context the context of the application.
          */
