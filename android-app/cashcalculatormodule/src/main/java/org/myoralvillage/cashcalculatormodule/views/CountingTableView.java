@@ -18,27 +18,116 @@ import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+/**
+ *  A view that displays images of currency to represent a number.
+ *
+ * @author Alexander Yang
+ * @author Hamza Mahfooz
+ * @author Peter Panagiotis Roubatsis
+ * @see RelativeLayout
+ */
 public class CountingTableView extends RelativeLayout {
+    /**
+     * The view that displays the images of currency.
+     *
+     * @see CountingTableSurfaceView
+     */
     private CountingTableSurfaceView countingTableSurfaceView;
+
+    /**
+     * The application state being rendered by this view
+     *
+     * @see AppStateModel
+     */
     private AppStateModel appState;
+
+    /**
+     * A listener for handling user events that occur in this view
+     *
+     * @see CountingTableListener
+     */
     private CountingTableListener listener = null;
+
+    /**
+     * Assists in partitioning the total value of this view to their appropriate denominations.
+     *
+     * @see CountingService
+     */
     private CountingService countingService = new CountingService();
+
+    /**
+     * Stores the type of currency as well as the set of denominations.
+     *
+     * @see CurrencyModel
+     */
     private CurrencyModel currencyModel;
 
+    /**
+     * Displays the total value in the top right corner of the view.
+     *
+     * @see TextView
+     */
     private TextView sumView;
 
+    /**
+     * Displays an image that can be tapped, thereby executing the mathematical operation symbolised
+     * by this image.
+     *
+     * @see ImageView
+     */
     private ImageView calculateButton;
+
+    /**
+     * Displays an image that can be tapped, thereby removing the denominations on this view.
+     *
+     * @see ImageView
+     */
     private ImageView clearButton;
 
+    /**
+     * Displays an image that can be tapped, thereby entering the history mode of this application.
+     *
+     * @see ImageView
+     */
     private ImageView enterHistoryButton;
+
+    /**
+     * Displays an image that can be tapped, thereby going to the next history slide of this
+     * application.
+     *
+     * @see ImageView
+     */
     private ImageView rightHistoryButton;
+
+    /**
+     * Displays an image that can be tapped, thereby going to the previous history slide of this
+     * application.
+     *
+     * @see ImageView
+     */
     private ImageView leftHistoryButton;
 
+    /**
+     * Constructs a <code>CountingTableSurfaceView</code> in the given Android context with the
+     * given attributes.
+     *
+     * @param context the context of the application.
+     * @param attrs A collection of attributes found in the xml layout.
+     */
     public CountingTableView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(getContext(), R.layout.counting_table, this);
     }
 
+    /**
+     * Initializes this view with its currency and initial state.
+     *
+     * @param currencyModel the currencyModel of this view.
+     * @param appState the appState of this view.
+     *
+     * @see CurrencyModel
+     * @see AppStateModel
+     */
     public void initialize(CurrencyModel currencyModel, AppStateModel appState) {
         this.currencyModel = currencyModel;
         this.appState = appState;
@@ -177,7 +266,6 @@ public class CountingTableView extends RelativeLayout {
         });
     }
 
-
     private void updateHistoryButtons() {
         if (appState.isInHistorySlideshow()) {
             enterHistoryButton.setVisibility(View.INVISIBLE);
@@ -201,15 +289,33 @@ public class CountingTableView extends RelativeLayout {
         updateSumView();
     }
 
+    /**
+     * Sets the listener to allow handling of the view's events.
+     *
+     * @param listener the listener of this view
+     * @see CountingTableListener
+     */
     public void setListener(CountingTableListener listener) {
         this.listener = listener;
     }
 
+    /**
+     * Sets the appState of this view and render the updated state.
+     *
+     * @param appState the appState of the application.
+     * @see AppStateModel
+     */
     public void setAppState(AppStateModel appState) {
         this.appState = appState;
         updateAll();
     }
 
+    /**
+     * Set the background to a given resource. The resource should refer to a Drawable object or 0
+     * to remove the background.
+     *
+     * @param resid the identifier of the resource.
+     */
     @Override
     public void setBackgroundResource(int resid) {
         countingTableSurfaceView.setBackgroundResource(resid);
