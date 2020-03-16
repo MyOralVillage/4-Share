@@ -77,7 +77,6 @@ public class CashCalculatorFragment extends Fragment {
                     switchState();
                     getActivity().overridePendingTransition(R.anim.activity_left_in,R.anim.activity_left_out);
                     getActivity().finish();
-
                 }
             }
 
@@ -116,11 +115,25 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void onTapCalculateButton() {
                 service.calculate();
+                switch(service.getAppState().getAppMode()) {
+                    case NUMERIC:
+                        numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                                currCurrency.getCurrency().getSymbol(), service.getValue()));
+                        numberPadView.setValue(service.getValue());
+                        break;
+                }
                 updateAll();
             }
 
             @Override
             public void onTapClearButton() {
+                switch(service.getAppState().getAppMode()) {
+                    case NUMERIC:
+                        numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                                currCurrency.getCurrency().getSymbol(), 0));
+                        numberPadView.setValue(BigDecimal.ZERO);
+                        break;
+                }
                 service.reset();
                 updateAll();
             }
@@ -197,20 +210,22 @@ public class CashCalculatorFragment extends Fragment {
         numberPadView.setListener(new NumberPadListener() {
             @Override
             public void onCheck(BigDecimal value) {
-                sum.setVisibility(View.VISIBLE);
-                service.setValue(value);
-                numberInputView.setVisibility(View.INVISIBLE);
-                updateAll();
+                    sum.setVisibility(View.VISIBLE);
+                    service.setValue(value);
+                    numberInputView.setVisibility(View.INVISIBLE);
+                    updateAll();
             }
 
             @Override
             public void onBack(BigDecimal value) {
-                numberInputView.setText(String.format(Locale.CANADA, "%s %s",
-                        currCurrency.getCurrency().getSymbol(), value));
+                    numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                            currCurrency.getCurrency().getSymbol(), value));
+                    service.setValue(value);
             }
 
             @Override
             public void onTapNumber(BigDecimal value) {
+                service.setValue(value);
                 sum.setVisibility(View.INVISIBLE);
                 numberInputView.setVisibility(View.VISIBLE);
                 numberInputView.setText(String.format(Locale.CANADA, "%s %s",
