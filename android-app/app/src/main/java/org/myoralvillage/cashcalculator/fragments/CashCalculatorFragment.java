@@ -29,7 +29,7 @@ import java.util.Locale;
 
 public class CashCalculatorFragment extends Fragment {
     private final String APP_STATE_KEY = "appState";
-    private  AppService service;
+    private AppService service;
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
     private CurrencyScrollbarView currencyScrollbarView;
@@ -55,8 +55,15 @@ public class CashCalculatorFragment extends Fragment {
         return view;
     }
 
+    //get the value of current total amount of money
     public BigDecimal getValue(){
         return service.getValue();
+    }
+
+    //Set the currency to the Scrollbar
+    public void SetCurrency(CurrencyScrollbarView currencyScrollbarView){
+        String currency = SettingActivity.getSettingService().getCurrencyName();
+        currencyScrollbarView.setCurrency(currency);
     }
 
     private void initializeCountingView(View view) {
@@ -144,7 +151,7 @@ public class CashCalculatorFragment extends Fragment {
 
     private void initializeCurrencyScrollbar(View view){
         currencyScrollbarView = view.findViewById(R.id.currency_scrollbar);
-        currencyScrollbarView.setCurrency(SettingActivity.getSettingService().getCurrencyName());
+        SetCurrency(currencyScrollbarView);
         this.currCurrency = currencyScrollbarView.getCurrency();
 
         currencyScrollbarView.setCurrencyScrollbarListener(new CurrencyScrollbarListener() {
