@@ -243,13 +243,12 @@ public class AppService {
      * @see MathOperationModel
      */
     private static int findLastOperationOfMode(List<MathOperationModel> operations, MathOperationMode mode) {
-        int index = -1;
 
         for (int i = 0; i < operations.size(); i++)
             if (operations.get(i).getMode() == mode)
-                index = i;
+                return i;
 
-        return index;
+        return -1;
     }
 
     /**
