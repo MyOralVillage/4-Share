@@ -62,7 +62,7 @@ public class AppServiceTest {
         service.add();
         service.setValue(new BigDecimal(10));
         service.subtract();
-        service.setValue(new BigDecimal(3));
+//        service.setValue(new BigDecimal(3));
         service.setValue(new BigDecimal(2));
         service.add();
         service.setValue(new BigDecimal(1));
