@@ -93,7 +93,7 @@ public class AppServiceTest {
         service.setValue(new BigDecimal(1));
         service.calculate();
 
-        BigDecimal expected = new BigDecimal(42);
+        BigDecimal expected = new BigDecimal(44);
         assertEquals(expected, service.getValue());
     }
 
@@ -118,7 +118,7 @@ public class AppServiceTest {
         expected.getOperations().add(MathOperationModel.createAdd(new BigDecimal(10)));
         expected.getOperations().add(MathOperationModel.createSubtract(new BigDecimal(2)));
         expected.getOperations().add(MathOperationModel.createAdd(new BigDecimal(1)));
-        expected.getOperations().add(MathOperationModel.createStandard(new BigDecimal(42)));
+        expected.getOperations().add(MathOperationModel.createStandard(new BigDecimal(44)));
         expected.setCurrentOperationIndex(5);
 
         assertEquals(expected, service.getAppState());
