@@ -223,10 +223,19 @@ public class AppService {
             return calculateOperationsResult(collapseOperationAtIndex(operations, multiplyIndex));
 
         int addIndex = findFirstOperationOfMode(operations, MathOperationMode.ADD);
+        int subtractIndex = findFirstOperationOfMode(operations, MathOperationMode.SUBTRACT);
+
+        // Do addition/subtraction left-to-right in the order they appear
+        if (addIndex >=0 && subtractIndex >= 0) {
+            if (addIndex < subtractIndex)
+                return calculateOperationsResult(collapseOperationAtIndex(operations, addIndex));
+            else
+                return calculateOperationsResult(collapseOperationAtIndex(operations, subtractIndex));
+        }
+
         if (addIndex >= 0)
             return calculateOperationsResult(collapseOperationAtIndex(operations, addIndex));
 
-        int subtractIndex = findFirstOperationOfMode(operations, MathOperationMode.SUBTRACT);
         if (subtractIndex >= 0)
             return calculateOperationsResult(collapseOperationAtIndex(operations, subtractIndex));
 
