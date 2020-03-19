@@ -214,19 +214,19 @@ public class AppService {
         if (operations.size() == 1)
             return operations.get(0).getValue();
 
-        int lastStandardIndex = findfirstOperationOfMode(operations, MathOperationMode.STANDARD);
+        int lastStandardIndex = findFirstOperationOfMode(operations, MathOperationMode.STANDARD);
         if (lastStandardIndex > 0)
             return calculateOperationsResult(operations.subList(lastStandardIndex, operations.size()));
 
-        int lastMultiplyIndex = findfirstOperationOfMode(operations, MathOperationMode.MULTIPLY);
+        int lastMultiplyIndex = findFirstOperationOfMode(operations, MathOperationMode.MULTIPLY);
         if (lastMultiplyIndex >= 0)
             return calculateOperationsResult(collapseOperationAtIndex(operations, lastMultiplyIndex));
 
-        int lastAddIndex = findfirstOperationOfMode(operations, MathOperationMode.ADD);
+        int lastAddIndex = findFirstOperationOfMode(operations, MathOperationMode.ADD);
         if (lastAddIndex >= 0)
             return calculateOperationsResult(collapseOperationAtIndex(operations, lastAddIndex));
 
-        int lastSubtractIndex = findfirstOperationOfMode(operations, MathOperationMode.SUBTRACT);
+        int lastSubtractIndex = findFirstOperationOfMode(operations, MathOperationMode.SUBTRACT);
         if (lastSubtractIndex >= 0)
             return calculateOperationsResult(collapseOperationAtIndex(operations, lastSubtractIndex));
 
@@ -252,18 +252,13 @@ public class AppService {
         return index;
     }
 
-    private static int findlaststandardoperation(List<MathOperationModel> operations) {
-        int index = -1;
-
-        for (int i = 0; i < operations.size(); i++)
-            if (operations.get(i).getMode() == MathOperationMode.STANDARD)
-                index = i;
-        return index;
+    private static int findLastStandardOperation(List<MathOperationModel> operations) {
+        return findLastOperationOfMode(operations, MathOperationMode.STANDARD);
     }
 
 
-    private static int findfirstOperationOfMode(List<MathOperationModel> operations, MathOperationMode mode) {
-        int index = findlaststandardoperation(operations);
+    private static int findFirstOperationOfMode(List<MathOperationModel> operations, MathOperationMode mode) {
+        int index = findLastStandardOperation(operations);
 
         if (mode == MathOperationMode.STANDARD){
             return index;
