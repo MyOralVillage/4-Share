@@ -460,7 +460,7 @@ public class AppServiceMathTest {
         service.setValue(new BigDecimal(600));
         service.calculate();
 
-        BigDecimal expected = new BigDecimal(-600);
+        BigDecimal expected = new BigDecimal(600);
         assertEquals(expected, service.getValue());
     }
 
