@@ -1,24 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import MainPage from "./MainPage";
+
+const countries = [
+  { country: "Canada", currency: "CAD", image: "Canada.png" },
+  { country: "Bangladesh", currency: "BDT", image: "Bangladesh.png" },
+  { country: "India", currency: "INR", image: "India.png" },
+  { country: "Pakistan", currency: "PKR", image: "Pakistan.png" },
+  { country: "Kenya", currency: "KES", image: "Kenya.png" },
+  { country: "United States", currency: "USD", image: "United_States.png" }
+];
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MainPage countries={countries} />
     </div>
   );
 }
