@@ -214,21 +214,30 @@ public class AppService {
         if (operations.size() == 1)
             return operations.get(0).getValue();
 
-        int lastStandardIndex = findLastOperationOfMode(operations, MathOperationMode.STANDARD);
-        if (lastStandardIndex > 0)
-            return calculateOperationsResult(operations.subList(lastStandardIndex, operations.size()));
+        int standardIndex = findFirstOperationOfMode(operations, MathOperationMode.STANDARD);
+        if (standardIndex > 0)
+            return calculateOperationsResult(operations.subList(standardIndex, operations.size()));
 
-        int lastMultiplyIndex = findLastOperationOfMode(operations, MathOperationMode.MULTIPLY);
-        if (lastMultiplyIndex >= 0)
-            return calculateOperationsResult(collapseOperationAtIndex(operations, lastMultiplyIndex));
+        int multiplyIndex = findFirstOperationOfMode(operations, MathOperationMode.MULTIPLY);
+        if (multiplyIndex >= 0)
+            return calculateOperationsResult(collapseOperationAtIndex(operations, multiplyIndex));
 
-        int lastAddIndex = findLastOperationOfMode(operations, MathOperationMode.ADD);
-        if (lastAddIndex >= 0)
-            return calculateOperationsResult(collapseOperationAtIndex(operations, lastAddIndex));
+        int addIndex = findFirstOperationOfMode(operations, MathOperationMode.ADD);
+        int subtractIndex = findFirstOperationOfMode(operations, MathOperationMode.SUBTRACT);
 
-        int lastSubtractIndex = findLastOperationOfMode(operations, MathOperationMode.SUBTRACT);
-        if (lastSubtractIndex >= 0)
-            return calculateOperationsResult(collapseOperationAtIndex(operations, lastSubtractIndex));
+        // Do addition/subtraction left-to-right in the order they appear
+        if (addIndex >=0 && subtractIndex >= 0) {
+            if (addIndex < subtractIndex)
+                return calculateOperationsResult(collapseOperationAtIndex(operations, addIndex));
+            else
+                return calculateOperationsResult(collapseOperationAtIndex(operations, subtractIndex));
+        }
+
+        if (addIndex >= 0)
+            return calculateOperationsResult(collapseOperationAtIndex(operations, addIndex));
+
+        if (subtractIndex >= 0)
+            return calculateOperationsResult(collapseOperationAtIndex(operations, subtractIndex));
 
         return BigDecimal.ZERO;
     }
@@ -250,6 +259,23 @@ public class AppService {
                 index = i;
 
         return index;
+    }
+
+    private static int findLastStandardOperation(List<MathOperationModel> operations) {
+        return findLastOperationOfMode(operations, MathOperationMode.STANDARD);
+    }
+
+
+    private static int findFirstOperationOfMode(List<MathOperationModel> operations, MathOperationMode mode) {
+        int index = findLastStandardOperation(operations);
+
+        if (mode == MathOperationMode.STANDARD){
+            return index;
+        }
+        for (int i = index; i < operations.size(); i++)
+            if (operations.get(i).getMode() == mode)
+                return i;
+        return -1;
     }
 
     /**
