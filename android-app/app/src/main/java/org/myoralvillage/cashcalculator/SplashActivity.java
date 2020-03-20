@@ -44,11 +44,11 @@ public class SplashActivity extends AppCompatActivity {
     private static void setDefaultImage(Button setting){
         String systemLangauge = Locale.getDefault().getCountry();
         switch (systemLangauge){
-            case "KE":
-                setting.setBackgroundResource(R.drawable.kes);
+            case "PK":
+                setting.setBackgroundResource(R.drawable.pkr);
                 break;
             default:
-                setting.setBackgroundResource(R.drawable.pkr);
+                setting.setBackgroundResource(R.drawable.kes);
                 break;
         }
     }

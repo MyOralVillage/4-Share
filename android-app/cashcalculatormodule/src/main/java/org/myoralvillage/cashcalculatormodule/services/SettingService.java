@@ -13,7 +13,7 @@ public class SettingService {
     /**
      * The default currency code for the Cash Calculator.
      */
-    private static String currencyName = setDefaultCurrency();
+    private static String currencyName = getDefaultCurrency();
 
     /**
      * Returns current the currency code for the Cash Calculator.
@@ -37,15 +37,15 @@ public class SettingService {
      * Change the default currency to match the system country.
      * @return default currency.
      */
-    private static String setDefaultCurrency(){
+    private static String getDefaultCurrency(){
         String defaultCurrency;
         String systemLangauge = Locale.getDefault().getCountry();
         switch (systemLangauge){
-            case "KE":
-                defaultCurrency = "KES";
+            case "PK":
+                defaultCurrency = "PKR";
                 break;
             default:
-                defaultCurrency = "PKR";
+                defaultCurrency = "KES";
                 break;
         }
         return defaultCurrency;
