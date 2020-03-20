@@ -116,4 +116,4 @@ class CountryPage extends React.Component {
   }
 }
 
-export default MainPage;
+export default CountryPage;
