@@ -1,11 +1,12 @@
 # CountingTableView
 
 Suppose we want to initialize a CountingTableView, a view used to monitor the denominations on the table area of the application.
+
 ```java
-// Creates a new variable. 
+// Creates a new variable.
 CountingTableView countingtableview;
 
-// Match the view to the layout area of the xml file of the view. The name_of_view is the id for this view. 
+// Match the view to the layout area of the xml file of the view. The name_of_view is the id for this view.
 countingTableView = view.findViewById(R.id.<name_of_view>);
 
 // Creates a currency model for the denominations to be initialized to. In this case, the model is Pakistani Rupees, PKR.
@@ -21,8 +22,8 @@ countingTableView.setListener(new CountingTableListener() {
                     // Handles the countingTableView events.
 }
 ```
-The java snippet above will setup the CountingTableView so that you can handle any events that the user performs within the counting table, along with initializing its state and currency.
 
+The java snippet above will setup the CountingTableView so that you can handle any events that the user performs within the counting table, along with initializing its state and currency.
 
 # CurrencyScrollbarView
 
@@ -46,33 +47,10 @@ currencyScrollbarView.setCurrencyScrollbarListener(new CurrencyScrollbarListener
 
 The java snippet above will setup the CurrencyScrollbarView to display the denominations on this view.
 
+# Adding denominations to the counting table.
 
-# Adding denominations to the counting table (A).
+Suppose we want to add a 50 dollar denomination of Pakistani currency manually to the Counting Table and the current value displayed is "PKR 450". Note that this means there are 4-hundred dollar denominations and a fifty dollar denomination present on the CountingTable:
 
-Suppose we want to add a denomination of Pakistani currency to the Counting Table:
-
-Initialize the CurrencyScrollBarView as shown above with the following changes to CurrencyScrollbarListener.
-```java
-//Appservice assists in adding the tapped denomination to the total value.
-Appservice service;
-
-currencyScrollbarView.setCurrencyScrollbarListener(new CurrencyScrollbarListener() {
-
-    @Override
-    // This function handles the tapping of a denomination after it has been initialized on the CurrencyScrollbarView.
-    public void onTapDenomination(DenominationModel denomination) {
-    	//The service will update the display on the application to show that the denomination was added.
-        service.setValue(service.getValue().add(denomination.getValue()));
-
-        //This function in CountingTableView will update the denomination on screen to suit the total value displayed.
-        countingTableView.setAppState(service.getAppState());;
-    }
-    });
-```
-
-# Adding denominations to the counting table (B).
-
-Suppose we want to add a 100 dollar denomination of Pakistani currency manually to the Counting Table:
 ```java
 //Appservice assists in adding the denomination to the total value.
 Appservice service;
@@ -80,17 +58,8 @@ Appservice service;
 // Creates a currency model for the denominations to be initialized to. In this case, the model is Pakistani Rupees, PKR.
 CurrencyModel currency = CurrencyModel.loadCurrencyModel("PKR", getResources(), getContext());
 
-// Initialize the hundred dollar denomination where:
-// imageResource is the image of the 100 dollar Pakistani currency.
-// imageResourceFolded is the image of the 100 dollar Pakistani currency folded.
-// scaleFactor is the float to adjust the denomination on screen.
-// verticalOffsetInches is a float to assist in the CurrencyScrollbarView.
-DenominationModel hundred = DenominationModel(BigDecimal(100), imageResource, imageResourceFolded, scaleFactor, verticalOffsetInInches)
-
-// Instead of initializing the hundred dollar denomination manually, you can load the currency model and iterate the model to find the denomination.
-
-//The service will update the display on the application to show that the denomination was added.
-service.setValue(service.getValue().add(denomination.getValue()));
+// Fifty dollars is added to the CountingTableView, and the display is updated to PKR 500. The CountingTable will partition the 500 into a single five hundred dollar denomination instead of adding a fifty dollar denomination to the screen.
+service.setValue(service.getValue().add(BigDecimal(50)));
 
 //This function in CountingTableView will update the denomination on screen to suit the total value displayed.
 countingTableView.setAppState(service.getAppState());
