@@ -31,10 +31,16 @@ public class VideoActivity extends AppCompatActivity {
         replayButtonListener(video);
         skipButtonListener();
     }
+
+    private void switchToMain(){
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
     private void skipButtonListener() {
         ImageView setting = findViewById(R.id.skip);
         setting.setOnClickListener((e) -> {
-            switchToSplash();
+            switchToMain();
         });
     }
 
@@ -43,10 +49,5 @@ public class VideoActivity extends AppCompatActivity {
         setting.setOnClickListener((e) -> {
             video.resume();
         });
-    }
-
-    private void switchToSplash() {
-        startActivity(new Intent(this, SplashActivity.class));
-        finish();
     }
 }
