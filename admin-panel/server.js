@@ -8,6 +8,12 @@ app.use(express.static(path.join(__dirname, "build")));
 app.use(express.json());
 
 const pool = new Pool();
+var validCurrencies = [];
+
+await pool
+  .query({ text: "SELECT code FROM currencies", rowMode: "array" })
+  .then(rset => (validCurrencies = rset.rows.map(item => item[0])))
+  .catch(e => console.error(e.stack));
 
 app.get("/api/countries", (req, res) => {
   pool
@@ -38,8 +44,13 @@ app.post(
     challenge: true
   }),
   (req, res) => {
-    // TODO: verify the currencies are in the database
     const currencies = req.body["array"];
+    currencies.forEach(currency => {
+      if (validCurrencies.indexOf(currencies) < 0) {
+        res.status(400).end();
+      }
+    });
+
     pool
       .query("UPDATE countries SET currencies = $1 WHERE name = $2", [
         currencies,
