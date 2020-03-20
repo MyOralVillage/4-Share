@@ -9,10 +9,11 @@ import android.content.Intent;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.Locale;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashActivity extends AppCompatActivity {
-    Intent tmp;
     boolean exit = false;
 
     @Override
@@ -40,8 +41,22 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
+    private static void setDefaultImage(Button setting){
+        String systemLangauge = Locale.getDefault().getCountry();
+        switch (systemLangauge){
+            case "KE":
+                setting.setBackgroundResource(R.drawable.kes);
+                break;
+            default:
+                setting.setBackgroundResource(R.drawable.pkr);
+                break;
+        }
+    }
+
     private void settingButtonListener() {
         Button setting = findViewById(R.id.setting);
+
+        setDefaultImage(setting);
         setting.setOnClickListener((e) -> {
             exit = true;
             switchToSetting();

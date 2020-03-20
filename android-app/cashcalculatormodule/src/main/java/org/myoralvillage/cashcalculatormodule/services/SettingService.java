@@ -1,5 +1,7 @@
 package org.myoralvillage.cashcalculatormodule.services;
 
+import java.util.Locale;
+
 /**
  * A service class used to initialize the currency of the Cash Calculator.
  *
@@ -11,7 +13,7 @@ public class SettingService {
     /**
      * The default currency code for the Cash Calculator.
      */
-    private static String currencyName = "KES";
+    private static String currencyName = setDefaultCurrency();
 
     /**
      * Returns current the currency code for the Cash Calculator.
@@ -29,5 +31,23 @@ public class SettingService {
      */
     public void setCurrencyName(String newName){
         currencyName = newName;
+    }
+
+    /**
+     * Change the default currency to match the system country.
+     * @return default currency.
+     */
+    private static String setDefaultCurrency(){
+        String defaultCurrency;
+        String systemLangauge = Locale.getDefault().getCountry();
+        switch (systemLangauge){
+            case "KE":
+                defaultCurrency = "KES";
+                break;
+            default:
+                defaultCurrency = "PKR";
+                break;
+        }
+        return defaultCurrency;
     }
 }
