@@ -93,7 +93,7 @@ public class AppServiceTest {
         service.setValue(new BigDecimal(1));
         service.calculate();
 
-        BigDecimal expected = new BigDecimal(42);
+        BigDecimal expected = new BigDecimal(44);
         assertEquals(expected, service.getValue());
     }
 
@@ -118,7 +118,7 @@ public class AppServiceTest {
         expected.getOperations().add(MathOperationModel.createAdd(new BigDecimal(10)));
         expected.getOperations().add(MathOperationModel.createSubtract(new BigDecimal(2)));
         expected.getOperations().add(MathOperationModel.createAdd(new BigDecimal(1)));
-        expected.getOperations().add(MathOperationModel.createStandard(new BigDecimal(42)));
+        expected.getOperations().add(MathOperationModel.createStandard(new BigDecimal(44)));
         expected.setCurrentOperationIndex(5);
 
         assertEquals(expected, service.getAppState());
@@ -237,6 +237,48 @@ public class AppServiceTest {
         service.gotoNextHistorySlide();
 
         expected = new BigDecimal(61);
+        assertEquals(expected, service.getValue());
+    }
+
+    @Test
+    public void testSubtractionCalculation() {
+        AppService service = new AppService();
+        service.setValue(new BigDecimal(10000));
+        service.subtract();
+        service.setValue(new BigDecimal(2000));
+        service.subtract();
+        service.setValue(new BigDecimal(500));
+        service.subtract();
+        service.setValue(new BigDecimal(10000));
+        service.setValue(new BigDecimal(5000));
+        service.subtract();
+        service.setValue(new BigDecimal(1000));
+        service.calculate();
+
+        BigDecimal expected = new BigDecimal(1500);
+        assertEquals(expected, service.getValue());
+    }
+
+    @Test
+    public void testSubtractionAdditionalCalculation() {
+        AppService service = new AppService();
+        service.setValue(new BigDecimal(10000));
+        service.subtract();
+        service.setValue(new BigDecimal(2000));
+        service.subtract();
+        service.setValue(new BigDecimal(500));
+        service.subtract();
+        service.setValue(new BigDecimal(10000));
+        service.setValue(new BigDecimal(5000));
+        service.subtract();
+        service.setValue(new BigDecimal(1000));
+        service.calculate();
+        service.setValue(new BigDecimal(5000));
+        service.subtract();
+        service.setValue(new BigDecimal(200));
+        service.calculate();
+
+        BigDecimal expected = new BigDecimal(4800);
         assertEquals(expected, service.getValue());
     }
 }
