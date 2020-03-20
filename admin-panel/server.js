@@ -46,7 +46,7 @@ app.post(
   (req, res) => {
     const currencies = req.body["array"];
     currencies.forEach(currency => {
-      if (validCurrencies.indexOf(currencies) < 0) {
+      if (validCurrencies.indexOf(currency) < 0) {
         res.status(400).end();
       }
     });
