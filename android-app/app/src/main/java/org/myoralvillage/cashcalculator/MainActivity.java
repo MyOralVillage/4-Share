@@ -7,6 +7,8 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment;
+
 public class MainActivity extends AppCompatActivity{
 
     @Override
@@ -16,6 +18,11 @@ public class MainActivity extends AppCompatActivity{
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_main);
+        CashCalculatorFragment fragment = (CashCalculatorFragment) getSupportFragmentManager().findFragmentById(R.id.CountingTableFragment);
+
+        if (fragment != null)
+            fragment.initialize(SettingActivity.getSettingService().getCurrencyName());
     }
 }
