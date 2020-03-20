@@ -1,16 +1,64 @@
 const express = require("express");
+const basicAuth = require("express-basic-auth");
 const path = require("path");
-const bodyParser = require("body-parser");
+const { Pool } = require("pg");
 
 const app = express();
 app.use(express.static(path.join(__dirname, "build")));
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.get("/api/countries", (req, res) => {});
+const pool = new Pool();
 
-app.get("/api/currencies/:country", (req, res) => {});
+app.get("/api/countries", (req, res) => {
+  pool
+    .query({ text: "SELECT name FROM countries", rowMode: "array" })
+    .then(rset => res.json(rset.rows))
+    .catch(e => console.error(e.stack));
+});
 
-app.post("/api/currencies/:country", (req, res) => {});
+app.get("/api/currencies/:country", (req, res) => {
+  pool
+    .query("SELECT currencies::JSONB FROM countries WHERE name = $1", [
+      req.params.country
+    ])
+    .then(rset => {
+      if (rset.length === 0) {
+        res.status(400).end();
+      } else {
+        res.json(rset.rows[0]["currencies"]);
+      }
+    })
+    .catch(e => console.error(e.stack));
+});
+
+app.post(
+  "/api/currencies/:country",
+  basicAuth({
+    users: { admin: process.env.SECRET || "password" },
+    challenge: true
+  }),
+  (req, res) => {
+    // TODO: verify the currencies are in the database
+    const currencies = req.body["array"];
+    pool
+      .query("UPDATE countries SET currencies = $1 WHERE name = $2", [
+        currencies,
+        req.params.country
+      ])
+      .then(rset => {
+        if (rset.length === 0) {
+          pool.query(
+            "INSERT INTO countries(name, currencies) VALUES ($1, $2)",
+            [req.params.name, currencies]
+          );
+          res.status(200).end();
+        } else {
+          res.json(rset.rows[0]);
+        }
+      })
+      .catch(e => console.error(e.stack));
+  }
+);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"));
