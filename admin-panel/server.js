@@ -8,7 +8,6 @@ app.use(express.static(path.join(__dirname, "build")));
 app.use(express.json());
 
 const pool = new Pool();
-var validCurrencies = [];
 
 async function areCurrenciesValid(currencies) {
   const resultSet = await pool.query({
