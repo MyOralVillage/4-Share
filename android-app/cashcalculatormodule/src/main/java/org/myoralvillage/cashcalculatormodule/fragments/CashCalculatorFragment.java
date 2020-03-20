@@ -1,4 +1,5 @@
-package org.myoralvillage.cashcalculator.fragments;
+package org.myoralvillage.cashcalculatormodule.fragments;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
-import org.myoralvillage.cashcalculator.MainActivity;
-import org.myoralvillage.cashcalculator.R;
-import org.myoralvillage.cashcalculator.SettingActivity;
+import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
@@ -29,6 +28,7 @@ import java.util.Locale;
 
 public class CashCalculatorFragment extends Fragment {
     private final String APP_STATE_KEY = "appState";
+    private View view;
     private AppService service;
     private CurrencyModel currCurrency;
     private CountingTableView countingTableView;
@@ -43,15 +43,10 @@ public class CashCalculatorFragment extends Fragment {
             service = new AppService((AppStateModel) extras.getSerializable(APP_STATE_KEY));
         else service = new AppService();
 
-        View view = inflater.inflate(R.layout.fragment_activity, parent, false);
+        view = inflater.inflate(R.layout.fragment_activity, parent, false);
         numberInputView = view.findViewById(R.id.number_input_view);
         numberInputView.setVisibility(View.INVISIBLE);
 
-        initializeCurrencyScrollbar(view);
-        initializeCountingView(view);
-        initializeNumberPad(view);
-
-        updateAll();
         return view;
     }
 
@@ -60,13 +55,15 @@ public class CashCalculatorFragment extends Fragment {
         return service.getValue();
     }
 
-    //Set the currency to the Scrollbar
-    public void SetCurrency(CurrencyScrollbarView currencyScrollbarView){
-        String currency = SettingActivity.getSettingService().getCurrencyName();
-        currencyScrollbarView.setCurrency(currency);
+    public void initialize(String currencyCode) {
+        initializeCurrencyScrollbar(currencyCode);
+        initializeCountingView();
+        initializeNumberPad();
+
+        updateAll();
     }
 
-    private void initializeCountingView(View view) {
+    private void initializeCountingView() {
         countingTableView = view.findViewById(R.id.counting_table);
         countingTableView.initialize(currCurrency, service.getAppState());
         countingTableView.setListener(new CountingTableListener() {
@@ -162,9 +159,9 @@ public class CashCalculatorFragment extends Fragment {
         countingTableView.setAppState(service.getAppState());
     }
 
-    private void initializeCurrencyScrollbar(View view){
+    private void initializeCurrencyScrollbar(String currencyCode){
         currencyScrollbarView = view.findViewById(R.id.currency_scrollbar);
-        SetCurrency(currencyScrollbarView);
+        currencyScrollbarView.setCurrency(currencyCode);
         this.currCurrency = currencyScrollbarView.getCurrency();
 
         currencyScrollbarView.setCurrencyScrollbarListener(new CurrencyScrollbarListener() {
@@ -203,24 +200,24 @@ public class CashCalculatorFragment extends Fragment {
         updateAll();
     }
 
-    private void initializeNumberPad(View view) {
+    private void initializeNumberPad() {
         TextView sum = view.findViewById(R.id.sum_view);
         numberPadView = view.findViewById(R.id.number_pad_view);
 
         numberPadView.setListener(new NumberPadListener() {
             @Override
             public void onCheck(BigDecimal value) {
-                    sum.setVisibility(View.VISIBLE);
-                    service.setValue(value);
-                    numberInputView.setVisibility(View.INVISIBLE);
-                    updateAll();
+                sum.setVisibility(View.VISIBLE);
+                service.setValue(value);
+                numberInputView.setVisibility(View.INVISIBLE);
+                updateAll();
             }
 
             @Override
             public void onBack(BigDecimal value) {
-                    numberInputView.setText(String.format(Locale.CANADA, "%s %s",
-                            currCurrency.getCurrency().getSymbol(), value));
-                    service.setValue(value);
+                numberInputView.setText(String.format(Locale.CANADA, "%s %s",
+                        currCurrency.getCurrency().getSymbol(), value));
+                service.setValue(value);
             }
 
             @Override
@@ -253,11 +250,10 @@ public class CashCalculatorFragment extends Fragment {
     }
 
     private void switchState() {
-        Intent intent = new Intent(getActivity(), MainActivity.class);
+        Intent intent = new Intent(getActivity(), getActivity().getClass());
         intent.putExtra(APP_STATE_KEY, service.getAppState());
         startActivity(intent);
     }
-
 
     private void updateAll() {
         updateCountingTable();
