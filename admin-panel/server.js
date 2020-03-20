@@ -10,10 +10,15 @@ app.use(express.json());
 const pool = new Pool();
 var validCurrencies = [];
 
-await pool
-  .query({ text: "SELECT code FROM currencies", rowMode: "array" })
-  .then(rset => (validCurrencies = rset.rows.map(item => item[0])))
-  .catch(e => console.error(e.stack));
+async function areCurrenciesValid(currencies) {
+  const resultSet = await pool.query({
+    text: "SELECT code FROM currencies",
+    rowMode: "array"
+  });
+
+  const validCurrencies = resultSet.rows.map(row => row[0]);
+  return currencies.every(currency => validCurrencies.indexOf(currency) >= 0);
+}
 
 app.get("/api/countries", (req, res) => {
   pool
@@ -43,27 +48,23 @@ app.post(
     users: { admin: process.env.SECRET || "password" },
     challenge: true
   }),
-  (req, res) => {
+  async (req, res) => {
     const currencies = req.body["array"];
-    currencies.forEach(currency => {
-      if (validCurrencies.indexOf(currency) < 0) {
-        res.status(400).end();
-      }
-    });
 
-    pool
-      .query("UPDATE countries SET currencies = $1 WHERE name = $2", [
-        currencies,
-        req.params.country
-      ])
-      .then(rset => {
-        if (rset.length === 0) {
-          res.status(400).end();
-        } else {
-          res.json(rset.rows[0]);
-        }
-      })
-      .catch(e => console.error(e.stack));
+    if (await areCurrenciesValid(currencies)) {
+      const resultSet = await pool.query(
+        "UPDATE countries SET currencies = $1 WHERE name = $2",
+        [currencies, req.params.country]
+      );
+
+      if (resultSet.length === 0) {
+        res.status(400).end();
+      } else {
+        res.json(resultSet.rows[0]);
+      }
+    } else {
+      res.status(400).end();
+    }
   }
 );
 
