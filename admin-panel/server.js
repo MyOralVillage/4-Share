@@ -12,20 +12,20 @@ const pool = new Pool();
 app.get("/api/countries", (req, res) => {
   pool
     .query({ text: "SELECT name FROM countries", rowMode: "array" })
-    .then(rset => res.json(rset.rows))
+    .then(rset => res.json(rset.rows.map(item => item[0])))
     .catch(e => console.error(e.stack));
 });
 
 app.get("/api/currencies/:country", (req, res) => {
   pool
-    .query("SELECT currencies::JSONB FROM countries WHERE name = $1", [
+    .query("SELECT currencies::text[] FROM countries WHERE name = $1", [
       req.params.country
     ])
     .then(rset => {
       if (rset.length === 0) {
         res.status(400).end();
       } else {
-        res.json(rset.rows[0]["currencies"]);
+        res.json(rset.rows[0]);
       }
     })
     .catch(e => console.error(e.stack));
@@ -47,11 +47,7 @@ app.post(
       ])
       .then(rset => {
         if (rset.length === 0) {
-          pool.query(
-            "INSERT INTO countries(name, currencies) VALUES ($1, $2)",
-            [req.params.name, currencies]
-          );
-          res.status(200).end();
+          res.status(400).end();
         } else {
           res.json(rset.rows[0]);
         }
