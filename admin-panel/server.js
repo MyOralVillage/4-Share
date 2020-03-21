@@ -74,6 +74,8 @@ app.get("*", (req, res) => {
 });
 
 const port = process.env.PORT || 5000;
+console.log(`Attaching to port ${port}...`);
+
 app.listen(port, () => {
   console.log("Listening on port", port);
 });
