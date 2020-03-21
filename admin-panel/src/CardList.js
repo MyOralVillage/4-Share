@@ -5,6 +5,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -15,12 +16,11 @@ const useStyles = makeStyles({
 export default function CardList(props) {
   const classes = useStyles();
 
-  function handleClick(country) {
-    alert("You clicked " + country);
-  }
-
+  const history = useHistory();
   return (
-    <div onClick={() => handleClick(props.country)}>
+    <div
+      onClick={() => history.push("/country/" + props.country.toLowerCase())}
+    >
       <Card className={classes.root}>
         <CardActionArea>
           <CardMedia
