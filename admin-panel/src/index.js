@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import CountryPage from "./CountryPage";
 import * as serviceWorker from "./serviceWorker";
-import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import { Route, Link, BrowserRouter as Router, Switch } from "react-router-dom";
 
 const countries = [
   { country: "Canada", currency: "CAD", image: "Canada.png" },
@@ -17,13 +17,13 @@ const countries = [
 
 const routing = (
   <Router>
-    <div>
-      <Route path="/" component={App} />
+    <Switch>
       <Route
         path="/country/:country"
         render={props => <CountryPage {...props} countries={countries} />}
       />
-    </div>
+      <Route path="/" component={App} />
+    </Switch>
   </Router>
 );
 

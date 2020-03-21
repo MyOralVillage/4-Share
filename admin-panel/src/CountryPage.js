@@ -1,5 +1,5 @@
 import React from "react";
-import CardList from "./CardList";
+import CardList from "./CountryCardList.js";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import AppBar from "@material-ui/core/AppBar";
@@ -26,12 +26,11 @@ function FormRow(props) {
       <Grid
         key={i.toString()}
         item
-        xs={4}
+        xs={0}
         container
         spacing={0}
-        direction="column"
         justify="center"
-        style={{ minHeight: "50vh" }}
+        style={{ "padding-top": "50px" }}
       >
         <CardList
           country={props.countries[i].country}
@@ -45,14 +44,12 @@ function FormRow(props) {
   return <React.Fragment>{items}</React.Fragment>;
 }
 
-async function FormInfo(props) {
+function FormInfo(props) {
   const classes = useStyles();
 
   const country = props.country;
   const countries = props.countries;
-  const response = await fetch(`/api/currencies/${country}`);
-  const json = await response.json();
-  const order = json["currencies"];
+  const order = props.order;
 
   const rows = [];
   for (let i = 0; i < order.length; i++) {
@@ -64,7 +61,7 @@ async function FormInfo(props) {
       }
     }
     rows.push(
-      <Grid key={"row" + i.toString()} container item xs={12} spacing={3}>
+      <Grid key={"row" + i.toString()} container item xs={0} spacing={0}>
         <FormRow countries={current_country} />
       </Grid>
     );
@@ -86,10 +83,10 @@ function MainBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" className={classes.appBar}>
+      <AppBar position="center" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Cash Calculator Administration - props.country
+            Cash Calculator Administration - {props.country}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -102,8 +99,20 @@ class CountryPage extends React.Component {
     super(props);
     this.state = {
       countries: props.countries,
-      country: props.match.params.country
+      country: props.match.params.country,
+      order: []
     };
+  }
+
+  async componentDidMount() {
+    const response = await fetch(`/api/currencies/${this.state.country}`);
+    const json = await response.json();
+    const newOrder = json["currencies"];
+    this.setState({
+      order: newOrder,
+      countries: this.state.countries,
+      country: this.state.country
+    });
   }
 
   render() {
@@ -113,6 +122,7 @@ class CountryPage extends React.Component {
         <FormInfo
           country={this.state.country}
           countries={this.state.countries}
+          order={this.state.order}
         />
       </div>
     );
