@@ -48,25 +48,26 @@ function FormRow(props) {
 async function FormInfo(props) {
   const classes = useStyles();
 
-  const country = props.match.params.country;
+  const country = props.country;
   const countries = props.countries;
-  const json = await fetch(
+  const response = await fetch(
     `https://localhost:5000/api/currencies/${country}`
-  ).json();
+  );
+  const json = await response.json();
   const order = json["currencies"];
 
   const rows = [];
-  for (let i = 0; i < order.length; i = i++) {
-    let current_country = null;
+  for (let i = 0; i < order.length; i++) {
+    let current_country = [];
     for (let j = 0; j < countries.length; j++) {
       if (countries[j].currency === order[i]) {
-        current_country = countries[j];
+        current_country.push(countries[j]);
         break;
       }
     }
     rows.push(
       <Grid key={"row" + i.toString()} container item xs={12} spacing={3}>
-        <FormRow countries={[current_country]} />
+        <FormRow countries={current_country} />
       </Grid>
     );
   }
@@ -90,7 +91,7 @@ function MainBar(props) {
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Cash Calculator Administration - ${props.match.params.country}
+            Cash Calculator Administration - props.country
           </Typography>
         </Toolbar>
       </AppBar>
@@ -102,15 +103,19 @@ class CountryPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      countries: props.countries
+      countries: props.countries,
+      country: props.match.params.country
     };
   }
 
   render() {
     return (
       <div>
-        <MainBar />
-        <FormInfo countries={this.state.countries} />
+        <MainBar country={this.state.country} />
+        <FormInfo
+          country={this.state.country}
+          countries={this.state.countries}
+        />
       </div>
     );
   }
