@@ -34,9 +34,9 @@ function FormRow(props) {
         style={{ minHeight: "50vh" }}
       >
         <CardList
-          country={props.countries[i].country}
+          country={props.countries[i].name}
           currency={props.countries[i].currency}
-          image={props.countries[i].image}
+          code={props.countries[i].code}
         />
       </Grid>
     );
@@ -49,8 +49,6 @@ function FormInfo(props) {
   const classes = useStyles();
 
   const countries = props.countries;
-
-  countries.sort((a, b) => (a.country > b.country ? 1 : -1));
 
   const rows = [];
   let key = 0;

@@ -30,7 +30,7 @@ app.get("/api/countries", (req, res) => {
 
 app.get("/api/currencies/:country", (req, res) => {
   pool
-    .query("SELECT currencies::text[] FROM countries WHERE code = $1", [
+    .query("SELECT currencies::text[] FROM countries WHERE name = $1", [
       req.params.country
     ])
     .then(rset => {

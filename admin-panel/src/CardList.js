@@ -27,7 +27,9 @@ export default function CardList(props) {
             component="img"
             alt={props.country}
             height="150"
-            image={require("./country_img/" + props.image)}
+            image={require(`./country_img/${props.country
+              .charAt(0)
+              .toUpperCase() + props.country.slice(1)}.png`)}
             title={props.country}
           />
           <CardContent>

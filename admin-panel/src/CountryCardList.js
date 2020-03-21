@@ -16,8 +16,8 @@ const useStyles = makeStyles({
 
 export default function CardList({
   country,
+  code,
   currency,
-  image,
   onArrowUp,
   onArrowDown
 }) {
@@ -31,7 +31,8 @@ export default function CardList({
             component="img"
             alt={country}
             height="150"
-            image={require("./country_img/" + image)}
+            image={require(`./country_img/${country.charAt(0).toUpperCase() +
+              country.slice(1)}.png`)}
             title={country}
           />
           <CardContent>

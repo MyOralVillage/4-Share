@@ -32,9 +32,9 @@ function FormRow({ countries, onArrowUp, onArrowDown }) {
       style={{ "padding-top": "50px" }}
     >
       <CardList
-        country={country.country}
+        country={country.name}
         currency={country.currency}
-        image={country.image}
+        code={country.code}
         onArrowUp={() => onArrowUp(country.currency)}
         onArrowDown={() => onArrowDown(country.currency)}
       />
