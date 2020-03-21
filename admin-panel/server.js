@@ -19,6 +19,8 @@ async function areCurrenciesValid(currencies) {
   return currencies.every(currency => validCurrencies.indexOf(currency) >= 0);
 }
 
+app.use("/", express.static("build"));
+
 app.get("/api/countries", (req, res) => {
   pool
     .query({
