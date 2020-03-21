@@ -27,7 +27,8 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 /**
- * CashCalculatorFragment creates the Cash Calculator object. It manages the overall application.
+ * CashCalculatorFragment creates the whole Cash Calculator application, including the Counting Table
+ * and the Currency Scrollbar, packaged as one.
  *
  * @author Alexander Yang
  * @author Hamza Mahfooz
