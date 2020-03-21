@@ -50,9 +50,7 @@ async function FormInfo(props) {
 
   const country = props.country;
   const countries = props.countries;
-  const response = await fetch(
-    `https://localhost:5000/api/currencies/${country}`
-  );
+  const response = await fetch(`/api/currencies/${country}`);
   const json = await response.json();
   const order = json["currencies"];
 
