@@ -21,8 +21,7 @@ const routing = (
       <Route path="/" component={App} />
       <Route
         path="/country/:country"
-        component={CountryPage}
-        countries={countries}
+        render={props => <CountryPage {...props} countries={countries} />}
       />
     </div>
   </Router>
