@@ -31,8 +31,7 @@ export default function CardList({
             component="img"
             alt={country}
             height="150"
-            image={require(`./country_img/${country.charAt(0).toUpperCase() +
-              country.slice(1)}.png`)}
+            image={require(`../node_modules/svg-country-flags/svg/${code.toLowerCase()}.svg`)}
             title={country}
           />
           <CardContent>

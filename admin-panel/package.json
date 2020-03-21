@@ -18,7 +18,8 @@
     "react-icons": "^3.9.0",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "svg-country-flags": "^1.2.7"
   },
   "scripts": {
     "start": "react-scripts build && node server.js",
