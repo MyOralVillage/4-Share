@@ -6,6 +6,12 @@ const { Pool } = require("pg");
 const app = express();
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.json());
+app.use(
+  basicAuth({
+    users: { admin: process.env.SECRET || "password" },
+    challenge: true
+  })
+);
 
 const pool = new Pool();
 
@@ -43,31 +49,24 @@ app.get("/api/currencies/:country", (req, res) => {
     .catch(e => console.error(e.stack));
 });
 
-app.post(
-  "/api/currencies/:country",
-  basicAuth({
-    users: { admin: process.env.SECRET || "password" },
-    challenge: true
-  }),
-  async (req, res) => {
-    const currencies = req.body;
+app.post("/api/currencies/:country", async (req, res) => {
+  const currencies = req.body;
 
-    if (await areCurrenciesValid(currencies)) {
-      const resultSet = await pool.query(
-        "UPDATE countries SET currencies = $1 WHERE name = $2",
-        [currencies, req.params.country]
-      );
+  if (await areCurrenciesValid(currencies)) {
+    const resultSet = await pool.query(
+      "UPDATE countries SET currencies = $1 WHERE name = $2",
+      [currencies, req.params.country]
+    );
 
-      if (resultSet.length === 0) {
-        res.status(400).end();
-      } else {
-        res.json(resultSet.rows[0]);
-      }
-    } else {
+    if (resultSet.length === 0) {
       res.status(400).end();
+    } else {
+      res.json(resultSet.rows[0]);
     }
+  } else {
+    res.status(400).end();
   }
-);
+});
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"));

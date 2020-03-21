@@ -45,7 +45,6 @@ function FormRow({ countries, onArrowUp, onArrowDown }) {
 function FormInfo(props) {
   const classes = useStyles();
 
-  const country = props.country;
   const countries = props.countries;
   const order = props.order;
 

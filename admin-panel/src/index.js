@@ -4,7 +4,7 @@ import "./index.css";
 import CountryPage from "./CountryPage";
 import MainPage from "./MainPage";
 import * as serviceWorker from "./serviceWorker";
-import { Route, Link, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 
 fetch("/api/countries")
   .then(res => res.json())
