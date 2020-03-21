@@ -19,6 +19,8 @@ async function areCurrenciesValid(currencies) {
   return currencies.every(currency => validCurrencies.indexOf(currency) >= 0);
 }
 
+app.use("/", express.static("build"));
+
 app.get("/api/countries", (req, res) => {
   pool
     .query({ text: "SELECT name FROM countries", rowMode: "array" })
@@ -72,6 +74,8 @@ app.get("*", (req, res) => {
 });
 
 const port = process.env.PORT || 5000;
+console.log(`Attaching to port ${port}...`);
+
 app.listen(port, () => {
   console.log("Listening on port", port);
 });
