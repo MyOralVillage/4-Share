@@ -23,14 +23,14 @@ app.use("/", express.static("build"));
 
 app.get("/api/countries", (req, res) => {
   pool
-    .query({ text: "SELECT name FROM countries", rowMode: "array" })
-    .then(rset => res.json(rset.rows.map(item => item[0])))
+    .query("SELECT name, code, currency FROM countries ORDER BY name")
+    .then(rset => res.json(rset.rows))
     .catch(e => console.error(e.stack));
 });
 
 app.get("/api/currencies/:country", (req, res) => {
   pool
-    .query("SELECT currencies::text[] FROM countries WHERE name = $1", [
+    .query("SELECT currencies::text[] FROM countries WHERE code = $1", [
       req.params.country
     ])
     .then(rset => {
