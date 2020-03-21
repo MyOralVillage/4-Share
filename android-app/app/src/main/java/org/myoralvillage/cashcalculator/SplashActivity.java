@@ -32,12 +32,12 @@ public class SplashActivity extends AppCompatActivity {
         ImageView setting = findViewById(R.id.main);
         setting.setOnClickListener((e) -> {
             exit = true;
-            switchToMain();
+            switchToVideo();
         });
     }
 
-    private void switchToMain(){
-        startActivity(new Intent(this, MainActivity.class));
+    private void switchToVideo(){
+        startActivity(new Intent(this, VideoActivity.class));
         finish();
     }
 
