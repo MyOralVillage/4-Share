@@ -5,6 +5,8 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -12,24 +14,45 @@ const useStyles = makeStyles({
   }
 });
 
-export default function CardList(props) {
+export default function CardList({
+  country,
+  currency,
+  image,
+  onArrowUp,
+  onArrowDown
+}) {
   const classes = useStyles();
 
   return (
-    <div onClick={() => alert(props.country.toLowerCase())}>
+    <div>
       <Card className={classes.root}>
         <CardActionArea>
           <CardMedia
             component="img"
-            alt={props.country}
+            alt={country}
             height="150"
-            image={require("./country_img/" + props.image)}
-            title={props.country}
+            image={require("./country_img/" + image)}
+            title={country}
           />
           <CardContent>
-            <Typography gutterBottom align="center" variant="h5" component="h2">
-              {props.currency}
-            </Typography>
+            <Grid container>
+              <Grid container item xs={8}>
+                <Typography
+                  gutterBottom
+                  align="center"
+                  variant="h5"
+                  component="h2"
+                >
+                  {currency}
+                </Typography>
+              </Grid>
+              <Grid container item xs={2}>
+                <FaArrowUp onClick={onArrowUp} />
+              </Grid>
+              <Grid container item xs={2}>
+                <FaArrowDown onClick={onArrowDown} />
+              </Grid>
+            </Grid>
           </CardContent>
         </CardActionArea>
       </Card>

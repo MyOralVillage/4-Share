@@ -48,7 +48,7 @@ app.post(
     challenge: true
   }),
   async (req, res) => {
-    const currencies = req.body["array"];
+    const currencies = req.body;
 
     if (await areCurrenciesValid(currencies)) {
       const resultSet = await pool.query(
