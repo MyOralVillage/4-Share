@@ -18,7 +18,8 @@ const useStyles = makeStyles(theme => ({
     display: "inline-block"
   },
   card: {
-    maxWidth: 345
+    maxWidth: 345,
+    "margin-bottom": "25px"
   },
   title: {
     flexGrow: 1
