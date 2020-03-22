@@ -71,13 +71,16 @@ function FormInfo(props) {
 
 function MainBar(props) {
   const classes = useStyles();
+  const name =
+    props.country.charAt(0).toUpperCase() +
+    props.country.slice(1).toLowerCase();
 
   return (
     <div className={classes.root}>
       <AppBar position="center" className={classes.appBar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            Cash Calculator Administration - {props.country}
+            Cash Calculator Administration - {name}
           </Typography>
         </Toolbar>
       </AppBar>
