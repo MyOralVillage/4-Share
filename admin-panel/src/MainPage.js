@@ -20,46 +20,34 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function FormRow(props) {
-  const items = [];
-  for (var i = 0; i < props.countries.length; i++) {
-    items.push(
-      <Grid
-        key={i.toString()}
-        item
-        xs={4}
-        container
-        spacing={0}
-        direction="column"
-        justify="center"
-        style={{ minHeight: "50vh" }}
-      >
-        <CardList
-          country={props.countries[i].name}
-          currency={props.countries[i].currency}
-          code={props.countries[i].code}
-        />
-      </Grid>
-    );
-  }
-
-  return <React.Fragment>{items}</React.Fragment>;
+  return props.countries.map((country, i) => (
+    <Grid
+      key={i.toString()}
+      item
+      xs={4}
+      container
+      spacing={0}
+      direction="column"
+      justify="center"
+      style={{ minHeight: "50vh" }}
+    >
+      <CardList
+        country={props.countries[i].name}
+        currency={props.countries[i].currency}
+        code={props.countries[i].code}
+      />
+    </Grid>
+  ));
 }
 
 function FormInfo(props) {
   const classes = useStyles();
 
-  const countries = props.countries;
-
-  const rows = [];
-  let key = 0;
-  for (var i = 0; i < countries.length; i = i + 3) {
-    rows.push(
-      <Grid key={"row" + key.toString()} container item xs={12} spacing={3}>
-        <FormRow countries={countries.slice(i, i + 3)} />
-      </Grid>
-    );
-    key++;
-  }
+  const rows = props.countries.map((_, i) => (
+    <Grid key={"row" + i.toString()} container item xs={12} spacing={3}>
+      <FormRow countries={props.countries.slice(3 * i, 3 * i + 3)} />
+    </Grid>
+  ));
 
   return (
     <div className={classes.root}>

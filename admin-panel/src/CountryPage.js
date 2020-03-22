@@ -48,25 +48,15 @@ function FormInfo(props) {
   const countries = props.countries;
   const order = props.order;
 
-  const rows = [];
-  for (let i = 0; i < order.length; i++) {
-    let current_country = [];
-    for (let j = 0; j < countries.length; j++) {
-      if (countries[j].currency === order[i]) {
-        current_country.push(countries[j]);
-        break;
-      }
-    }
-    rows.push(
-      <Grid key={"row" + i.toString()} container item xs={0} spacing={0}>
-        <FormRow
-          countries={current_country}
-          onArrowUp={props.onArrowUp}
-          onArrowDown={props.onArrowDown}
-        />
-      </Grid>
-    );
-  }
+  const rows = order.map((currency, i) => (
+    <Grid key={"row" + i.toString()} container item xs={0} spacing={0}>
+      <FormRow
+        countries={countries.filter(country => country.currency === currency)}
+        onArrowUp={props.onArrowUp}
+        onArrowDown={props.onArrowDown}
+      />
+    </Grid>
+  ));
 
   return (
     <div className={classes.root}>
