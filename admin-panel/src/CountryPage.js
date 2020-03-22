@@ -1,16 +1,24 @@
 import React from "react";
-import CardList from "./CountryCardList.js";
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 import arrayMove from "array-move";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
+  },
+  drop: {
+    flexGrow: 1,
+    display: "inline-block"
+  },
+  card: {
+    maxWidth: 345
   },
   title: {
     flexGrow: 1
@@ -20,27 +28,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function FormRow({ countries, onArrowUp, onArrowDown }) {
-  return countries.map((country, i) => (
-    <Grid
-      key={i.toString()}
-      item
-      xs={0}
-      container
-      spacing={0}
-      justify="center"
-      style={{ "padding-top": "50px" }}
-    >
-      <CardList
-        country={country.name}
-        currency={country.currency}
-        code={country.code}
-        onArrowUp={() => onArrowUp(country.currency)}
-        onArrowDown={() => onArrowDown(country.currency)}
-      />
-    </Grid>
-  ));
-}
+const getListStyle = isDraggingOver => ({
+  background: isDraggingOver ? "lightgrey" : "white",
+  padding: 8,
+  width: 250
+});
 
 function FormInfo(props) {
   const classes = useStyles();
@@ -49,22 +41,57 @@ function FormInfo(props) {
   const order = props.order;
 
   const rows = order.map((currency, i) => (
-    <Grid key={"row" + i.toString()} container item xs={0} spacing={0}>
-      <FormRow
-        countries={countries.filter(country => country.currency === currency)}
-        onArrowUp={props.onArrowUp}
-        onArrowDown={props.onArrowDown}
-      />
-    </Grid>
+    <Draggable key={currency} draggableId={currency} index={i}>
+      {(provided, snapshot) => {
+        const country = countries.filter(
+          country => country.currency === currency
+        )[0];
+        return (
+          <Card
+            className={classes.card}
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <CardMedia
+              component="img"
+              alt={country.name}
+              height="150"
+              image={require(`../node_modules/svg-country-flags/svg/${country.code.toLowerCase()}.svg`)}
+              title={country.name}
+            />
+            <CardContent>
+              <Typography
+                gutterBottom
+                align="center"
+                variant="h5"
+                component="h2"
+              >
+                {currency}
+              </Typography>
+            </CardContent>
+          </Card>
+        );
+      }}
+    </Draggable>
   ));
 
   return (
-    <div className={classes.root}>
-      <Container>
-        <Grid container spacing={1}>
-          {rows}
-        </Grid>
-      </Container>
+    <div className={classes.drop}>
+      <DragDropContext onDragEnd={props.onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <div
+              {...provided.droppableProps}
+              ref={provided.innerRef}
+              style={getListStyle(snapshot.isDraggingOver)}
+            >
+              {rows}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
     </div>
   );
 }
@@ -127,35 +154,22 @@ class CountryPage extends React.Component {
           country={this.state.country}
           countries={this.state.countries}
           order={this.state.order}
-          onArrowUp={async currency => {
-            const index = this.state.order.indexOf(currency);
-            if (index > 0) {
-              const updatedOrder = arrayMove(
-                this.state.order,
-                index,
-                index - 1
-              );
-              await postJson(
-                `/api/currencies/${this.state.country}`,
-                updatedOrder
-              );
-              this.setState({ ...this.state, order: updatedOrder });
+          onDragEnd={async result => {
+            if (!result.destination) {
+              return;
             }
-          }}
-          onArrowDown={async currency => {
-            const index = this.state.order.indexOf(currency);
-            if (index < this.state.order.length - 1) {
-              const updatedOrder = arrayMove(
-                this.state.order,
-                index,
-                index + 1
-              );
-              await postJson(
-                `/api/currencies/${this.state.country}`,
-                updatedOrder
-              );
-              this.setState({ ...this.state, order: updatedOrder });
-            }
+
+            const updatedOrder = arrayMove(
+              this.state.order,
+              result.source.index,
+              result.destination.index
+            );
+            await postJson(
+              `/api/currencies/${this.state.country}`,
+              updatedOrder
+            );
+
+            this.setState({ ...this.state, order: updatedOrder });
           }}
         />
       </div>
