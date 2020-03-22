@@ -36,9 +36,9 @@ function FormRow(props) {
       style={{ minHeight: "50vh" }}
     >
       <CardList
-        country={capitalize(props.countries[i].name)}
-        currency={props.countries[i].currency}
-        code={props.countries[i].code}
+        country={capitalize(country.name)}
+        currency={country.currency}
+        code={country.code}
       />
     </Grid>
   ));
