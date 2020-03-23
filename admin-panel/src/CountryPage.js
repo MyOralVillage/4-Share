@@ -53,6 +53,7 @@ function FormInfo(props) {
 
   const countries = props.countries;
   const order = props.order;
+  const names = require("../node_modules/currency-format/currency-format.json");
 
   const rows = order.map((currency, i) => (
     <Draggable key={currency} draggableId={currency} index={i}>
@@ -75,7 +76,7 @@ function FormInfo(props) {
             <div className={classes.details}>
               <CardContent className={classes.content}>
                 <Typography component="h6" variant="h6" align="left">
-                  {"Name"}
+                  {names[currency].name}
                 </Typography>
                 <Typography variant="subtitle1" align="left">
                   {currency}
