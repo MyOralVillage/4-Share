@@ -45,7 +45,7 @@ const useStyles = makeStyles(theme => ({
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightgrey" : "white",
   padding: 8,
-  width: 250
+  width: 380
 });
 
 function FormInfo(props) {
