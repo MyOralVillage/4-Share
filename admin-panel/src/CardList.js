@@ -40,7 +40,7 @@ export default function CardList(props) {
               color="textSecondary"
               component="p"
             >
-              Default: {props.currency} currency
+              Default Currency: {props.currency}
             </Typography>
           </CardContent>
         </CardActionArea>

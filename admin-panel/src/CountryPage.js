@@ -63,6 +63,7 @@ function FormInfo(props) {
         )[0];
         return (
           <Card
+            variant="outlined"
             className={classes.card}
             ref={provided.innerRef}
             {...provided.draggableProps}

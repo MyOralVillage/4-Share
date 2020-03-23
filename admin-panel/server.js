@@ -29,7 +29,9 @@ app.use("/", express.static("build"));
 
 app.get("/api/countries", (req, res) => {
   pool
-    .query("SELECT name, code, currency FROM countries ORDER BY name")
+    .query(
+      "SELECT name, code, currency, currencies[1] AS def FROM countries ORDER BY name"
+    )
     .then(rset => res.json(rset.rows))
     .catch(e => console.error(e.stack));
 });

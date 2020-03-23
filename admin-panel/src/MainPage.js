@@ -37,7 +37,7 @@ function FormRow(props) {
     >
       <CardList
         country={capitalize(country.name)}
-        currency={country.currency}
+        currency={country.def}
         code={country.code}
       />
     </Grid>
