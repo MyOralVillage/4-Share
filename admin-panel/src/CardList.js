@@ -27,7 +27,7 @@ export default function CardList(props) {
             component="img"
             alt={props.country}
             height="150"
-            image={require("./country_img/" + props.image)}
+            image={require(`../node_modules/svg-country-flags/svg/${props.code.toLowerCase()}.svg`)}
             title={props.country}
           />
           <CardContent>
@@ -40,7 +40,7 @@ export default function CardList(props) {
               color="textSecondary"
               component="p"
             >
-              Default: {props.currency} currency
+              Default Currency: {props.currency}
             </Typography>
           </CardContent>
         </CardActionArea>
