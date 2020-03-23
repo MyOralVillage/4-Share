@@ -18,8 +18,21 @@ const useStyles = makeStyles(theme => ({
     display: "inline-block"
   },
   card: {
-    maxWidth: 345,
-    "margin-bottom": "25px"
+    display: "flex",
+    width: 350,
+    "margin-bottom": "25px",
+    padding: 15
+  },
+  details: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  cover: {
+    width: 150,
+    height: 100
+  },
+  content: {
+    flex: "1 0 auto"
   },
   title: {
     flexGrow: 1
@@ -55,22 +68,20 @@ function FormInfo(props) {
             {...provided.dragHandleProps}
           >
             <CardMedia
-              component="img"
-              alt={country.name}
-              height="150"
+              className={classes.cover}
               image={require(`../node_modules/svg-country-flags/svg/${country.code.toLowerCase()}.svg`)}
               title={country.name}
             />
-            <CardContent>
-              <Typography
-                gutterBottom
-                align="center"
-                variant="h5"
-                component="h2"
-              >
-                {currency}
-              </Typography>
-            </CardContent>
+            <div className={classes.details}>
+              <CardContent className={classes.content}>
+                <Typography component="h6" variant="h6" align="left">
+                  {"Name"}
+                </Typography>
+                <Typography variant="subtitle1" align="left">
+                  {currency}
+                </Typography>
+              </CardContent>
+            </div>
           </Card>
         );
       }}
