@@ -4,16 +4,10 @@ const path = require("path");
 const { Pool } = require("pg");
 
 const app = express();
-app.use(express.static(path.join(__dirname, "build")));
-app.use(express.json());
-app.use(
-  basicAuth({
-    users: { admin: process.env.SECRET || "password" },
-    challenge: true
-  })
-);
-
+const router = express.Router();
 const pool = new Pool();
+
+app.use(express.json());
 
 async function areCurrenciesValid(currencies) {
   const resultSet = await pool.query({
@@ -24,8 +18,6 @@ async function areCurrenciesValid(currencies) {
   const validCurrencies = resultSet.rows.map(row => row[0]);
   return currencies.every(currency => validCurrencies.indexOf(currency) >= 0);
 }
-
-app.use("/", express.static("build"));
 
 app.get("/api/countries", (req, res) => {
   pool
@@ -51,7 +43,7 @@ app.get("/api/currencies/:country", (req, res) => {
     .catch(e => console.error(e.stack));
 });
 
-app.post("/api/currencies/:country", async (req, res) => {
+router.post("/api/currencies/:country", async (req, res) => {
   const currencies = req.body;
 
   if (await areCurrenciesValid(currencies)) {
@@ -70,9 +62,20 @@ app.post("/api/currencies/:country", async (req, res) => {
   }
 });
 
-app.get("*", (req, res) => {
+router.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"));
 });
+
+app.use(
+  [
+    basicAuth({
+      users: { admin: process.env.SECRET || "password" },
+      challenge: true
+    }),
+    express.static("build")
+  ],
+  router
+);
 
 const port = process.env.PORT || 5000;
 console.log(`Attaching to port ${port}...`);
