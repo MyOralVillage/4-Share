@@ -28,10 +28,10 @@ app.get("/api/countries", (req, res) => {
     .catch(e => console.error(e.stack));
 });
 
-app.get("/api/currencies/:country", (req, res) => {
+app.get("/api/currencies/:code", (req, res) => {
   pool
-    .query("SELECT currencies::text[] FROM countries WHERE name = $1", [
-      req.params.country
+    .query("SELECT currencies::text[] FROM countries WHERE code = $1", [
+      req.params.code
     ])
     .then(rset => {
       if (rset.length === 0) {
@@ -43,13 +43,13 @@ app.get("/api/currencies/:country", (req, res) => {
     .catch(e => console.error(e.stack));
 });
 
-router.post("/api/currencies/:country", async (req, res) => {
+router.post("/api/currencies/:code", async (req, res) => {
   const currencies = req.body;
 
   if (await areCurrenciesValid(currencies)) {
     const resultSet = await pool.query(
-      "UPDATE countries SET currencies = $1 WHERE name = $2",
-      [currencies, req.params.country]
+      "UPDATE countries SET currencies = $1 WHERE code = $2",
+      [currencies, req.params.code]
     );
 
     if (resultSet.length === 0) {

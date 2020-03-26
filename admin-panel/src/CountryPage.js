@@ -118,19 +118,21 @@ class CountryPage extends React.Component {
     super(props);
     this.state = {
       countries: props.countries,
-      country: props.match.params.country,
+      code: props.match.params.code.toUpperCase(),
       order: []
     };
   }
 
   async componentDidMount() {
-    const response = await fetch(`/api/currencies/${this.state.country}`);
+    const response = await fetch(`/api/currencies/${this.state.code}`);
     const json = await response.json();
     this.setState({ ...this.state, order: json.currencies });
   }
 
   render() {
-    const country = this.state.country;
+    const country = this.state.countries.filter(
+      country => country.code === this.state.code
+    )[0].name;
     const name =
       country.charAt(0).toUpperCase() + country.slice(1).toLowerCase();
     return (
@@ -150,10 +152,7 @@ class CountryPage extends React.Component {
               result.source.index,
               result.destination.index
             );
-            await postJson(
-              `/api/currencies/${this.state.country}`,
-              updatedOrder
-            );
+            await postJson(`/api/currencies/${this.state.code}`, updatedOrder);
 
             this.setState({ ...this.state, order: updatedOrder });
           }}

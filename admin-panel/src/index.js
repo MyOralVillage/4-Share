@@ -15,7 +15,7 @@ fetch("/api/countries")
         <div className="index">
           <Switch>
             <Route
-              path="/country/:country"
+              path="/country/:code"
               exact
               render={props => <CountryPage {...props} countries={countries} />}
             />
