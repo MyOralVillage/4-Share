@@ -18,9 +18,7 @@ export default function CardList(props) {
 
   const history = useHistory();
   return (
-    <div
-      onClick={() => history.push("/country/" + props.country.toLowerCase())}
-    >
+    <div onClick={() => history.push("/country/" + props.code.toLowerCase())}>
       <Card className={classes.root}>
         <CardActionArea>
           <CardMedia

@@ -1,21 +1,13 @@
 import React from "react";
 import CardList from "./CardList";
+import MainBar from "./MainBar";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1
-  },
-  title: {
-    flexGrow: 1
-  },
-  appBar: {
-    backgroundColor: "indigo"
   }
 }));
 
@@ -64,22 +56,6 @@ function FormInfo(props) {
   );
 }
 
-function MainBar() {
-  const classes = useStyles();
-
-  return (
-    <div className={classes.root}>
-      <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Cash Calculator Administration
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-}
-
 class MainPage extends React.Component {
   constructor(props) {
     super(props);
@@ -91,7 +67,7 @@ class MainPage extends React.Component {
   render() {
     return (
       <div>
-        <MainBar />
+        <MainBar msg={""} />
         <FormInfo countries={this.state.countries} />
       </div>
     );
