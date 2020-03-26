@@ -112,6 +112,7 @@ public class CountingTableSurfaceView extends View {
         float numSize = getWidth() / 12;
         Typeface font = Typeface.create(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC);
         denoNumber.setTypeface(font);
+
         denoNumber.setTextSize(numSize);
         denoNumber.setStrokeWidth((float) numSize / OFFSET_STROKE_RATE);
         denoNumber.setAntiAlias(true);
@@ -208,6 +209,18 @@ public class CountingTableSurfaceView extends View {
         }
         int textPositionY = originY + (int)(bmp.getHeight() / 1.5f);
 
+        if (num >= 100){
+            denoNumber.setTextSize(numSize / 2);
+            denoNumber.setStrokeWidth((float) numSize / 23);
+        }else{
+            if (num > 9){
+                denoNumber.setTextSize(numSize * 2 / 3);
+                denoNumber.setStrokeWidth((float) numSize / 19);
+            }else{
+                denoNumber.setTextSize(numSize);
+                denoNumber.setStrokeWidth((float) numSize / OFFSET_STROKE_RATE);
+            }
+        }
         denoNumber.setStyle(Paint.Style.FILL);
         denoNumber.setColor(Color.WHITE);
         canvas.drawText(Integer.toString(num), textPositionX, textPositionY, denoNumber);
@@ -231,7 +244,6 @@ public class CountingTableSurfaceView extends View {
                 output.setPixel(x, y, pixel ^ 0x00FFFFFF);
             }
         }
-
         return output;
     }
 
