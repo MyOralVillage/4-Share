@@ -1,17 +1,16 @@
 package org.myoralvillage.cashcalculator;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.content.Intent;
-
 import android.widget.Button;
 import android.widget.ImageView;
 
-import java.util.Locale;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
 
 public class SplashActivity extends AppCompatActivity {
     boolean exit = false;
@@ -36,30 +35,16 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private void switchToVideo(){
+    private void switchToVideo() {
         startActivity(new Intent(this, VideoActivity.class));
         finish();
     }
 
-    private static void setDefaultImage(Button setting){
-        String systemLangauge = Locale.getDefault().getCountry();
-        switch (systemLangauge){
-            case "PK":
-                setting.setBackgroundResource(R.drawable.pkr);
-                break;
-            case "BD":
-                setting.setBackgroundResource(R.drawable.ban);
-                break;
-            case "US":
-                setting.setBackgroundResource(R.drawable.usa);
-                break;
-            case "IN":
-                setting.setBackgroundResource(R.drawable.india);
-                break;
-            default:
-                setting.setBackgroundResource(R.drawable.kes);
-                break;
-        }
+    private void setDefaultImage(Button setting) {
+        new CurrencyService(getApplicationContext()).call(currencies -> {
+            int id = CurrencyService.getCurrencyResource(currencies[0]);
+            runOnUiThread(() -> setting.setBackgroundResource(id));
+        });
     }
 
     private void settingButtonListener() {
@@ -72,7 +57,7 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private void switchToSetting(){
+    private void switchToSetting() {
         startActivity(new Intent(this, SettingActivity.class));
         finish();
     }
