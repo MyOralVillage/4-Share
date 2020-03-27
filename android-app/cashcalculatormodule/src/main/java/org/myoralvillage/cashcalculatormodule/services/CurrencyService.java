@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class CurrencyService {
@@ -28,6 +29,7 @@ public class CurrencyService {
     private static final String BASE_URL =
             "https://cash-calculator-admin.herokuapp.com/api/currencies/";
     private static final String FILE_NAME = "db.json";
+    private static final String[] DEFAULT_ORDER = {"KES", "PKR", "BDT", "USD", "INR"};
     private static String[] strings = null;
 
     private Context context;
@@ -87,7 +89,7 @@ public class CurrencyService {
     }
 
     private String[] getCurrencies() {
-        if (strings != null) {
+        if (strings != null && !Arrays.equals(strings, DEFAULT_ORDER)) {
             return strings;
         }
 
@@ -95,7 +97,8 @@ public class CurrencyService {
         File file = new File(context.getFilesDir(), FILE_NAME);
 
         try {
-            String json;
+            String json = null;
+            boolean write = true;
 
             if (isOnline()) {
                 URL url = new URL(BASE_URL + country);
@@ -103,24 +106,29 @@ public class CurrencyService {
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
                 json = readStream(in);
-                if (json != null) {
-                    strings = parseJson(json);
-                    file.createNewFile();
-                    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
-                        bufferedWriter.write(json);
-                    }
-                }
 
                 urlConnection.disconnect();
             } else {
                 if (file.exists()) {
                     json = readStream(new FileInputStream(file));
-                    if (json != null) {
-                        strings = parseJson(json);
+                    write = false;
+                }
+            }
+
+            if (json != null) {
+                strings = parseJson(json);
+                if (write) {
+                    file.createNewFile();
+                    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+                        bufferedWriter.write(json);
                     }
                 }
             }
         } catch (IOException | JSONException ignored) {
+        }
+
+        if (strings == null) {
+            strings = DEFAULT_ORDER;
         }
 
         return strings;
@@ -132,15 +140,12 @@ public class CurrencyService {
 
     public static int getCurrencyResource(String currency) {
         int id = -1;
-        for (Field field : R.drawable.class.getFields()) {
-            if (field.getName().equals(currency.toLowerCase())) {
-                try {
-                    id = field.getInt(null);
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-                break;
-            }
+        try {
+            id = R.drawable.class.getField(currency.toLowerCase()).getInt(null);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
         }
 
         return id;

@@ -12,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
 
-import java.util.Currency;
-import java.util.Locale;
-
 public class SplashActivity extends AppCompatActivity {
     boolean exit = false;
 
@@ -45,19 +42,8 @@ public class SplashActivity extends AppCompatActivity {
 
     private void setDefaultImage(Button setting) {
         new CurrencyService(getApplicationContext()).call(currencies -> {
-            String currency = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
-            if (currencies != null) {
-                currency = currencies[0];
-            }
-
-            int id = CurrencyService.getCurrencyResource(currency);
-
-            if (id < 0) {
-                id = R.drawable.kes;
-            }
-
-            int finalId = id;
-            runOnUiThread(() -> setting.setBackgroundResource(finalId));
+            int id = CurrencyService.getCurrencyResource(currencies[0]);
+            runOnUiThread(() -> setting.setBackgroundResource(id));
         });
     }
 
