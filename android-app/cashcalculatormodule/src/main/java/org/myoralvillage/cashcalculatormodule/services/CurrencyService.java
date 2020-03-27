@@ -3,12 +3,14 @@ package org.myoralvillage.cashcalculatormodule.services;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.myoralvillage.cashcalculatormodule.R;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Locale;
@@ -68,5 +70,21 @@ public class CurrencyService {
 
     public interface Callback<V> {
         void consume(V v);
+    }
+
+    public static int getCurrencyResource(String currency) {
+        int id = -1;
+        for (Field field : R.drawable.class.getFields()) {
+            if (field.getName().equals(currency.toLowerCase())) {
+                try {
+                    id = field.getInt(null);
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
+
+        return id;
     }
 }

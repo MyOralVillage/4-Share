@@ -50,17 +50,14 @@ public class SplashActivity extends AppCompatActivity {
                 currency = currencies[0];
             }
 
-            int id;
-            switch (currency) {
-                case "PKR":
-                    id = R.drawable.pkr;
-                    break;
-                default:
-                    id = R.drawable.kes;
-                    break;
+            int id = CurrencyService.getCurrencyResource(currency);
+
+            if (id < 0) {
+                id = R.drawable.kes;
             }
 
-            runOnUiThread(() -> setting.setBackgroundResource(id));
+            int finalId = id;
+            runOnUiThread(() -> setting.setBackgroundResource(finalId));
         }).run();
     }
 

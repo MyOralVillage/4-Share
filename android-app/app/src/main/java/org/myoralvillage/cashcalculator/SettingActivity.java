@@ -3,19 +3,20 @@ package org.myoralvillage.cashcalculator;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
 import org.myoralvillage.cashcalculatormodule.services.SettingService;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SettingActivity extends AppCompatActivity {
-    private Map<String, Button> currencies = new HashMap<>();
+    private static final String[] DEFAULT_ORDER = {"KES", "PKR"};
     private static SettingService settingService = new SettingService();
 
     @Override
@@ -27,23 +28,54 @@ public class SettingActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_setting);
 
-        currencies.put("PKR", (Button) findViewById(R.id.PKR));
-        currencies.put("KES", (Button) findViewById(R.id.KEN));
-        currencyButtonListener();
+        buildLayout();
     }
 
     public static SettingService getSettingService() {
         return settingService;
     }
 
-    private void currencyButtonListener() {
-        //Button pkr = findViewById(R.id.pkr);
-        for (Map.Entry<String, Button> entry : currencies.entrySet()) {
-            entry.getValue().setOnClickListener((e) -> {
-                settingService.setCurrencyName(entry.getKey());
-                switchToMainActivity();
+    private void buildLayout() {
+        new CurrencyService(stored -> {
+            String[] currencies = stored != null ? stored : DEFAULT_ORDER;
+            runOnUiThread(() -> {
+                LinearLayout view = findViewById(R.id.currencies);
+                int width = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        300f,
+                        getResources().getDisplayMetrics()
+                );
+                int height = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        178f,
+                        getResources().getDisplayMetrics()
+                );
+                int margin = (int) TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        30f,
+                        getResources().getDisplayMetrics()
+                );
+
+                for (int i = 0; i < currencies.length; i++) {
+                    String currency = currencies[i];
+                    Button button = new Button(this);
+                    LinearLayout.LayoutParams params =
+                            new LinearLayout.LayoutParams(width, height);
+                    if (i % 2 == 0) {
+                        params.setMargins(0, margin, 0, margin);
+                    } else if (i + 1 == currencies.length) {
+                        params.setMargins(0, 0, 0, margin);
+                    }
+                    button.setLayoutParams(params);
+                    button.setBackgroundResource(CurrencyService.getCurrencyResource(currency));
+                    button.setOnClickListener(e -> {
+                        settingService.setCurrencyName(currency);
+                        switchToMainActivity();
+                    });
+                    view.addView(button);
+                }
             });
-        }
+        }).run();
     }
 
     private void switchToMainActivity() {
