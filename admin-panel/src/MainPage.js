@@ -11,10 +11,6 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
-
 function FormRow(props) {
   return props.countries.map((country, i) => (
     <Grid
@@ -28,7 +24,7 @@ function FormRow(props) {
       style={{ minHeight: "50vh" }}
     >
       <CardList
-        country={capitalize(country.name)}
+        country={country.name}
         currency={country.def}
         code={country.code}
       />
