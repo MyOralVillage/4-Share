@@ -1,13 +1,12 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import arrayMove from "array-move";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
+import MainBar from "./MainBar";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -33,12 +32,6 @@ const useStyles = makeStyles(theme => ({
   },
   content: {
     flex: "1 0 auto"
-  },
-  title: {
-    flexGrow: 1
-  },
-  appBar: {
-    backgroundColor: "indigo"
   }
 }));
 
@@ -110,25 +103,6 @@ function FormInfo(props) {
   );
 }
 
-function MainBar(props) {
-  const classes = useStyles();
-  const name =
-    props.country.charAt(0).toUpperCase() +
-    props.country.slice(1).toLowerCase();
-
-  return (
-    <div className={classes.root}>
-      <AppBar position="center" className={classes.appBar}>
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Cash Calculator Administration - {name}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
-}
-
 function postJson(url, data) {
   return fetch(url, {
     method: "POST",
@@ -144,26 +118,26 @@ class CountryPage extends React.Component {
     super(props);
     this.state = {
       countries: props.countries,
-      country: props.match.params.country,
+      code: props.match.params.code.toUpperCase(),
       order: []
     };
   }
 
   async componentDidMount() {
-    const response = await fetch(`/api/currencies/${this.state.country}`);
+    const response = await fetch(`/api/currencies/${this.state.code}`);
     const json = await response.json();
-    const newOrder = json["currencies"];
-    this.setState({
-      order: newOrder,
-      countries: this.state.countries,
-      country: this.state.country
-    });
+    this.setState({ ...this.state, order: json.currencies });
   }
 
   render() {
+    const country = this.state.countries.filter(
+      country => country.code === this.state.code
+    )[0].name;
+    const name =
+      country.charAt(0).toUpperCase() + country.slice(1).toLowerCase();
     return (
       <div>
-        <MainBar country={this.state.country} />
+        <MainBar msg={" - " + name} />
         <FormInfo
           country={this.state.country}
           countries={this.state.countries}
@@ -178,10 +152,7 @@ class CountryPage extends React.Component {
               result.source.index,
               result.destination.index
             );
-            await postJson(
-              `/api/currencies/${this.state.country}`,
-              updatedOrder
-            );
+            await postJson(`/api/currencies/${this.state.code}`, updatedOrder);
 
             this.setState({ ...this.state, order: updatedOrder });
           }}
