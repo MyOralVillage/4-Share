@@ -28,6 +28,7 @@ public class CurrencyService {
     private static final String BASE_URL =
             "https://cash-calculator-admin.herokuapp.com/api/currencies/";
     private static final String FILE_NAME = "db.json";
+    private static String[] strings = null;
 
     private Context context;
     private Callback<String[]> callable;
@@ -88,8 +89,11 @@ public class CurrencyService {
     }
 
     private String[] getCurrencies() {
+        if (strings != null) {
+            return strings;
+        }
+
         String country = Locale.getDefault().getCountry();
-        String[] strings = null;
         File file = new File(context.getFilesDir(), FILE_NAME);
 
         try {
