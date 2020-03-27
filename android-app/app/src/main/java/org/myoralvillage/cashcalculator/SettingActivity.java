@@ -15,7 +15,7 @@ import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
 import org.myoralvillage.cashcalculatormodule.services.SettingService;
 
 public class SettingActivity extends AppCompatActivity {
-    private static final String[] DEFAULT_ORDER = {"KES", "PKR"};
+    private static final String[] DEFAULT_ORDER = {"KES", "PKR", "BDT", "USD", "INR"};
     private static SettingService settingService = new SettingService();
 
     @Override

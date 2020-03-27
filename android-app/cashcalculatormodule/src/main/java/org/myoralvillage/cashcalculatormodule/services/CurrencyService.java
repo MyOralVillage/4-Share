@@ -105,6 +105,7 @@ public class CurrencyService {
                 json = readStream(in);
                 if (json != null) {
                     strings = parseJson(json);
+                    file.createNewFile();
                     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
                         bufferedWriter.write(json);
                     }
