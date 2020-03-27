@@ -26,16 +26,83 @@ import androidx.annotation.NonNull;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+/**
+ * CashCalculatorFragment creates the whole Cash Calculator application, including the Counting Table
+ * and the Currency Scrollbar, packaged as one.
+ *
+ * @author Alexander Yang
+ * @author Hamza Mahfooz
+ * @author Jiaheng Li
+ * @author Lingjing Zou
+ * @author Peter Panagiotis Roubatsis
+ * @author Yujie Wu
+ * @author Zhipeng Zou
+*/
 public class CashCalculatorFragment extends Fragment {
+    /**
+     * A constant variable to store and lookup the state of the app when a new activity is started.
+     * It stores the app state in the Activity's bundle so that it can be accessed by the next
+     * activity.
+     *
+     * @see Bundle
+     */
     private final String APP_STATE_KEY = "appState";
+
+    /**
+     * The view of the Cash Calculator.
+     */
     private View view;
+
+    /**
+     * The service class used to perform the main operations of the Cash Calculator.
+     *
+     * @see AppService
+     */
     private AppService service;
+
+    /**
+     * The model class used to represent the type of currency as well as the set of denominations
+     * available.
+     *
+     * @see CurrencyModel
+     */
     private CurrencyModel currCurrency;
+
+    /**
+     * The view that displays images of currency to represent a number.
+     *
+     * @see CountingTableView
+     */
     private CountingTableView countingTableView;
+
+    /**
+     * The view of the Scrollbar to monitor and render the display of the denominations in the
+     * scrollbar as well as the scrollbar itself.
+     *
+     * @see CurrencyScrollbarView
+     */
     private CurrencyScrollbarView currencyScrollbarView;
+
+    /**
+     * The view class used to monitor and render the display of the number pad.
+     *
+     * @see NumberPadView
+     */
     private NumberPadView numberPadView;
+
+    /**
+     * Displays the number when in numeric mode.
+     *
+     */
     private TextView numberInputView;
 
+    /**
+     * Called to have the <code>CashCalculatorFragment</code> instantiate its user interface view.
+     *
+     * @param inflater _
+     * @param parent _
+     * @param savedInstanceState _
+     */
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         Bundle extras = getActivity().getIntent().getExtras();
@@ -50,11 +117,20 @@ public class CashCalculatorFragment extends Fragment {
         return view;
     }
 
-    //get the value of current total amount of money
+    /**
+     * Gets the value of current total amount of money of the Cash Calculator.
+     *
+     * @return the total amount of money.
+     */
     public BigDecimal getValue(){
         return service.getValue();
     }
 
+    /**
+     * Initializes the <code>CashCalculatorFragment</code> based on the currency code.
+     *
+     * @param currencyCode The currency code that the application is set to.
+     */
     public void initialize(String currencyCode) {
         initializeCurrencyScrollbar(currencyCode);
         initializeCountingView();
@@ -63,6 +139,11 @@ public class CashCalculatorFragment extends Fragment {
         updateAll();
     }
 
+    /**
+     * Initializes the <code>CountingTableView</code>.
+     *
+     * @see CountingTableView
+     */
     private void initializeCountingView() {
         countingTableView = view.findViewById(R.id.counting_table);
         countingTableView.initialize(currCurrency, service.getAppState());
@@ -155,10 +236,20 @@ public class CashCalculatorFragment extends Fragment {
         });
     }
 
+    /**
+     * Called when the value displayed is changed.
+     */
     private void updateCountingTable() {
         countingTableView.setAppState(service.getAppState());
     }
 
+    /**
+     * Initializes the <code>CurrencyScrollBarView</code> to the given currency code.
+     *
+     * @param currencyCode The currency code that the denominations being displayed is set to.
+     *
+     * @see CurrencyScrollbarView
+     */
     private void initializeCurrencyScrollbar(String currencyCode){
         currencyScrollbarView = view.findViewById(R.id.currency_scrollbar);
         currencyScrollbarView.setCurrency(currencyCode);
@@ -178,6 +269,11 @@ public class CashCalculatorFragment extends Fragment {
         });
     }
 
+    /**
+     * Switches the Cash Calculator between numeric mode and image mode.
+     *
+     * @see AppService
+     */
     private void switchAppMode() {
         service.switchAppMode();
         if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC)
@@ -200,6 +296,11 @@ public class CashCalculatorFragment extends Fragment {
         updateAll();
     }
 
+    /**
+     * Initializes the <code>NumberPadView</code> when the application is in numeric mode.
+     *
+     * @see NumberPadView
+     */
     private void initializeNumberPad() {
         TextView sum = view.findViewById(R.id.sum_view);
         numberPadView = view.findViewById(R.id.number_pad_view);
@@ -236,6 +337,9 @@ public class CashCalculatorFragment extends Fragment {
         });
     }
 
+    /**
+     * Called when the application is updated.
+     */
     private void updateAppMode() {
         switch(service.getAppState().getAppMode()) {
             case IMAGE:
@@ -249,12 +353,18 @@ public class CashCalculatorFragment extends Fragment {
         }
     }
 
+    /**
+     * Called whenever the application switches its mathematical operation mode.
+     */
     private void switchState() {
         Intent intent = new Intent(getActivity(), getActivity().getClass());
         intent.putExtra(APP_STATE_KEY, service.getAppState());
         startActivity(intent);
     }
 
+    /**
+     * Called whenever a gesture is performed on the Cash Calculator and upon initialization.
+     */
     private void updateAll() {
         updateCountingTable();
         updateAppMode();
