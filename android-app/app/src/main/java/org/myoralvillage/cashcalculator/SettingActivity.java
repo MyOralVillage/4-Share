@@ -7,15 +7,15 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import org.myoralvillage.cashcalculatormodule.services.SettingService;
-
-import java.util.ArrayList;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.myoralvillage.cashcalculatormodule.services.SettingService;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class SettingActivity extends AppCompatActivity {
-    private ArrayList<Button> currency = new ArrayList<>();
-    private ArrayList<String> currencyName = new ArrayList<>();
+    private Map<String, Button> currencies = new HashMap<>();
     private static SettingService settingService = new SettingService();
 
     @Override
@@ -23,33 +23,30 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_setting);
 
-        currency.add(findViewById(R.id.PKR));
-        currency.add(findViewById(R.id.KEN));
-        currencyName.add("PKR");
-        currencyName.add("KES");
+        currencies.put("PKR", (Button) findViewById(R.id.PKR));
+        currencies.put("KES", (Button) findViewById(R.id.KEN));
         currencyButtonListener();
     }
 
-    public static SettingService getSettingService(){
+    public static SettingService getSettingService() {
         return settingService;
     }
 
     private void currencyButtonListener() {
         //Button pkr = findViewById(R.id.pkr);
-        for (int i = 0; i < currency.size(); i++){
-            Button button= currency.get(i);
-            String currCurrencyName = currencyName.get(i);
-            button.setOnClickListener((e) -> {
-                settingService.setCurrencyName(currCurrencyName);
+        for (Map.Entry<String, Button> entry : currencies.entrySet()) {
+            entry.getValue().setOnClickListener((e) -> {
+                settingService.setCurrencyName(entry.getKey());
                 switchToMainActivity();
             });
         }
     }
 
-    private void switchToMainActivity(){
+    private void switchToMainActivity() {
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

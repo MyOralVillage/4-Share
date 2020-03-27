@@ -1,17 +1,19 @@
 package org.myoralvillage.cashcalculator;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
-import android.content.Intent;
-
 import android.widget.Button;
 import android.widget.ImageView;
 
-import java.util.Locale;
-
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
+
+import java.util.Currency;
+import java.util.Locale;
 
 public class SplashActivity extends AppCompatActivity {
     boolean exit = false;
@@ -36,21 +38,30 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private void switchToVideo(){
+    private void switchToVideo() {
         startActivity(new Intent(this, VideoActivity.class));
         finish();
     }
 
-    private static void setDefaultImage(Button setting){
-        String systemLangauge = Locale.getDefault().getCountry();
-        switch (systemLangauge){
-            case "PK":
-                setting.setBackgroundResource(R.drawable.pkr);
-                break;
-            default:
-                setting.setBackgroundResource(R.drawable.kes);
-                break;
-        }
+    private void setDefaultImage(Button setting) {
+        new CurrencyService(currencies -> {
+            String currency = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
+            if (currencies != null) {
+                currency = currencies[0];
+            }
+
+            int id;
+            switch (currency) {
+                case "PKR":
+                    id = R.drawable.pkr;
+                    break;
+                default:
+                    id = R.drawable.kes;
+                    break;
+            }
+
+            runOnUiThread(() -> setting.setBackgroundResource(id));
+        }).run();
     }
 
     private void settingButtonListener() {
@@ -63,7 +74,7 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private void switchToSetting(){
+    private void switchToSetting() {
         startActivity(new Intent(this, SettingActivity.class));
         finish();
     }
