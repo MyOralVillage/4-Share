@@ -28,8 +28,14 @@ public class SettingActivity extends AppCompatActivity {
 
         currency.add(findViewById(R.id.PKR));
         currency.add(findViewById(R.id.KEN));
+        currency.add(findViewById(R.id.BAN));
+        currency.add(findViewById(R.id.USA));
+        currency.add(findViewById(R.id.india));
         currencyName.add("PKR");
         currencyName.add("KES");
+        currencyName.add("BDT");
+        currencyName.add("USD");
+        currencyName.add("INR");
         currencyButtonListener();
     }
 

@@ -4,16 +4,10 @@ const path = require("path");
 const { Pool } = require("pg");
 
 const app = express();
-app.use(express.static(path.join(__dirname, "build")));
-app.use(express.json());
-app.use(
-  basicAuth({
-    users: { admin: process.env.SECRET || "password" },
-    challenge: true
-  })
-);
-
+const router = express.Router();
 const pool = new Pool();
+
+app.use(express.json());
 
 async function areCurrenciesValid(currencies) {
   const resultSet = await pool.query({
@@ -25,8 +19,6 @@ async function areCurrenciesValid(currencies) {
   return currencies.every(currency => validCurrencies.indexOf(currency) >= 0);
 }
 
-app.use("/", express.static("build"));
-
 app.get("/api/countries", (req, res) => {
   pool
     .query(
@@ -36,10 +28,10 @@ app.get("/api/countries", (req, res) => {
     .catch(e => console.error(e.stack));
 });
 
-app.get("/api/currencies/:country", (req, res) => {
+app.get("/api/currencies/:code", (req, res) => {
   pool
-    .query("SELECT currencies::text[] FROM countries WHERE name = $1", [
-      req.params.country
+    .query("SELECT currencies::text[] FROM countries WHERE code = $1", [
+      req.params.code
     ])
     .then(rset => {
       if (rset.length === 0) {
@@ -51,13 +43,13 @@ app.get("/api/currencies/:country", (req, res) => {
     .catch(e => console.error(e.stack));
 });
 
-app.post("/api/currencies/:country", async (req, res) => {
+router.post("/api/currencies/:code", async (req, res) => {
   const currencies = req.body;
 
   if (await areCurrenciesValid(currencies)) {
     const resultSet = await pool.query(
-      "UPDATE countries SET currencies = $1 WHERE name = $2",
-      [currencies, req.params.country]
+      "UPDATE countries SET currencies = $1 WHERE code = $2",
+      [currencies, req.params.code]
     );
 
     if (resultSet.length === 0) {
@@ -70,9 +62,20 @@ app.post("/api/currencies/:country", async (req, res) => {
   }
 });
 
-app.get("*", (req, res) => {
+router.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build/index.html"));
 });
+
+app.use(
+  [
+    basicAuth({
+      users: { admin: process.env.SECRET || "password" },
+      challenge: true
+    }),
+    express.static("build")
+  ],
+  router
+);
 
 const port = process.env.PORT || 5000;
 console.log(`Attaching to port ${port}...`);

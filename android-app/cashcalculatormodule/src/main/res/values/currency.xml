@@ -72,7 +72,7 @@
         <item>10000</item>
         <item>@drawable/currency_kes_10000</item>
         <item>@drawable/currency_kes_10000</item>
-        <item>0.6</item>
+        <item>0.9</item>
         <item>0.0</item>
 
         <item>1000</item>
@@ -128,5 +128,171 @@
         <item>@drawable/currency_kes_1</item>
         <item>0.85</item>
         <item>0.0</item>
+    </array>
+    <array name="currency_USD">
+        <item>1000</item>
+        <item>@drawable/currency_usd_1000</item>
+        <item>@drawable/currency_usd_1000</item>
+        <item>1.0</item>
+        <item>0.012</item>
+
+        <item>100</item>
+        <item>@drawable/currency_usd_100</item>
+        <item>@drawable/currency_usd_100_folded</item>
+        <item>1.0</item>
+        <item>0.024</item>
+
+        <item>50</item>
+        <item>@drawable/currency_usd_50</item>
+        <item>@drawable/currency_usd_50_folded</item>
+        <item>1.0</item>
+        <item>0.036</item>
+
+        <item>20</item>
+        <item>@drawable/currency_usd_20</item>
+        <item>@drawable/currency_usd_20_folded</item>
+        <item>1.0</item>
+        <item>0.048</item>
+
+        <item>10</item>
+        <item>@drawable/currency_usd_10</item>
+        <item>@drawable/currency_usd_10_folded</item>
+        <item>1.0</item>
+        <item>0.06</item>
+
+        <item>5</item>
+        <item>@drawable/currency_usd_5</item>
+        <item>@drawable/currency_usd_5_folded</item>
+        <item>1.0</item>
+        <item>0.07</item>
+
+        <item>1</item>
+        <item>@drawable/currency_usd_1</item>
+        <item>@drawable/currency_usd_1_folded</item>
+        <item>1.0</item>
+        <item>0.08</item>
+
+        <item>0.25</item>
+        <item>@drawable/currency_usd_0_25</item>
+        <item>@drawable/currency_usd_0_25</item>
+        <item>0.85</item>
+        <item>0.0</item>
+
+        <item>0.10</item>
+        <item>@drawable/currency_usd_0_10</item>
+        <item>@drawable/currency_usd_0_10</item>
+        <item>0.85</item>
+        <item>0.0</item>
+
+        <item>0.01</item>
+        <item>@drawable/currency_usd_0_01</item>
+        <item>@drawable/currency_usd_0_01</item>
+        <item>0.85</item>
+        <item>0.0</item>
+    </array>
+    <array name="currency_BDT">
+        <item>1000</item>
+        <item>@drawable/currency_bdt_1000</item>
+        <item>@drawable/currency_bdt_1000_folded</item>
+        <item>1.0</item>
+        <item>0.012</item>
+
+        <item>500</item>
+        <item>@drawable/currency_bdt_500</item>
+        <item>@drawable/currency_bdt_500_folded</item>
+        <item>1.0</item>
+        <item>0.024</item>
+
+        <item>100</item>
+        <item>@drawable/currency_bdt_100</item>
+        <item>@drawable/currency_bdt_100_folded</item>
+        <item>1.0</item>
+        <item>0.036</item>
+
+        <item>50</item>
+        <item>@drawable/currency_bdt_50</item>
+        <item>@drawable/currency_bdt_50_folded</item>
+        <item>1.0</item>
+        <item>0.048</item>
+
+        <item>20</item>
+        <item>@drawable/currency_bdt_20</item>
+        <item>@drawable/currency_bdt_20_folded</item>
+        <item>1.0</item>
+        <item>0.06</item>
+
+        <item>10</item>
+        <item>@drawable/currency_bdt_10</item>
+        <item>@drawable/currency_bdt_10_folded</item>
+        <item>1.0</item>
+        <item>0.07</item>
+
+        <item>5</item>
+        <item>@drawable/currency_bdt_5</item>
+        <item>@drawable/currency_bdt_5_folded</item>
+        <item>1.0</item>
+        <item>0.08</item>
+
+        <item>2</item>
+        <item>@drawable/currency_bdt_2</item>
+        <item>@drawable/currency_bdt_2_folded</item>
+        <item>1.0</item>
+        <item>0.09</item>
+    </array>
+
+    <array name="currency_INR">
+        <item>20000</item>
+        <item>@drawable/currency_inr_20000</item>
+        <item>@drawable/currency_inr_20000</item>
+        <item>1.0</item>
+        <item>0.012</item>
+
+        <item>2000</item>
+        <item>@drawable/currency_inr_2000</item>
+        <item>@drawable/currency_inr_2000_folded</item>
+        <item>1.0</item>
+        <item>0.024</item>
+
+        <item>500</item>
+        <item>@drawable/currency_inr_500</item>
+        <item>@drawable/currency_inr_500_folded</item>
+        <item>1.0</item>
+        <item>0.036</item>
+
+        <item>100</item>
+        <item>@drawable/currency_inr_100</item>
+        <item>@drawable/currency_inr_100_folded</item>
+        <item>1.0</item>
+        <item>0.048</item>
+
+        <item>50</item>
+        <item>@drawable/currency_inr_50</item>
+        <item>@drawable/currency_inr_50_folded</item>
+        <item>1.0</item>
+        <item>0.06</item>
+
+        <item>20</item>
+        <item>@drawable/currency_inr_20</item>
+        <item>@drawable/currency_inr_20_folded</item>
+        <item>1.0</item>
+        <item>0.07</item>
+
+        <item>10</item>
+        <item>@drawable/currency_inr_10</item>
+        <item>@drawable/currency_inr_10_folded</item>
+        <item>1.0</item>
+        <item>0.08</item>
+
+        <item>2</item>
+        <item>@drawable/currency_inr_2</item>
+        <item>@drawable/currency_inr_2</item>
+        <item>1.0</item>
+        <item>0.09</item>
+
+        <item>1</item>
+        <item>@drawable/currency_inr_1</item>
+        <item>@drawable/currency_inr_1</item>
+        <item>1.0</item>
+        <item>0.09</item>
     </array>
 </resources>

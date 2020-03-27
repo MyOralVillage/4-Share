@@ -44,6 +44,15 @@ public class SettingService {
             case "PK":
                 defaultCurrency = "PKR";
                 break;
+            case "BD":
+                defaultCurrency = "BDT";
+                break;
+            case "US":
+                defaultCurrency = "USD";
+                break;
+            case "IN":
+                defaultCurrency = "INR";
+                break;
             default:
                 defaultCurrency = "KES";
                 break;

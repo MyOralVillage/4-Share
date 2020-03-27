@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
+import MainBar from "./MainBar";
 import CountryPage from "./CountryPage";
 import MainPage from "./MainPage";
 import * as serviceWorker from "./serviceWorker";
@@ -14,13 +15,16 @@ fetch("/api/countries")
         <div className="index">
           <Switch>
             <Route
-              path="/country/:country"
+              path="/country/:code"
+              exact
               render={props => <CountryPage {...props} countries={countries} />}
             />
             <Route
               path="/"
+              exact
               render={props => <MainPage {...props} countries={countries} />}
             />
+            <Route render={props => <MainBar msg={" - Not found"} />} />
           </Switch>
         </div>
       </Router>
