@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -36,7 +35,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void buildLayout() {
-        new CurrencyService(stored -> {
+        new CurrencyService(getApplicationContext(), stored -> {
             String[] currencies = stored != null ? stored : DEFAULT_ORDER;
             runOnUiThread(() -> {
                 LinearLayout view = findViewById(R.id.currencies);
