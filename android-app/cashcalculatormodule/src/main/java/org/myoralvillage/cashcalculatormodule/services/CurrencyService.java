@@ -31,15 +31,13 @@ public class CurrencyService {
     private static String[] strings = null;
 
     private Context context;
-    private Callback<String[]> callable;
 
-    public CurrencyService(Context context, Callback<String[]> callable) {
+    public CurrencyService(Context context) {
         this.context = context;
-        this.callable = callable;
     }
 
-    public void run() {
-        new Thread(() -> callable.consume(getCurrencies())).start();
+    public void call(Callback<String[]> callback) {
+        new Thread(() -> callback.consume(getCurrencies())).start();
     }
 
     private String readStream(InputStream in) throws IOException {

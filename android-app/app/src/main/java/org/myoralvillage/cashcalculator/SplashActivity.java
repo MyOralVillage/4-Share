@@ -44,7 +44,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setDefaultImage(Button setting) {
-        new CurrencyService(getApplicationContext(), currencies -> {
+        new CurrencyService(getApplicationContext()).call(currencies -> {
             String currency = Currency.getInstance(Locale.getDefault()).getCurrencyCode();
             if (currencies != null) {
                 currency = currencies[0];
@@ -58,7 +58,7 @@ public class SplashActivity extends AppCompatActivity {
 
             int finalId = id;
             runOnUiThread(() -> setting.setBackgroundResource(finalId));
-        }).run();
+        });
     }
 
     private void settingButtonListener() {

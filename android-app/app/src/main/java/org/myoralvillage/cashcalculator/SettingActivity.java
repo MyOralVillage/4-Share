@@ -35,7 +35,7 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     private void buildLayout() {
-        new CurrencyService(getApplicationContext(), stored -> {
+        new CurrencyService(getApplicationContext()).call(stored -> {
             String[] currencies = stored != null ? stored : DEFAULT_ORDER;
             runOnUiThread(() -> {
                 LinearLayout view = findViewById(R.id.currencies);
@@ -74,7 +74,7 @@ public class SettingActivity extends AppCompatActivity {
                     view.addView(button);
                 }
             });
-        }).run();
+        });
     }
 
     private void switchToMainActivity() {
