@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -110,6 +111,14 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         });
 
         linearLayout.addView(denominationsView);
+
+        Handler h = new Handler();
+
+        h.postDelayed(() -> {
+            int view = getWidth()/2;
+            int scrollbar = linearLayout.getWidth()/2;
+            scrollTo(scrollbar - view , 0);
+        }, 250);
     }
 
     /**
