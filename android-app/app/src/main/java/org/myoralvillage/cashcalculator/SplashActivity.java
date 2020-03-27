@@ -47,6 +47,15 @@ public class SplashActivity extends AppCompatActivity {
             case "PK":
                 setting.setBackgroundResource(R.drawable.pkr);
                 break;
+            case "BD":
+                setting.setBackgroundResource(R.drawable.ban);
+                break;
+            case "US":
+                setting.setBackgroundResource(R.drawable.usa);
+                break;
+            case "IN":
+                setting.setBackgroundResource(R.drawable.india);
+                break;
             default:
                 setting.setBackgroundResource(R.drawable.kes);
                 break;
