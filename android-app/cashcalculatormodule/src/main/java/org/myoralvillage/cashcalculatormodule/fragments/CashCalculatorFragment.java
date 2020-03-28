@@ -227,14 +227,18 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onTapNextHistory() {
+                numberInputView.setVisibility(View.INVISIBLE);
                 service.gotoNextHistorySlide();
                 updateAll();
+                sum.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onTapPreviousHistory() {
+                numberInputView.setVisibility(View.INVISIBLE);
                 service.gotoPreviousHistorySlide();
                 updateAll();
+                sum.setVisibility(View.VISIBLE);
             }
         });
     }
