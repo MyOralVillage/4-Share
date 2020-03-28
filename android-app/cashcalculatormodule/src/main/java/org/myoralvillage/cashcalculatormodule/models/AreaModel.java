@@ -159,6 +159,14 @@ public class AreaModel {
             return x >= minX && x <= maxX && y >= minY && y <= maxY;
         }
 
+        public int getX() {
+            return minX;
+        }
+
+        public int getY() {
+            return minY;
+        }
+
         /**
          * Indicates whether some other <code>Box</code> is equal to this one.
          *
