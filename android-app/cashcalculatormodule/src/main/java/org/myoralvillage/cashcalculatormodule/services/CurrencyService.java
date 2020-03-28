@@ -28,7 +28,7 @@ public class CurrencyService {
     private static final String BASE_URL =
             "https://cash-calculator-admin.herokuapp.com/api/currencies/";
     private static final String FILE_NAME = "db.json";
-    private static String[] defaultOrder = null;
+    private String[] defaultOrder;
     private static String[] strings = null;
 
     private Context context;
