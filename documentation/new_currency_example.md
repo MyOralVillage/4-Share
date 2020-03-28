@@ -95,22 +95,17 @@ INSERT INTO countries VALUES ('JP', 'japan', 'JPY', 'JPY');
 
 - (Optional) Search for the 2 letter country code from [this website](https://www.iso.org/obp/ui/#search). This is to ensure that the 2 letter country code presented in the application matches the new added currency. In this case, the 2 letter country code is JP.
 
-- (Optional) In SettingService.java, add the following to the list of case statements in the getDefaultCurrency function, in case this country was not updated in the admin panel:
+- (Optional) Add the 3 letter currency code and 2 letter country code to the list of items in the array located in countries.xml, in case this country was not updated in the admin panel. Place the items in the specific location that you wish for this new currency to be ordered as the default currency order:
 
-```java
-switch (systemLangauge){
-    //Previously added cases.
-    case "JP":
-        defaultCurrency = "JPY";
-        break;
-    //Previously added cases and default.
-}
-```
+```xml
+<array name="default_country_order">
+    //Higher preference currency codes.
 
-- (Optional) In CurrencyService.java, add the currency to the list of default currencies.
+    <item> JPY </item>
+    <item> JP </item>
 
-```java
-private static final String[] DEFAULT_ORDER = {"KES", "PKR", "BDT", "USD", "INR", "JPY"};
+    //Lower preference currency codes.
+</array>
 ```
 
 The currency will now be added so if the country is chosen in the settings is Japan, or the device's language is set to Japanese, then the following will be initialized on screen. The preference in getting a currency order for a specified currency code in the model is:
