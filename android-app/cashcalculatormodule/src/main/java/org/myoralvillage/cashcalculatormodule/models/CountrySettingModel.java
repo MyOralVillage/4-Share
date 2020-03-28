@@ -121,7 +121,7 @@ public class CountrySettingModel {
 
                     if (currency != null && country != null) addCode(country, currency);
                 }
-                defaultCurrencyCode = array.getString(array.length() - 1);
+                defaultCurrencyCode = array.getString(0);
             } finally {
                 // Required to call as part of the TypedArray lifecycle
                 array.recycle();

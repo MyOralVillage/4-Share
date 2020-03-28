@@ -21,8 +21,8 @@ public class SettingService {
      *
      * @see CountrySettingModel
      */
-
     private static CountrySettingModel countrySettingModel;
+
     /**
      * The default currency code for the Cash Calculator.
      */
@@ -81,10 +81,15 @@ public class SettingService {
     public String[] getDefaultOrder(){
         int num = countrySettingModel.getNumCodes();
         String[] order = new String[num];
-        int i = 0;
+        String defaultCurrency = getDefaultCurrency();
+        order[0] = defaultCurrency;
+
+        int i = 1;
         for (CountrySettingModel.Code code : countrySettingModel.getCodes()){
-            order[i] = code.getCurrencyCode();
-            i += 1;
+            if (!defaultCurrency.equals(code.getCurrencyCode())) {
+                order[i] = code.getCurrencyCode();
+                i += 1;
+            }
         }
 
         return order;
