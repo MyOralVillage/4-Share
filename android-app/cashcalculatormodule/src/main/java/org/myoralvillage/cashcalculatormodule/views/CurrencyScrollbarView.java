@@ -112,13 +112,11 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
         linearLayout.addView(denominationsView);
 
-        Handler h = new Handler();
-
-        h.postDelayed(() -> {
+        post(() -> {
             int view = getWidth()/2;
             int scrollbar = linearLayout.getWidth()/2;
-            scrollTo(scrollbar - view , 0);
-        }, 250);
+            scrollTo(scrollbar - view, 0);
+        });
     }
 
     /**
