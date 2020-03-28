@@ -9,11 +9,17 @@ CREATE TABLE countries (
     code char(2) PRIMARY KEY,
     name TEXT,
     currency char(3) REFERENCES currencies(code),
-    currencies TEXT[]
+    currencies TEXT[] DEFAULT '{"KES", "PKR", "BDT", "USD", "INR"}'
 );
 
 INSERT INTO currencies VALUES ('KES');
 INSERT INTO currencies VALUES ('PKR');
+INSERT INTO currencies VALUES ('BDT');
+INSERT INTO currencies VALUES ('USD');
+INSERT INTO currencies VALUES ('INR');
 
-INSERT INTO countries VALUES ('KE', 'kenya', 'KES', '{"KES","PKR"}');
-INSERT INTO countries VALUES ('PK', 'pakistan', 'PKR', '{"PKR","KES"}');
+INSERT INTO countries VALUES ('KE', 'Kenya', 'KES');
+INSERT INTO countries VALUES ('PK', 'Pakistan', 'PKR');
+INSERT INTO countries VALUES ('BD', 'Bangladesh', 'BDT');
+INSERT INTO countries VALUES ('US', 'United States of America', 'USD');
+INSERT INTO countries VALUES ('IN', 'India', 'INR');
