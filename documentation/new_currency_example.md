@@ -4,6 +4,22 @@ Suppose we want to add a new currency type, say Japanese Yen:
 
 - (Optional) Search for the country code from [this website](https://www.currency-iso.org/dam/downloads/lists/list_one.xml). This is to ensure that the symbol presented in the application matches the new added currency. In this case, the currency code is JPY.
 
+# Admin Panel
+
+- Add an entry for the currency, Japanese Yen, to the database table. Then add it to each relevant country in the countries table's currencies column. This can be added through the init.sql or through an sql client:
+
+```sql
+/* Add the entry to the currencies table.*/
+INSERT INTO currencies VALUES ('JPY');
+
+/* Add the country associated with the currency if the country has not been added.*/
+INSERT INTO countries VALUES ('JP', 'japan', 'JPY', 'JPY');
+```
+
+# Mobile Application
+
+- Add an image to denote the currency type to the drawable folder. Name the image country_code_in_lowercase.png. In this case, the image will be named jpy.png.
+
 - In the currency.xml file at location ./android-app/cashcalculatormodule/src/main/res/values, add a new array with the Japanese Yen images:
 
 ```xml
@@ -77,21 +93,28 @@ Suppose we want to add a new currency type, say Japanese Yen:
     - Every (i-1) + 4 element, where i = 1,2,...,n and n is the number of denomination, is the scale factor of the denomination being added to adjust the size of the image on screen in the CountingTable.
     - Every (i-1) + 5 element, where i = 1,2,...,n and n is the number of denomination, is the offset in inches of the denomination being added to adjust the format of the image in the CurrencyScrollBar.
 
-- In activity_setting.xml, add a new button to the layout in order to select this new currency:
+- (Optional) Search for the 2 letter country code from [this website](https://www.iso.org/obp/ui/#search). This is to ensure that the 2 letter country code presented in the application matches the new added currency. In this case, the 2 letter country code is JP.
 
-```xml
-<Button
-        android:id="@+id/JPY"
-        android:background="@drawable/jpy"/>
-```
-
-    Note that "jpy" is the image name of the image being added to denote this will be Japanese Yen.
-
-- In SettingActivity.java, add the following to the onCreate function:
+- (Optional) In SettingService.java, add the following to the list of case statements in the getDefaultCurrency function, in case this country was not updated in the admin panel:
 
 ```java
-currency.add(findViewById(R.id.JPY));
-currencyName.add("JPY");
+switch (systemLangauge){
+    //Previously added cases.
+    case "JP":
+        defaultCurrency = "JPY";
+        break;
+    //Previously added cases and default.
+}
 ```
 
-- The currency will now be added so if the country is chosen in the settings is Japan, or the device's language is set to Japanese, then the following will be initialized on screen.
+- (Optional) In CurrencyService.java, add the currency to the list of default currencies.
+
+```java
+private static final String[] DEFAULT_ORDER = {"KES", "PKR", "BDT", "USD", "INR", "JPY"};
+```
+
+The currency will now be added so if the country is chosen in the settings is Japan, or the device's language is set to Japanese, then the following will be initialized on screen. The preference in getting a currency order for a specified currency code in the model is:
+
+1. Attempt to connect to the endpoint of the admin panel to read the currency for a country.
+2. If preference 1 fails, then check to see if there is an order stored in the database file, db.json.
+3. If all above fails, use the default currrency order specified in the CurrencyService.java.
