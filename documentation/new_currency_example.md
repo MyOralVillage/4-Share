@@ -104,7 +104,7 @@ INSERT INTO countries VALUES ('JP', 'japan', 'JPY', 'JPY');
     <item> JPY </item>
     <item> JP </item>
 
-    //Lower preference currency codes.
+    //Lower preference currency codes and default value.
 </array>
 ```
 
