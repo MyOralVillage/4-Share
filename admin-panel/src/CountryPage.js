@@ -133,13 +133,10 @@ class CountryPage extends React.Component {
     const country = this.state.countries.filter(
       country => country.code === this.state.code
     )[0].name;
-    const name =
-      country.charAt(0).toUpperCase() + country.slice(1).toLowerCase();
     return (
       <div>
-        <MainBar msg={" - " + name} />
+        <MainBar msg={" - " + country} />
         <FormInfo
-          country={this.state.country}
           countries={this.state.countries}
           order={this.state.order}
           onDragEnd={async result => {
