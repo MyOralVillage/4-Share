@@ -1,6 +1,7 @@
 package org.myoralvillage.cashcalculatormodule.services;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
@@ -29,13 +30,14 @@ public class CurrencyService {
     private static final String BASE_URL =
             "https://cash-calculator-admin.herokuapp.com/api/currencies/";
     private static final String FILE_NAME = "db.json";
-    private static final String[] DEFAULT_ORDER = {"KES", "PKR", "BDT", "USD", "INR"};
+    private static String[] defaultOrder = null;
     private static String[] strings = null;
 
     private Context context;
 
-    public CurrencyService(Context context) {
+    public CurrencyService(Context context, String[] defaultOrder) {
         this.context = context;
+        this.defaultOrder = defaultOrder;
     }
 
     public void call(Callback<String[]> callback) {
@@ -89,7 +91,7 @@ public class CurrencyService {
     }
 
     private String[] getCurrencies() {
-        if (strings != null && !Arrays.equals(strings, DEFAULT_ORDER)) {
+        if (strings != null && !Arrays.equals(strings, defaultOrder)) {
             return strings;
         }
 
@@ -128,7 +130,7 @@ public class CurrencyService {
         }
 
         if (strings == null) {
-            strings = DEFAULT_ORDER;
+            strings = defaultOrder;
         }
 
         return strings;

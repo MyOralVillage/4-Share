@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
+import org.myoralvillage.cashcalculatormodule.services.SettingService;
 
 public class SplashActivity extends AppCompatActivity {
     boolean exit = false;
@@ -41,7 +42,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void setDefaultImage(Button setting) {
-        new CurrencyService(getApplicationContext()).call(currencies -> {
+        SettingService settingService = new SettingService(getApplicationContext(), getResources());
+        new CurrencyService(getApplicationContext(), settingService.getDefaultOrder()).call(
+                currencies -> {
             int id = CurrencyService.getCurrencyResource(currencies[0]);
             runOnUiThread(() -> setting.setBackgroundResource(id));
         });

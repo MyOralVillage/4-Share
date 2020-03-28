@@ -1,5 +1,11 @@
 package org.myoralvillage.cashcalculatormodule.services;
 
+import android.content.Context;
+import android.content.res.Resources;
+
+import org.myoralvillage.cashcalculatormodule.models.CountrySettingModel;
+
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -10,10 +16,16 @@ import java.util.Locale;
  * @see Object
  */
 public class SettingService {
+    public static CountrySettingModel countrySettingModel;
     /**
      * The default currency code for the Cash Calculator.
      */
-    private static String currencyName = getDefaultCurrency();
+    private static String currencyName;
+
+    public SettingService(Context context, Resources resources){
+        countrySettingModel = new CountrySettingModel(resources, context);
+        currencyName = getDefaultCurrency();
+    }
 
     /**
      * Returns current the currency code for the Cash Calculator.
@@ -40,23 +52,23 @@ public class SettingService {
     private static String getDefaultCurrency(){
         String defaultCurrency;
         String systemLangauge = Locale.getDefault().getCountry();
-        switch (systemLangauge){
-            case "PK":
-                defaultCurrency = "PKR";
-                break;
-            case "BD":
-                defaultCurrency = "BDT";
-                break;
-            case "US":
-                defaultCurrency = "USD";
-                break;
-            case "IN":
-                defaultCurrency = "INR";
-                break;
-            default:
-                defaultCurrency = "KES";
-                break;
-        }
+
+        defaultCurrency = countrySettingModel.findThreeLetterCode(systemLangauge);
+
+        if (defaultCurrency == null)
+            return countrySettingModel.getDefaultCode();
+
         return defaultCurrency;
+    }
+
+    public String[] getDefaultOrder(){
+        int num = countrySettingModel.getNumCountries();
+        String[] order = new String[num];
+        int i = 0;
+        for (CountrySettingModel.CountryCode countryCode : countrySettingModel.getCountries()){
+            order[i] = countryCode.getThreeLetterCode();
+        }
+
+        return order;
     }
 }
