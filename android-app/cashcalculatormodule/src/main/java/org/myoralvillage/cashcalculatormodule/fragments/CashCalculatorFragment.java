@@ -145,6 +145,7 @@ public class CashCalculatorFragment extends Fragment {
      * @see CountingTableView
      */
     private void initializeCountingView() {
+        TextView sum = view.findViewById(R.id.sum_view);
         countingTableView = view.findViewById(R.id.counting_table);
         countingTableView.initialize(currCurrency, service.getAppState());
         countingTableView.setListener(new CountingTableListener() {
@@ -218,8 +219,10 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onTapEnterHistory() {
+                numberInputView.setVisibility(View.INVISIBLE);
                 service.enterHistorySlideshow();
                 updateAll();
+                sum.setVisibility(View.VISIBLE);
             }
 
             @Override
