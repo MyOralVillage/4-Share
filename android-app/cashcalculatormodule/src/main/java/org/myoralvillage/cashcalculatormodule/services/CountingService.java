@@ -53,7 +53,7 @@ public class CountingService {
             return null;
 
         ArrayList<Integer> allocation = allocateZero(denominations.size());
-        if (value.equals(BigDecimal.ZERO))
+        if (value.compareTo(BigDecimal.ZERO) == 0)
             return allocation;
 
         if (isCached(value, symbol))
