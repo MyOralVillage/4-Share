@@ -33,18 +33,18 @@ public class CountrySettingModel {
         countries.add(new CountryCode(twoLetter, threeLetter));
     }
 
-    public String findThreeLetterCode(String value){
+    public String findCurrencyCode(String value){
         for (CountryCode code: countries){
-            if(code.getTwoLetterCode().equals(value))
-                return code.getThreeLetterCode();
+            if(code.getCountryCode().equals(value))
+                return code.getCurrencyCode();
         }
         return null;
     }
 
-    public String findTwoLetterCode(String value){
+    public String findCountryCode(String value){
         for (CountryCode code: countries){
-            if(code.getThreeLetterCode().equals(value))
-                return code.getTwoLetterCode();
+            if(code.getCurrencyCode().equals(value))
+                return code.getCountryCode();
         }
         return null;
     }
@@ -57,9 +57,9 @@ public class CountrySettingModel {
             TypedArray array = resources.obtainTypedArray(arrayId);
             try {
                 for (int i = 0; i < array.length() - 1; i += 2) {
-                    // Build CurrencyModel instance from the values in the xml
-                    String value2 = array.getString(i);
-                    String value3 = array.getString(i+1);
+                    // Build CountryCode instance from the values in the xml
+                    String value3 = array.getString(i);
+                    String value2 = array.getString(i+1);
 
                     if (value3 != null && value2 != null) addCountryCode(value2, value3);
                 }
@@ -72,20 +72,20 @@ public class CountrySettingModel {
     }
 
     public static class CountryCode{
-        private String twoLetterCode;
-        private String threeLetterCode;
+        private String countryCode;
+        private String currencyCode;
 
-        CountryCode(String twoLetterCode, String threeLetterCode){
-            this.twoLetterCode = twoLetterCode;
-            this.threeLetterCode = threeLetterCode;
+        CountryCode(String countryCode, String currencyCode){
+            this.countryCode = countryCode;
+            this.currencyCode = currencyCode;
         }
 
-        public String getThreeLetterCode() {
-            return threeLetterCode;
+        public String getCurrencyCode() {
+            return currencyCode;
         }
 
-        String getTwoLetterCode() {
-            return twoLetterCode;
+        String getCountryCode() {
+            return countryCode;
         }
     }
 }

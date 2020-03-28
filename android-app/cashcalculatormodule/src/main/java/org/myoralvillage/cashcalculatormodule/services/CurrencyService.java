@@ -1,7 +1,6 @@
 package org.myoralvillage.cashcalculatormodule.services;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 

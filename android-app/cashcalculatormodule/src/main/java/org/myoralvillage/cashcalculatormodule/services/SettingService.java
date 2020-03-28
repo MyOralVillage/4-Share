@@ -52,7 +52,7 @@ public class SettingService {
         String defaultCurrency;
         String systemLangauge = Locale.getDefault().getCountry();
 
-        defaultCurrency = countrySettingModel.findThreeLetterCode(systemLangauge);
+        defaultCurrency = countrySettingModel.findCurrencyCode(systemLangauge);
 
         if (defaultCurrency == null)
             return countrySettingModel.getDefaultCode();
@@ -65,7 +65,8 @@ public class SettingService {
         String[] order = new String[num];
         int i = 0;
         for (CountrySettingModel.CountryCode countryCode : countrySettingModel.getCountries()){
-            order[i] = countryCode.getThreeLetterCode();
+            order[i] = countryCode.getCurrencyCode();
+            i += 1;
         }
 
         return order;
