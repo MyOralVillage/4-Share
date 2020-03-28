@@ -7,43 +7,101 @@ import android.content.res.TypedArray;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A model class used to represent the type of codes and their currencies.
+ *
+ * @author Alexander Yang
+ * @see Object
+ */
 public class CountrySettingModel {
-    private List<CountryCode> countries;
+    /**
+     * A list of Codes for a country and their currencies.
+     *
+     * @see Code
+     */
+    private List<Code> codes;
 
-    private String defaultCode;
+    /**
+     * The default currency code if the country is not in the list.
+     */
+    private String defaultCurrencyCode;
 
+    /**
+     * Constructs a new <code>CountrySettingModel</code> with the specified application's resources
+     * and context.
+     *
+     * @param resources The resource of this application.
+     * @param context The context of this application.
+     */
     public CountrySettingModel(Resources resources, Context context) {
-        this.countries = new ArrayList<>();
+        this.codes = new ArrayList<>();
         loadCountryCode(resources, context);
     }
 
-    public List<CountryCode> getCountries(){
-        return countries;
+    /**
+     * Returns the list of codes associated with this model.
+     *
+     * @return list of codes.
+     * @see Code
+     */
+    public List<Code> getCodes(){
+        return codes;
     }
 
-    public String getDefaultCode(){
-        return defaultCode;
+    /**
+     * Returns the default currency code associated with this model.
+     *
+     * @return the default currency code.
+     */
+    public String getDefaultCurrencyCode(){
+        return defaultCurrencyCode;
     }
 
-    public int getNumCountries(){
-        return countries.size();
+    /**
+     * Returns the number of codes in the list, <code>codes</code>.
+     *
+     * @return the size of the list, codes.
+     */
+    public int getNumCodes(){
+        return codes.size();
     }
 
-    private void addCountryCode(String twoLetter, String threeLetter){
-        countries.add(new CountryCode(twoLetter, threeLetter));
+    /**
+     * Adds a new code with the specified country code and currency code to the list of codes in this
+     * model.
+     *
+     * @param country The 2 letter country code.
+     * @param currency The 3 letter currency code.
+     *
+     * @see Code
+     */
+    private void addCode(String country, String currency){
+        codes.add(new Code(country, currency));
     }
 
-    public String findCurrencyCode(String value){
-        for (CountryCode code: countries){
-            if(code.getCountryCode().equals(value))
+    /**
+     * Returns the currency code associated with the specified country code.
+     *
+     * @param country The country code to be searched.
+     * @return The resulting currency code; Returns null if not found in the list.
+     */
+    public String findCurrencyCode(String country){
+        for (Code code: codes){
+            if(code.getCountryCode().equals(country))
                 return code.getCurrencyCode();
         }
         return null;
     }
 
-    public String findCountryCode(String value){
-        for (CountryCode code: countries){
-            if(code.getCurrencyCode().equals(value))
+    /**
+     * Returns the country code associated with the specified currency code.
+     *
+     * @param currency The currency code to be searched.
+     * @return The resulting country code; Returns null if not found in the list.
+     */
+    public String findCountryCode(String currency){
+        for (Code code: codes){
+            if(code.getCurrencyCode().equals(currency))
                 return code.getCountryCode();
         }
         return null;
@@ -57,13 +115,13 @@ public class CountrySettingModel {
             TypedArray array = resources.obtainTypedArray(arrayId);
             try {
                 for (int i = 0; i < array.length() - 1; i += 2) {
-                    // Build CountryCode instance from the values in the xml
-                    String value3 = array.getString(i);
-                    String value2 = array.getString(i+1);
+                    // Build Code instance from the values in the xml
+                    String currency = array.getString(i);
+                    String country = array.getString(i+1);
 
-                    if (value3 != null && value2 != null) addCountryCode(value2, value3);
+                    if (currency != null && country != null) addCode(country, currency);
                 }
-                defaultCode = array.getString(array.length() - 1);
+                defaultCurrencyCode = array.getString(array.length() - 1);
             } finally {
                 // Required to call as part of the TypedArray lifecycle
                 array.recycle();
@@ -71,19 +129,45 @@ public class CountrySettingModel {
         }
     }
 
-    public static class CountryCode{
+    /**
+     * A model class used to represent the codes for the country and the currency that country use.
+     */
+    public static class Code {
+        /**
+         * The country's 2 letter code.
+         */
         private String countryCode;
+
+        /**
+         * The currency's 3 letter code.
+         */
         private String currencyCode;
 
-        CountryCode(String countryCode, String currencyCode){
+        /**
+         * Constructs a new <code>Code</code> with the specified country code and currency code.
+         *
+         * @param countryCode A 2 letter String.
+         * @param currencyCode A 3 letter String.
+         */
+        Code(String countryCode, String currencyCode){
             this.countryCode = countryCode;
             this.currencyCode = currencyCode;
         }
 
+        /**
+         * Returns the currency code related to this model.
+         *
+         * @return the currency code.
+         */
         public String getCurrencyCode() {
             return currencyCode;
         }
 
+        /**
+         * Return the country code related to this model.
+         *
+         * @return the country code.
+         */
         String getCountryCode() {
             return countryCode;
         }

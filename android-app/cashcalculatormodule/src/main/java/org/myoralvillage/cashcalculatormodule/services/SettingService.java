@@ -10,17 +10,30 @@ import java.util.Locale;
 /**
  * A service class used to initialize the currency of the Cash Calculator.
  *
+ * @author Alexander Yang
  * @author Peter Panagiotis Roubatsis
  * @author Yujie Wu
  * @see Object
  */
 public class SettingService {
+    /**
+     * The model used to initialize the countries and their currencies for the Setting.
+     *
+     * @see CountrySettingModel
+     */
+
     private static CountrySettingModel countrySettingModel;
     /**
      * The default currency code for the Cash Calculator.
      */
     private static String currencyName;
 
+    /**
+     * Constructs a new <code>SettingService</code> with the application's context and resources.
+     *
+     * @param context The application's resource.
+     * @param resources The application's context.
+     */
     public SettingService(Context context, Resources resources){
         countrySettingModel = new CountrySettingModel(resources, context);
         currencyName = getDefaultCurrency();
@@ -55,17 +68,22 @@ public class SettingService {
         defaultCurrency = countrySettingModel.findCurrencyCode(systemLangauge);
 
         if (defaultCurrency == null)
-            return countrySettingModel.getDefaultCode();
+            return countrySettingModel.getDefaultCurrencyCode();
 
         return defaultCurrency;
     }
 
+    /**
+     * Returns the list of countryCode in the order that they were added.
+     *
+     * @return list of countryCode.
+     */
     public String[] getDefaultOrder(){
-        int num = countrySettingModel.getNumCountries();
+        int num = countrySettingModel.getNumCodes();
         String[] order = new String[num];
         int i = 0;
-        for (CountrySettingModel.CountryCode countryCode : countrySettingModel.getCountries()){
-            order[i] = countryCode.getCurrencyCode();
+        for (CountrySettingModel.Code code : countrySettingModel.getCodes()){
+            order[i] = code.getCurrencyCode();
             i += 1;
         }
 
