@@ -5,7 +5,6 @@ import android.content.res.Resources;
 
 import org.myoralvillage.cashcalculatormodule.models.CountrySettingModel;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -16,7 +15,7 @@ import java.util.Locale;
  * @see Object
  */
 public class SettingService {
-    public static CountrySettingModel countrySettingModel;
+    private static CountrySettingModel countrySettingModel;
     /**
      * The default currency code for the Cash Calculator.
      */

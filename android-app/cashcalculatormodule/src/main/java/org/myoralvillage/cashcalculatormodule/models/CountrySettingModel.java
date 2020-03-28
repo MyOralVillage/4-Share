@@ -4,12 +4,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class CountrySettingModel {
     private List<CountryCode> countries;
@@ -33,7 +29,7 @@ public class CountrySettingModel {
         return countries.size();
     }
 
-    public void addCountryCode(String twoLetter, String threeLetter){
+    private void addCountryCode(String twoLetter, String threeLetter){
         countries.add(new CountryCode(twoLetter, threeLetter));
     }
 
@@ -79,7 +75,7 @@ public class CountrySettingModel {
         private String twoLetterCode;
         private String threeLetterCode;
 
-        public CountryCode(String twoLetterCode, String threeLetterCode){
+        CountryCode(String twoLetterCode, String threeLetterCode){
             this.twoLetterCode = twoLetterCode;
             this.threeLetterCode = threeLetterCode;
         }
@@ -88,7 +84,7 @@ public class CountrySettingModel {
             return threeLetterCode;
         }
 
-        public String getTwoLetterCode() {
+        String getTwoLetterCode() {
             return twoLetterCode;
         }
     }
