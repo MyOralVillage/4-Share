@@ -99,12 +99,12 @@ INSERT INTO countries VALUES ('JP', 'japan', 'JPY', 'JPY');
 
 ```xml
 <array name="default_country_order">
-    //Higher preference currency codes.
+    <!--Higher preference currency codes. Note that the default code is the first item.-->
 
     <item> JPY </item>
     <item> JP </item>
 
-    //Lower preference currency codes and default value.
+    <!--Lower preference currency codes.-->
 </array>
 ```
 
