@@ -8,6 +8,7 @@ import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment;
+import org.myoralvillage.cashcalculatormodule.services.SettingService;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -22,7 +23,12 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         CashCalculatorFragment fragment = (CashCalculatorFragment) getSupportFragmentManager().findFragmentById(R.id.CountingTableFragment);
 
-        if (fragment != null)
-            fragment.initialize(SettingActivity.getSettingService().getCurrencyName());
+        if (fragment != null) {
+            SettingService settingService = SettingActivity.getSettingService();
+            if (settingService == null){
+                settingService = new SettingService(getApplicationContext(), getResources());
+            }
+            fragment.initialize(settingService.getCurrencyName());
+        }
     }
 }
