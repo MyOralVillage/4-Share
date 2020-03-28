@@ -348,8 +348,12 @@ public class CountingTableSurfaceView extends View {
         for (Map.Entry<DenominationModel, AreaModel> entry : areas.entrySet()) {
             AreaModel.Box box = entry.getValue().getBoxFromPoint(x, y);
             if (box != null) {
-                removeDenomination(entry.getKey());
-                entry.getValue().removeLastBox();
+                int color = bitmaps.get(entry.getKey()).
+                        getPixel(Math.round(x - box.getX()), Math.round(y - box.getY()));
+                if (color != Color.TRANSPARENT) {
+                    removeDenomination(entry.getKey());
+                    entry.getValue().removeLastBox();
+                }
                 break;
             }
         }
