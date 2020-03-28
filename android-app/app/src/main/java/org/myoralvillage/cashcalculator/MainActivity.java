@@ -26,9 +26,11 @@ public class MainActivity extends AppCompatActivity{
         if (fragment != null) {
             SettingService settingService = SettingActivity.getSettingService();
             if (settingService == null){
-                settingService = new SettingService(getApplicationContext(), getResources());
+                String currencyName = getIntent().getStringExtra("currencyName");
+                fragment.initialize(currencyName);
             }
-            fragment.initialize(settingService.getCurrencyName());
+            else
+                fragment.initialize(settingService.getCurrencyName());
         }
     }
 }

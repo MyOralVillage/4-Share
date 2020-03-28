@@ -16,6 +16,8 @@ import org.myoralvillage.cashcalculatormodule.services.SettingService;
 public class SplashActivity extends AppCompatActivity {
     boolean exit = false;
 
+    String currencyName = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +26,8 @@ public class SplashActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-        mainActivityButtonListener();
         settingButtonListener();
+        mainActivityButtonListener();
     }
 
     private void mainActivityButtonListener() {
@@ -37,7 +39,9 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void switchToVideo() {
-        startActivity(new Intent(this, VideoActivity.class));
+        Intent intent = new Intent(this, VideoActivity.class);
+        intent.putExtra("currencyName", currencyName);
+        startActivity(intent);
         finish();
     }
 
@@ -46,6 +50,7 @@ public class SplashActivity extends AppCompatActivity {
         new CurrencyService(getApplicationContext(), settingService.getDefaultOrder()).call(
                 currencies -> {
             int id = CurrencyService.getCurrencyResource(currencies[0]);
+            currencyName = currencies[0];
             runOnUiThread(() -> setting.setBackgroundResource(id));
         });
     }
