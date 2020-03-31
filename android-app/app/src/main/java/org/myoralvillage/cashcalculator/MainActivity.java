@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +20,12 @@ public class MainActivity extends AppCompatActivity{
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main);
-        CashCalculatorFragment fragment = (CashCalculatorFragment) getSupportFragmentManager().findFragmentById(R.id.CountingTableFragment);
+        CashCalculatorFragment fragment = (CashCalculatorFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.CountingTableFragment);
 
         if (fragment != null)
-            fragment.initialize(SettingActivity.getSettingService().getCurrencyName());
+            fragment.initialize(SplashActivity.getSettingService().getCurrencyName());
     }
+
+
 }

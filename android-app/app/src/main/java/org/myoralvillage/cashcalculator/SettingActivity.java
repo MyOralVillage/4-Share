@@ -12,10 +12,8 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
-import org.myoralvillage.cashcalculatormodule.services.SettingService;
 
 public class SettingActivity extends AppCompatActivity {
-    private static SettingService settingService = new SettingService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +25,6 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         buildLayout();
-    }
-
-    public static SettingService getSettingService() {
-        return settingService;
     }
 
     private void buildLayout() {
@@ -65,7 +59,7 @@ public class SettingActivity extends AppCompatActivity {
                 button.setLayoutParams(params);
                 button.setBackgroundResource(CurrencyService.getCurrencyResource(currency));
                 button.setOnClickListener(e -> {
-                    settingService.setCurrencyName(currency);
+                    SplashActivity.getSettingService().setCurrencyName(currency);
                     switchToMainActivity();
                 });
                 view.addView(button);

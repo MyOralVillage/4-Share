@@ -11,9 +11,10 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
+import org.myoralvillage.cashcalculatormodule.services.SettingService;
 
 public class SplashActivity extends AppCompatActivity {
-    boolean exit = false;
+    private static SettingService settingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +26,16 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         mainActivityButtonListener();
         settingButtonListener();
+        settingService = new SettingService(getApplicationContext());
+    }
+
+    public static SettingService getSettingService() {
+        return settingService;
     }
 
     private void mainActivityButtonListener() {
         ImageView setting = findViewById(R.id.main);
-        setting.setOnClickListener((e) -> {
-            exit = true;
-            switchToVideo();
-        });
+        setting.setOnClickListener(e -> switchToVideo());
     }
 
     private void switchToVideo() {
@@ -51,10 +54,7 @@ public class SplashActivity extends AppCompatActivity {
         Button setting = findViewById(R.id.setting);
 
         setDefaultImage(setting);
-        setting.setOnClickListener((e) -> {
-            exit = true;
-            switchToSetting();
-        });
+        setting.setOnClickListener(e -> switchToSetting());
     }
 
     private void switchToSetting() {

@@ -32,22 +32,18 @@ public class VideoActivity extends AppCompatActivity {
         skipButtonListener();
     }
 
-    private void switchToMain(){
+    private void switchToMain() {
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 
     private void skipButtonListener() {
         ImageView setting = findViewById(R.id.skip);
-        setting.setOnClickListener((e) -> {
-            switchToMain();
-        });
+        setting.setOnClickListener(e -> switchToMain());
     }
 
     private void replayButtonListener(VideoView video) {
         ImageView setting = findViewById(R.id.replay);
-        setting.setOnClickListener((e) -> {
-            video.resume();
-        });
+        setting.setOnClickListener(e -> video.resume());
     }
 }
