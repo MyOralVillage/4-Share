@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.CountingTableFragment);
 
         if (fragment != null)
-            fragment.initialize(SplashActivity.getSettingService().getCurrencyName());
+            fragment.initialize(getIntent().getStringExtra("currencyName"));
     }
 
 
