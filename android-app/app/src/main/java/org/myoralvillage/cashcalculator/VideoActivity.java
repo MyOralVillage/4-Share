@@ -33,9 +33,9 @@ public class VideoActivity extends AppCompatActivity {
         skipButtonListener();
     }
 
-    private void switchToMain(String currencyName) {
+    private void switchToMain(String currencyCode) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("currencyName", currencyName);
+        intent.putExtra("currencyCode", currencyCode);
         startActivity(intent);
         finish();
     }

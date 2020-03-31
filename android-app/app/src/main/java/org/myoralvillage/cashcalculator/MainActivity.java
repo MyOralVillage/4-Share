@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.CountingTableFragment);
 
         if (fragment != null)
-            fragment.initialize(getIntent().getStringExtra("currencyName"));
+            fragment.initialize(getIntent().getStringExtra("currencyCode"));
     }
 
 

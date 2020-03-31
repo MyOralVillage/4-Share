@@ -17,6 +17,7 @@ import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListe
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
@@ -107,6 +108,7 @@ public class CountingTableView extends RelativeLayout {
      * @see ImageView
      */
     private ImageView leftHistoryButton;
+    private Locale locale;
 
     /**
      * Constructs a <code>CountingTableSurfaceView</code> in the given Android context with the
@@ -129,9 +131,10 @@ public class CountingTableView extends RelativeLayout {
      * @see CurrencyModel
      * @see AppStateModel
      */
-    public void initialize(CurrencyModel currencyModel, AppStateModel appState) {
+    public void initialize(CurrencyModel currencyModel, AppStateModel appState, Locale locale) {
         this.currencyModel = currencyModel;
         this.appState = appState;
+        this.locale = locale;
 
         initializeSumView();
         initializeSurface();
@@ -146,9 +149,10 @@ public class CountingTableView extends RelativeLayout {
     }
 
     private void updateSumView() {
-        sumView.setText(String.format(Locale.CANADA, "%s %s",
-                currencyModel.getCurrency().getSymbol(),
-                appState.getCurrentOperation().getValue()));
+        sumView.setText(String.format(locale,"%s %s",
+                currencyModel.getCurrency().getSymbol(), NumberFormat.getCurrencyInstance(locale)
+                        .format(appState.getCurrentOperation().getValue())
+                        .replaceAll("[^\\d,.]+", "")));
     }
 
     private void initializeSurface() {

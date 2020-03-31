@@ -64,9 +64,9 @@ public class SettingActivity extends AppCompatActivity {
         }));
     }
 
-    private void switchToMainActivity(String currencyName) {
+    private void switchToMainActivity(String currencyCode) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("currencyName", currencyName);
+        intent.putExtra("currencyCode", currencyCode);
         startActivity(intent);
         finish();
     }
