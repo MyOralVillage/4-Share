@@ -11,6 +11,8 @@ import org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static String currencyCode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +25,13 @@ public class MainActivity extends AppCompatActivity {
         CashCalculatorFragment fragment = (CashCalculatorFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.CountingTableFragment);
 
-        if (fragment != null)
-            fragment.initialize(getIntent().getStringExtra("currencyCode"));
+        if  (currencyCode == null) {
+            currencyCode = getIntent().getStringExtra("currencyCode");
+        }
+
+        if (fragment != null) {
+            fragment.initialize(currencyCode);
+        }
     }
 
 
