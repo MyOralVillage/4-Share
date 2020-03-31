@@ -58,9 +58,7 @@ public class SettingActivity extends AppCompatActivity {
                 }
                 button.setLayoutParams(params);
                 button.setBackgroundResource(CurrencyService.getCurrencyResource(currency));
-                button.setOnClickListener(e -> {
-                    switchToMainActivity(currency);
-                });
+                button.setOnClickListener(e -> switchToMainActivity(currency));
                 view.addView(button);
             }
         }));
