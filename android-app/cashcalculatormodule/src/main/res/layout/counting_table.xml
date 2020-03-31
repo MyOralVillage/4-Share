@@ -58,6 +58,6 @@
         android:layout_height="64dp"
         android:src="@drawable/handshake"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true" />
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>

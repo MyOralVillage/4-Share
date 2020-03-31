@@ -1,6 +1,7 @@
 package org.myoralvillage.cashcalculatormodule.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -141,16 +142,13 @@ public class CountingTableView extends RelativeLayout {
 
     private void initializeSumView() {
         sumView = findViewById(R.id.sum_view);
+        sumView.setTextColor(Color.BLACK);
     }
 
     private void updateSumView() {
-        if (appState.getCurrentOperation().getValue().compareTo(BigDecimal.ZERO) < 0)
-            sumView.setTextColor(getResources().getColor(R.color.negativeSum));
-        else
-            sumView.setTextColor(getResources().getColor(R.color.positiveSum));
-
         sumView.setText(String.format(Locale.CANADA, "%s %s",
-                currencyModel.getCurrency().getSymbol(), appState.getCurrentOperation().getValue()));
+                currencyModel.getCurrency().getSymbol(),
+                appState.getCurrentOperation().getValue()));
     }
 
     private void initializeSurface() {
