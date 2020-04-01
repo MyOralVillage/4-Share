@@ -13,7 +13,7 @@ Suppose we want to add a new currency type, say Japanese Yen:
 INSERT INTO currencies VALUES ('JPY');
 
 /* Add the country associated with the currency if the country has not been added.*/
-INSERT INTO countries VALUES ('JP', 'japan', 'JPY', 'JPY');
+INSERT INTO countries VALUES ('JP', 'japan', 'JPY');
 ```
 
 # Mobile Application
