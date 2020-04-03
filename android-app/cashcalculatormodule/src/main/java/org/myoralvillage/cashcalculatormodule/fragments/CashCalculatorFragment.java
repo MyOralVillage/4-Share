@@ -359,8 +359,7 @@ public class CashCalculatorFragment extends Fragment {
     }
 
     private String formatCurrency(BigDecimal value) {
-        return String.format(locale, "%s %s",
-                currCurrency.getCurrency().getSymbol(),
+        return String.format(locale, "%s",
                 NumberFormat.getCurrencyInstance(locale)
                         .format(value).replaceAll("[^\\d,.]+,", ""));
     }

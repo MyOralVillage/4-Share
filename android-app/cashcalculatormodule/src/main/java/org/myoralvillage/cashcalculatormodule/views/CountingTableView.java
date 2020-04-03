@@ -149,10 +149,10 @@ public class CountingTableView extends RelativeLayout {
     }
 
     private void updateSumView() {
-        sumView.setText(String.format(locale,"%s %s",
-                currencyModel.getCurrency().getSymbol(), NumberFormat.getCurrencyInstance(locale)
+        sumView.setText(String.format(locale,"%s",
+                NumberFormat.getCurrencyInstance(locale)
                         .format(appState.getCurrentOperation().getValue())
-                        .replaceAll("[^\\d,.]+", "")));
+                        ));
     }
 
     private void initializeSurface() {
