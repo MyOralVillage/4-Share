@@ -42,7 +42,9 @@ public class VideoActivity extends AppCompatActivity {
 
     private void skipButtonListener() {
         ImageView setting = findViewById(R.id.skip);
-        setting.setOnClickListener(e -> new CurrencyService(getApplicationContext())
+        String[] currencyName = new String[1];
+        currencyName[0] = getIntent().getStringExtra("currencyName");
+        setting.setOnClickListener(e -> new CurrencyService(getApplicationContext(), currencyName)
                 .call(currencies -> switchToMain(currencies[0])));
     }
 

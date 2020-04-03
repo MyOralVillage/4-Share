@@ -12,8 +12,10 @@ import android.widget.LinearLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
+import org.myoralvillage.cashcalculatormodule.services.SettingService;
 
 public class SettingActivity extends AppCompatActivity {
+    private static SettingService settingService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +26,17 @@ public class SettingActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_setting);
 
+        settingService = new SettingService(getApplicationContext(), getResources());
         buildLayout();
     }
 
+    public static SettingService getSettingService() {
+        return settingService;
+    }
+
     private void buildLayout() {
-        new CurrencyService(getApplicationContext()).call(currencies -> runOnUiThread(() -> {
+        new CurrencyService(getApplicationContext(), settingService.getDefaultOrder()).call(currencies
+                -> runOnUiThread(() -> {
             LinearLayout view = findViewById(R.id.currencies);
             int width = (int) TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
