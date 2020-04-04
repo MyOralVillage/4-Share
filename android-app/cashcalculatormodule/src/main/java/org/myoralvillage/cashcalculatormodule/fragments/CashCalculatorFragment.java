@@ -24,6 +24,8 @@ import org.myoralvillage.cashcalculatormodule.views.listeners.NumberPadListener;
 import androidx.annotation.NonNull;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.Locale;
 
 /**
@@ -95,6 +97,7 @@ public class CashCalculatorFragment extends Fragment {
      *
      */
     private TextView numberInputView;
+    private Locale locale;
 
     /**
      * Called to have the <code>CashCalculatorFragment</code> instantiate its user interface view.
@@ -132,6 +135,21 @@ public class CashCalculatorFragment extends Fragment {
      * @param currencyCode The currency code that the application is set to.
      */
     public void initialize(String currencyCode) {
+        this.locale = Locale.getDefault();
+        for (Locale l : Locale.getAvailableLocales()) {
+            try {
+                Currency currency = Currency.getInstance(l);
+                if (currency == null) {
+                    continue;
+                }
+
+                if (currency.getCurrencyCode().equals(currencyCode)) {
+                    locale = l;
+                    break;
+                }
+            } catch (IllegalArgumentException ignored) {}
+        }
+
         initializeCurrencyScrollbar(currencyCode);
         initializeCountingView();
         initializeNumberPad();
@@ -147,7 +165,7 @@ public class CashCalculatorFragment extends Fragment {
     private void initializeCountingView() {
         TextView sum = view.findViewById(R.id.sum_view);
         countingTableView = view.findViewById(R.id.counting_table);
-        countingTableView.initialize(currCurrency, service.getAppState());
+        countingTableView.initialize(currCurrency, service.getAppState(), locale);
         countingTableView.setListener(new CountingTableListener() {
             @Override
             public void onSwipeAddition() {
@@ -194,10 +212,9 @@ public class CashCalculatorFragment extends Fragment {
             @Override
             public void onTapCalculateButton() {
                 service.calculate();
-                switch(service.getAppState().getAppMode()) {
+                switch (service.getAppState().getAppMode()) {
                     case NUMERIC:
-                        numberInputView.setText(String.format(Locale.CANADA, "%s %s",
-                                currCurrency.getCurrency().getSymbol(), service.getValue()));
+                        numberInputView.setText(formatCurrency(service.getValue()));
                         numberPadView.setValue(service.getValue());
                         break;
                 }
@@ -206,10 +223,9 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onTapClearButton() {
-                switch(service.getAppState().getAppMode()) {
+                switch (service.getAppState().getAppMode()) {
                     case NUMERIC:
-                        numberInputView.setText(String.format(Locale.CANADA, "%s %s",
-                                currCurrency.getCurrency().getSymbol(), 0));
+                        numberInputView.setText(formatCurrency(BigDecimal.ZERO));
                         numberPadView.setValue(BigDecimal.ZERO);
                         break;
                 }
@@ -323,8 +339,7 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onBack(BigDecimal value) {
-                numberInputView.setText(String.format(Locale.CANADA, "%s %s",
-                        currCurrency.getCurrency().getSymbol(), value));
+                numberInputView.setText(formatCurrency(value));
                 service.setValue(value);
             }
 
@@ -333,8 +348,7 @@ public class CashCalculatorFragment extends Fragment {
                 service.setValue(value);
                 sum.setVisibility(View.INVISIBLE);
                 numberInputView.setVisibility(View.VISIBLE);
-                numberInputView.setText(String.format(Locale.CANADA, "%s %s",
-                        currCurrency.getCurrency().getSymbol(), value));
+                numberInputView.setText(formatCurrency(value));
             }
 
             @Override
@@ -342,6 +356,12 @@ public class CashCalculatorFragment extends Fragment {
                 switchAppMode();
             }
         });
+    }
+
+    private String formatCurrency(BigDecimal value) {
+        return String.format(locale, "%s",
+                NumberFormat.getCurrencyInstance(locale)
+                        .format(value).replaceAll("[^\\d,.]+,", ""));
     }
 
     /**

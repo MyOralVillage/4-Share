@@ -1,6 +1,7 @@
 package org.myoralvillage.cashcalculatormodule.views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListe
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.Locale;
 
 /**
@@ -106,6 +108,7 @@ public class CountingTableView extends RelativeLayout {
      * @see ImageView
      */
     private ImageView leftHistoryButton;
+    private Locale locale;
 
     /**
      * Constructs a <code>CountingTableSurfaceView</code> in the given Android context with the
@@ -128,9 +131,10 @@ public class CountingTableView extends RelativeLayout {
      * @see CurrencyModel
      * @see AppStateModel
      */
-    public void initialize(CurrencyModel currencyModel, AppStateModel appState) {
+    public void initialize(CurrencyModel currencyModel, AppStateModel appState, Locale locale) {
         this.currencyModel = currencyModel;
         this.appState = appState;
+        this.locale = locale;
 
         initializeSumView();
         initializeSurface();
@@ -141,16 +145,14 @@ public class CountingTableView extends RelativeLayout {
 
     private void initializeSumView() {
         sumView = findViewById(R.id.sum_view);
+        sumView.setTextColor(Color.BLACK);
     }
 
     private void updateSumView() {
-        if (appState.getCurrentOperation().getValue().compareTo(BigDecimal.ZERO) < 0)
-            sumView.setTextColor(getResources().getColor(R.color.negativeSum));
-        else
-            sumView.setTextColor(getResources().getColor(R.color.positiveSum));
-
-        sumView.setText(String.format(Locale.CANADA, "%s %s",
-                currencyModel.getCurrency().getSymbol(), appState.getCurrentOperation().getValue()));
+        sumView.setText(String.format(locale,"%s",
+                NumberFormat.getCurrencyInstance(locale)
+                        .format(appState.getCurrentOperation().getValue())
+                        ));
     }
 
     private void initializeSurface() {

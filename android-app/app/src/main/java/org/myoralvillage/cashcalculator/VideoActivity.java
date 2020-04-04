@@ -12,6 +12,7 @@ import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.myoralvillage.cashcalculator.views.CustomVideoView;
+import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
 
 public class VideoActivity extends AppCompatActivity {
 
@@ -32,24 +33,23 @@ public class VideoActivity extends AppCompatActivity {
         skipButtonListener();
     }
 
-    private void switchToMain(){
+    private void switchToMain(String currencyCode) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("currencyName", getIntent().getStringExtra("currencyName"));
+        intent.putExtra("currencyCode", currencyCode);
         startActivity(intent);
         finish();
     }
 
     private void skipButtonListener() {
         ImageView setting = findViewById(R.id.skip);
-        setting.setOnClickListener((e) -> {
-            switchToMain();
-        });
+        String[] currencyName = new String[1];
+        currencyName[0] = getIntent().getStringExtra("currencyName");
+        setting.setOnClickListener(e -> new CurrencyService(getApplicationContext(), currencyName)
+                .call(currencies -> switchToMain(currencies[0])));
     }
 
     private void replayButtonListener(VideoView video) {
         ImageView setting = findViewById(R.id.replay);
-        setting.setOnClickListener((e) -> {
-            video.resume();
-        });
+        setting.setOnClickListener(e -> video.resume());
     }
 }

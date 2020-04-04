@@ -66,17 +66,16 @@ public class SettingActivity extends AppCompatActivity {
                 }
                 button.setLayoutParams(params);
                 button.setBackgroundResource(CurrencyService.getCurrencyResource(currency));
-                button.setOnClickListener(e -> {
-                    settingService.setCurrencyName(currency);
-                    switchToMainActivity();
-                });
+                button.setOnClickListener(e -> switchToMainActivity(currency));
                 view.addView(button);
             }
         }));
     }
 
-    private void switchToMainActivity() {
-        startActivity(new Intent(this, MainActivity.class));
+    private void switchToMainActivity(String currencyCode) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("currencyCode", currencyCode);
+        startActivity(intent);
         finish();
     }
 }
