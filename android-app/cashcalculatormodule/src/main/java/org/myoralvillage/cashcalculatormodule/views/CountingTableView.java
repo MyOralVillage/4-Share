@@ -18,6 +18,8 @@ import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 /**
