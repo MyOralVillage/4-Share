@@ -3,6 +3,9 @@
     <array name="default_country_order">
         <item> PKR </item>
         <item> PK</item>
+        
+        <item> KES </item>
+        <item> KE</item>
 
         <item> KES </item>
         <item> KE</item>
