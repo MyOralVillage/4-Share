@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="default_country_order">
-        <item> KES </item>
-        <item> KE</item>
-
         <item> PKR </item>
         <item> PK</item>
+
+        <item> KES </item>
+        <item> KE</item>
 
         <item> BDT </item>
         <item> BD </item>

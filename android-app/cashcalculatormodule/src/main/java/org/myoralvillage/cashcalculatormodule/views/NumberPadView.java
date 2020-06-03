@@ -1,18 +1,18 @@
 package org.myoralvillage.cashcalculatormodule.views;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
+        import android.content.Context;
+        import android.util.AttributeSet;
+        import android.view.MotionEvent;
+        import android.view.View;
+        import android.widget.Button;
+        import android.widget.LinearLayout;
 
-import androidx.annotation.Nullable;
+        import androidx.annotation.Nullable;
 
-import org.myoralvillage.cashcalculatormodule.R;
-import org.myoralvillage.cashcalculatormodule.views.listeners.NumberPadListener;
+        import org.myoralvillage.cashcalculatormodule.R;
+        import org.myoralvillage.cashcalculatormodule.views.listeners.NumberPadListener;
 
-import java.math.BigDecimal;
+        import java.math.BigDecimal;
 
 /**
  * A view class used to monitor and render the display of the number pad.
@@ -177,7 +177,6 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
                 return true;
             }
         }
-
         return false;
     }
 }
