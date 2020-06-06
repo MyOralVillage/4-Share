@@ -66,6 +66,12 @@
         <item>@drawable/currency_pkr_2_folded</item>
         <item>0.75</item>
         <item>0.0</item>
+
+        <item>1</item>
+        <item>@drawable/currency_pkr_1</item>
+        <item>@drawable/currency_pkr_1</item>
+        <item>0.7</item>
+        <item>0.0</item>
     </array>
 
     <array name="currency_KES">
