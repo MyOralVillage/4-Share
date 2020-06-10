@@ -166,6 +166,11 @@ public class CashCalculatorFragment extends Fragment {
         TextView sum = view.findViewById(R.id.sum_view);
         countingTableView = view.findViewById(R.id.counting_table);
         countingTableView.initialize(currCurrency, service.getAppState(), locale);
+        if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC) {
+            sum.setVisibility(View.INVISIBLE);
+            numberInputView.setVisibility(View.VISIBLE);
+            numberInputView.setText(formatCurrency(service.getValue()));
+        }
         countingTableView.setListener(new CountingTableListener() {
             @Override
             public void onSwipeAddition() {
