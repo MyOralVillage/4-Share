@@ -157,8 +157,9 @@ public class CountingTableView extends RelativeLayout {
 
     private void initializeSurface() {
         countingTableSurfaceView = findViewById(R.id.counting_table_surface);
-        countingTableSurfaceView.initDenominationModels(currencyModel.getDenominations());
-
+        if (appState.getAppMode() == AppStateModel.AppMode.IMAGE) {
+            countingTableSurfaceView.initDenominationModels(currencyModel.getDenominations());
+        }
         countingTableSurfaceView.setOnTouchListener(new SwipeListener(getContext()) {
             @Override
             public void swipeLeft() {
