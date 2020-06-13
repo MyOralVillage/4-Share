@@ -342,8 +342,9 @@ public class CashCalculatorFragment extends Fragment {
                 sum.setVisibility(View.VISIBLE);
                 service.setValue(value);
                 numberInputView.setVisibility(View.INVISIBLE);
-                switchAppMode();
+                service.getAppState().setAppMode(AppStateModel.AppMode.IMAGE);
                 countingTableView.initialize(currCurrency, service.getAppState(), locale);
+                service.getAppState().setAppMode(AppStateModel.AppMode.NUMERIC);
                 updateAll();
             }
 
