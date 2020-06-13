@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
+import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.models.MathOperationModel;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListener;
@@ -189,8 +190,9 @@ public class CountingTableView extends RelativeLayout {
 
     private void initializeSurface() {
         countingTableSurfaceView = findViewById(R.id.counting_table_surface);
-        countingTableSurfaceView.initDenominationModels(currencyModel.getDenominations());
-
+        if (appState.getAppMode() == AppStateModel.AppMode.IMAGE) {
+            countingTableSurfaceView.initDenominationModels(currencyModel.getDenominations());
+        }
         countingTableSurfaceView.setOnTouchListener(new SwipeListener(getContext()) {
             @Override
             public void swipeLeft() {
@@ -354,4 +356,6 @@ public class CountingTableView extends RelativeLayout {
     public void setBackgroundResource(int resid) {
         countingTableSurfaceView.setBackgroundResource(resid);
     }
+
+
 }

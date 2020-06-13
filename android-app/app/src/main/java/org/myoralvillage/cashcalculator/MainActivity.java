@@ -25,8 +25,10 @@ public class MainActivity extends AppCompatActivity {
         CashCalculatorFragment fragment = (CashCalculatorFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.CountingTableFragment);
 
-        if  (currencyCode == null) {
-            currencyCode = getIntent().getStringExtra("currencyCode");
+        if  (getIntent().getExtras() != null) {
+            if (getIntent().getStringExtra("currencyCode") != null) {
+                currencyCode = getIntent().getStringExtra("currencyCode");
+            }
         }
 
         if (fragment != null) {

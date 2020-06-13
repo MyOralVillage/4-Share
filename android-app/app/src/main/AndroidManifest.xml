@@ -18,8 +18,6 @@
         android:hardwareAccelerated="false"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:hardwareAccelerated="false"
-        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
         </activity>

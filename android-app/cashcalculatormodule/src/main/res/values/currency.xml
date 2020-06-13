@@ -196,14 +196,6 @@
         <item>0.85</item>
         <item>0.0</item>
 
-
-        <item>0.05</item>
-        <item>@drawable/currency_usd_0_05</item>
-        <item>@drawable/currency_usd_0_05</item>
-        <item>0.85</item>
-        <item>0.0</item>
-
-
         <item>0.01</item>
         <item>@drawable/currency_usd_0_01</item>
         <item>@drawable/currency_usd_0_01</item>

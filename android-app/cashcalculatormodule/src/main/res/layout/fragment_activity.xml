@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
    <org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView
         android:id="@+id/currency_scrollbar"
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
     <org.myoralvillage.cashcalculatormodule.views.CountingTableView
         android:id="@+id/counting_table"
         android:layout_width="match_parent"
@@ -32,6 +34,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 
     <TextView
         android:id="@+id/number_input_view"

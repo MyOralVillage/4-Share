@@ -1,12 +1,21 @@
 package org.myoralvillage.cashcalculatormodule.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
+
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import org.myoralvillage.cashcalculatormodule.R;
@@ -122,6 +131,7 @@ public class CashCalculatorFragment extends Fragment {
         return view;
     }
 
+
     /**
      * Gets the value of current total amount of money of the Cash Calculator.
      *
@@ -168,6 +178,11 @@ public class CashCalculatorFragment extends Fragment {
         TextView sum = view.findViewById(R.id.sum_view);
         countingTableView = view.findViewById(R.id.counting_table);
         countingTableView.initialize(currCurrency, service.getAppState(), locale);
+        if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC) {
+            sum.setVisibility(View.INVISIBLE);
+            numberInputView.setVisibility(View.VISIBLE);
+            numberInputView.setText(formatCurrency(service.getValue()));
+        }
         countingTableView.setListener(new CountingTableListener() {
             @Override
             public void onSwipeAddition() {
@@ -289,7 +304,7 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onVerticalSwipe() {
-                switchAppMode();
+                    switchAppMode();
             }
         });
     }
@@ -337,6 +352,9 @@ public class CashCalculatorFragment extends Fragment {
                 sum.setVisibility(View.VISIBLE);
                 service.setValue(value);
                 numberInputView.setVisibility(View.INVISIBLE);
+                service.getAppState().setAppMode(AppStateModel.AppMode.IMAGE);
+                countingTableView.initialize(currCurrency, service.getAppState(), locale);
+                service.getAppState().setAppMode(AppStateModel.AppMode.NUMERIC);
                 updateAll();
             }
 
