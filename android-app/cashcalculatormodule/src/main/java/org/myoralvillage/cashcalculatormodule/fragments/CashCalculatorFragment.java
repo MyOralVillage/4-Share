@@ -304,7 +304,7 @@ public class CashCalculatorFragment extends Fragment {
      *
      * @see AppService
      */
-    private void switchAppMode() {
+    public void switchAppMode() {
         service.switchAppMode();
         if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC)
             service.setValue(BigDecimal.ZERO);
@@ -339,12 +339,18 @@ public class CashCalculatorFragment extends Fragment {
         numberPadView.setListener(new NumberPadListener() {
             @Override
             public void onCheck(BigDecimal value) {
-                sum.setVisibility(View.VISIBLE);
-                service.setValue(value);
-                numberInputView.setVisibility(View.INVISIBLE);
-                switchAppMode();
-                countingTableView.initialize(currCurrency, service.getAppState(), locale);
-                updateAll();
+                if (numberInputView.getVisibility() == View.INVISIBLE) {
+
+                }
+                else {
+                    sum.setVisibility(View.VISIBLE);
+                    service.setValue(value);
+                    numberInputView.setVisibility(View.INVISIBLE);
+                    service.getAppState().setAppMode(AppStateModel.AppMode.IMAGE);
+                    countingTableView.initialize(currCurrency, service.getAppState(), locale);
+                    service.getAppState().setAppMode(AppStateModel.AppMode.NUMERIC);
+                    updateAll();
+                }
             }
 
             @Override
@@ -355,10 +361,15 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onTapNumber(BigDecimal value) {
-                service.setValue(value);
-                sum.setVisibility(View.INVISIBLE);
-                numberInputView.setVisibility(View.VISIBLE);
-                numberInputView.setText(formatCurrency(value));
+                if (numberInputView.getVisibility() == View.INVISIBLE) {
+                    service.setValue(BigDecimal.ZERO);
+                    countingTableView.initialize(currCurrency, service.getAppState(), locale);
+                    updateAll();
+                }
+                    service.setValue(value);
+                    sum.setVisibility(View.INVISIBLE);
+                    numberInputView.setVisibility(View.VISIBLE);
+                    numberInputView.setText(formatCurrency(value));
             }
 
             @Override

@@ -12,6 +12,7 @@ import org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment;
 public class MainActivity extends AppCompatActivity {
 
     private static String currencyCode;
+    private static boolean numericMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,14 +26,24 @@ public class MainActivity extends AppCompatActivity {
         CashCalculatorFragment fragment = (CashCalculatorFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.CountingTableFragment);
 
-        if  (getIntent().getExtras() != null) {
-            if (getIntent().getStringExtra("currencyCode") != null) {
-                currencyCode = getIntent().getStringExtra("currencyCode");
+        numericMode = false;
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+            if (extras.containsKey("currencyCode")) {
+                currencyCode = extras.getString("currencyCode");
             }
+            if (extras.containsKey("numericMode")) {
+                numericMode = extras.getBoolean("numericMode", false);
+            }
+
         }
 
         if (fragment != null) {
             fragment.initialize(currencyCode);
+            if (numericMode) {
+                fragment.switchAppMode();
+            }
         }
     }
 
