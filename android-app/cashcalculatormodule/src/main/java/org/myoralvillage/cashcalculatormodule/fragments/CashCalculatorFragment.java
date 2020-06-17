@@ -232,6 +232,8 @@ public class CashCalculatorFragment extends Fragment {
             public void onTapClearButton() {
                 switch (service.getAppState().getAppMode()) {
                     case NUMERIC:
+                        sum.setVisibility(View.INVISIBLE);
+                        numberInputView.setVisibility(View.VISIBLE);
                         numberInputView.setText(formatCurrency(BigDecimal.ZERO));
                         numberPadView.setValue(BigDecimal.ZERO);
                         break;
