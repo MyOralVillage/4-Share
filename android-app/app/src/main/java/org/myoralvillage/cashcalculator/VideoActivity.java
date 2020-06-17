@@ -36,6 +36,7 @@ public class VideoActivity extends AppCompatActivity {
     private void switchToMain(String currencyCode) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("currencyCode", currencyCode);
+        intent.putExtra("numericMode", getIntent().getBooleanExtra("numericMode", false));
         startActivity(intent);
         finish();
     }
