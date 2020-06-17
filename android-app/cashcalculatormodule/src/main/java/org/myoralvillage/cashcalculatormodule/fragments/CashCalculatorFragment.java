@@ -304,7 +304,7 @@ public class CashCalculatorFragment extends Fragment {
      *
      * @see AppService
      */
-    private void switchAppMode() {
+    public void switchAppMode() {
         service.switchAppMode();
         if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC)
             service.setValue(BigDecimal.ZERO);
