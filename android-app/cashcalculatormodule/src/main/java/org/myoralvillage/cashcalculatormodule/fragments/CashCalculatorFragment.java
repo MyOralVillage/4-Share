@@ -296,7 +296,7 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onVerticalSwipe() {
-                switchAppMode();
+                //switchAppMode();
             }
         });
     }
@@ -376,7 +376,7 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onVerticalSwipe() {
-                switchAppMode();
+               //switchAppMode();
             }
         });
     }
