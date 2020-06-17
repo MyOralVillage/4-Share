@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         CashCalculatorFragment fragment = (CashCalculatorFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.CountingTableFragment);
 
+        numericMode = false;
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
