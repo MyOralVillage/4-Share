@@ -75,6 +75,7 @@ public class SettingActivity extends AppCompatActivity {
     private void switchToMainActivity(String currencyCode) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("currencyCode", currencyCode);
+        intent.putExtra("numericMode", getIntent().getBooleanExtra("numericMode", false));
         startActivity(intent);
         finish();
     }

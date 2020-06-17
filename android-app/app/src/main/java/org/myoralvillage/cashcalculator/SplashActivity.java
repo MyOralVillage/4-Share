@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +18,7 @@ import org.myoralvillage.cashcalculatormodule.services.SettingService;
 public class SplashActivity extends AppCompatActivity {
 
     String currencyName = null;
+    boolean numericMode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +30,7 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         settingButtonListener();
         mainActivityButtonListener();
+        modeSwitchButtonListener();
     }
 
     private void mainActivityButtonListener() {
@@ -37,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
     private void switchToVideo() {
         Intent intent = new Intent(this, VideoActivity.class);
         intent.putExtra("currencyName", currencyName);
+        intent.putExtra("numericMode", numericMode);
         startActivity(intent);
         finish();
     }
@@ -58,8 +63,20 @@ public class SplashActivity extends AppCompatActivity {
         setting.setOnClickListener(e -> switchToSetting());
     }
 
+    private void modeSwitchButtonListener() {
+        Switch modeSwitch = (Switch) findViewById(R.id.mode_switch);
+        modeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                numericMode = isChecked;
+            }
+        });
+    }
+
     private void switchToSetting() {
-        startActivity(new Intent(this, SettingActivity.class));
+        Intent intent = new Intent(this, SettingActivity.class);
+        intent.putExtra("numericMode", numericMode);
+        startActivity(intent);
         finish();
     }
 }
