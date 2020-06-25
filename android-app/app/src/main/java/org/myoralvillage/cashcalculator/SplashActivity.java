@@ -39,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void switchToVideo() {
-        Intent intent = new Intent(this, VideoActivity.class);
+        Intent intent = new Intent(this, TutorialActivity.class);
         intent.putExtra("currencyName", currencyName);
         intent.putExtra("numericMode", numericMode);
         startActivity(intent);
