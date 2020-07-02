@@ -2,7 +2,9 @@ package org.myoralvillage.cashcalculator;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.Image;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -35,16 +37,17 @@ public class SplashActivity extends AppCompatActivity {
 
     private void mainActivityButtonListener() {
         ImageView setting = findViewById(R.id.main);
-        setting.setOnClickListener(e -> switchToVideo());
+        setting.setOnClickListener(e -> switchToTutorial());
     }
 
-    private void switchToVideo() {
-        Intent intent = new Intent(this, VideoActivity.class);
+    private void switchToTutorial() {
+        Intent intent = new Intent(this, TutorialActivity.class);
         intent.putExtra("currencyName", currencyName);
         intent.putExtra("numericMode", numericMode);
         startActivity(intent);
         finish();
     }
+
 
     private void setDefaultImage(Button setting) {
         SettingService settingService = new SettingService(getApplicationContext(), getResources());
