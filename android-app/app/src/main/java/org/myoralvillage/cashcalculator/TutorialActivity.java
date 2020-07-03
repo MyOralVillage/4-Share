@@ -4,68 +4,49 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
+import org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment;
+
 public class TutorialActivity extends AppCompatActivity {
-    private int height;
-    private int width;
-
-    private ObjectAnimator getXAnimation(View view, float dX, int duration) {
-        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "translationX", dX);
-        animation.setDuration(duration);
-        return animation;
-    }
-
-    private ObjectAnimator getYAnimation(View view, float dY, int duration) {
-        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "translationY", dY);
-        animation.setDuration(duration);
-        return animation;
-    }
-
-    private ObjectAnimator getFadeOut(View view, int duration) {
-        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "alpha", 0f);
-        animation.setDuration(duration);
-        return animation;
-    }
-
-    private ObjectAnimator getFadeIn(View view, int duration) {
-        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "alpha", 1f);
-        animation.setDuration(duration);
-        return animation;
-    }
-
-    private void animate() {
-        ImageView finger = findViewById(R.id.finger);
-        ObjectAnimator[] animations = {
-                getXAnimation(finger, (float) (width * 0.5), 1500),
-                getXAnimation(finger, (float) (width * 0.07), 1000),
-                getFadeOut(finger, 250),
-                getFadeIn(findViewById(R.id.bill1), 100),
-                getYAnimation(finger, (float) (height * -0.5), 500),
-                getFadeIn(finger, 250),
-                getFadeOut(finger, 250),
-                getFadeOut(findViewById(R.id.bill1), 100),
-        };
-        AnimatorSet as = new AnimatorSet();
-        for (int i = 0; i < animations.length - 1; i++) {
-            as.play(animations[i]).before(animations[i + 1]);
-        }
-        as.start();
-    }
-
+    private CashCalculatorFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_tutorial);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        height = displayMetrics.heightPixels;
-        width = displayMetrics.heightPixels;
+        fragment = (CashCalculatorFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.TutorialFragment);
+
+        if (fragment != null) {
+            fragment.initialize("PKR");
+        }
         animate();
+    }
+    protected void animate() {
+        AnimatorSet set = new AnimatorSet();
+        set.playSequentially(getScrollbarAnimation(300, 1000), getScrollbarAnimation(700, 1000), getScrollbarAnimation(100, 1000));
+        set.start();
+    }
+    protected ObjectAnimator getScrollbarAnimation(int xValue, int duration) {
+        ObjectAnimator animator = ObjectAnimator.ofInt(fragment.currencyScrollbarView, "scrollX", xValue);
+        animator.setDuration(duration);
+        return animator;
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+            return true;
     }
 }

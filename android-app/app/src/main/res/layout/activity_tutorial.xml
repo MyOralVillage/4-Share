@@ -16,127 +16,22 @@
         android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/wooden_surface"
+        android:background="@android:color/background_dark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/hor1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.3" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/hor2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.7" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/vert1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.15" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/vert2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.3" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/vert3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.45" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/vert4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.6" />
-
-        <ImageView
-            android:id="@+id/imageView8"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hor2"
-            app:srcCompat="@drawable/scrollbar_background" />
-
-        <ImageView
-            android:id="@+id/imageView13"
+        <fragment
+            android:id="@+id/TutorialFragment"
+            android:name="org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/vert1"
-            app:layout_constraintTop_toBottomOf="@id/hor2"
-            app:srcCompat="@drawable/currency_pkr_1000" />
-
-        <ImageView
-            android:id="@+id/imageView14"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/vert1"
-            app:layout_constraintRight_toLeftOf="@id/vert2"
-            app:layout_constraintTop_toBottomOf="@id/hor2"
-            app:srcCompat="@drawable/currency_pkr_100" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/vert2"
-            app:layout_constraintRight_toLeftOf="@id/vert3"
-            app:layout_constraintTop_toBottomOf="@id/hor2"
-            app:srcCompat="@drawable/currency_pkr_10" />
-
-        <ImageView
-            android:id="@+id/imageView7"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/vert3"
-            app:layout_constraintRight_toLeftOf="@id/vert4"
-            app:layout_constraintTop_toBottomOf="@id/hor2"
-            app:srcCompat="@drawable/currency_pkr_1" />
-
-        <ImageView
-            android:id="@+id/bill1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:alpha="0"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/hor1"
-            app:layout_constraintEnd_toStartOf="@+id/vert1"
+            app:layout_constraintDimensionRatio="1.5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/currency_pkr_1000" />
-
-        <ImageView
-            android:id="@+id/finger"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/vert1"
-            app:layout_constraintTop_toBottomOf="@id/hor2"
-            app:srcCompat="@drawable/finger" />
-
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

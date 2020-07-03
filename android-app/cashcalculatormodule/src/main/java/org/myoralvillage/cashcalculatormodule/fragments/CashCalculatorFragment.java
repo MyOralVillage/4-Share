@@ -62,7 +62,7 @@ public class CashCalculatorFragment extends Fragment {
      *
      * @see AppService
      */
-    private AppService service;
+    AppService service;
 
     /**
      * The model class used to represent the type of currency as well as the set of denominations
@@ -85,7 +85,7 @@ public class CashCalculatorFragment extends Fragment {
      *
      * @see CurrencyScrollbarView
      */
-    private CurrencyScrollbarView currencyScrollbarView;
+    public CurrencyScrollbarView currencyScrollbarView;
 
     /**
      * The view class used to monitor and render the display of the number pad.
