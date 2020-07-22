@@ -275,7 +275,7 @@ public class CountingTableView extends RelativeLayout {
             clearButton.setVisibility(View.VISIBLE);
     }
 
-    private void updateCountingSurface() {
+    public void updateCountingSurface() {
         countingTableSurfaceView.setDenominations(currencyModel.getDenominations().iterator(),
                 countingService.allocate(appState.getCurrentOperation().getValue(), currencyModel),
                 appState.getCurrentOperation().getValue());

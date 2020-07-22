@@ -28,7 +28,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_launch_video);
 
         final VideoView video = (CustomVideoView) this.findViewById(R.id.videoView);
-        final String uri = "android.resource://" + getPackageName() + "/" + R.raw.intro_video;
+        final String uri = "android.resource://" + getPackageName() + "/" + R.raw.intro_video_updated_edited;
         video.setVideoURI(Uri.parse(uri));
         video.start();
         replayButtonListener(video);
