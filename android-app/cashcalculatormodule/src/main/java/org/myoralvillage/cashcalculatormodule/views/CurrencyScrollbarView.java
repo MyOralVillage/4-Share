@@ -128,6 +128,10 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         this.currencyScrollbarListener = currencyScrollbarListener;
     }
 
+    public CurrencyScrollbarListener getCurrencyScrollbarListener() {
+        return currencyScrollbarListener;
+    }
+
     /**
      * Sets the currency model of this view based off the currency code.
      *

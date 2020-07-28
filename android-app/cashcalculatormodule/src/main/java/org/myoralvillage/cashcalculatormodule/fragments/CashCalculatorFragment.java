@@ -85,7 +85,7 @@ public class CashCalculatorFragment extends Fragment {
      *
      * @see CurrencyScrollbarView
      */
-    public CurrencyScrollbarView currencyScrollbarView;
+    private CurrencyScrollbarView currencyScrollbarView;
 
     /**
      * The view class used to monitor and render the display of the number pad.
@@ -449,5 +449,13 @@ public class CashCalculatorFragment extends Fragment {
     private void updateAll() {
         updateCountingTable();
         updateAppMode();
+    }
+
+    public CurrencyScrollbarView getCurrencyScrollbarView() {
+        return currencyScrollbarView;
+    }
+
+    public CountingTableView getCountingTableView() {
+        return countingTableView;
     }
 }

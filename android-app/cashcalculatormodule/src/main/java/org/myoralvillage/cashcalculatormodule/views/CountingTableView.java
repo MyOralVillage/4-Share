@@ -332,6 +332,10 @@ public class CountingTableView extends RelativeLayout {
         this.listener = listener;
     }
 
+    public CountingTableListener getListener() {
+        return listener;
+    }
+
     /**
      * Sets the appState of this view and render the updated state.
      *
