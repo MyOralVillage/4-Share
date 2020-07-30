@@ -357,7 +357,9 @@ public class CashCalculatorFragment extends Fragment {
         numberPadView.setListener(new NumberPadListener() {
             @Override
             public void onCheck(BigDecimal value) {
-                if (numberInputView.getVisibility() == View.INVISIBLE) ;
+                if (numberInputView.getVisibility() == View.INVISIBLE) {
+                    //do nothing
+                }
                 else {
                     sum.setVisibility(View.VISIBLE);
                     service.setValue(value);
