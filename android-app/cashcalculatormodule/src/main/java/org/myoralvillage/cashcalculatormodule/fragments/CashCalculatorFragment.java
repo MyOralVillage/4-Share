@@ -232,11 +232,18 @@ public class CashCalculatorFragment extends Fragment {
                 switch (service.getAppState().getAppMode()) {
                     case NUMERIC:
                         if (numberInputView.getVisibility() == View.INVISIBLE) {
+                            BigDecimal actual = service.getValue();
+                            service.setValue(BigDecimal.ZERO);
+                            countingTableView.initialize(currCurrency, service.getAppState(), locale);
                             sum.setVisibility(View.INVISIBLE);
                             numberInputView.setVisibility(View.VISIBLE);
+                            numberInputView.setText(formatCurrency(actual));
+                            numberPadView.setValue(actual);
                         }
-                        numberInputView.setText(formatCurrency(service.getValue()));
-                        numberPadView.setValue(service.getValue());
+                        else {
+                            numberInputView.setText(formatCurrency(service.getValue()));
+                            numberPadView.setValue(service.getValue());
+                        }
                         break;
                 }
                 updateAll();
