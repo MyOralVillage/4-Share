@@ -132,6 +132,14 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         return currencyScrollbarListener;
     }
 
+    public List<Integer> getVerticalOffsetsInPixels() {
+        return denominationsView.getVerticalOffsetsInPixels();
+    }
+
+    public List<Integer> getHorizontalOffsetsInPixels() {
+        return denominationsView.getHorizontalOffsetsInPixels();
+    }
+
     /**
      * Sets the currency model of this view based off the currency code.
      *
@@ -173,6 +181,8 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
          */
         private List<Integer> verticalOffsetsInPixels = new ArrayList<>();
 
+        private List<Integer> horizontalOffsetsInPixels = new ArrayList<>();
+
         /**
          * the width of a denomination to the beginning of the view.
          */
@@ -213,10 +223,18 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
             for (int i = 0; i < bitmaps.size(); i++) {
                 Bitmap bmp = bitmaps.get(i);
                 Integer verticalOffset = verticalOffsetsInPixels.get(i);
-
+                horizontalOffsetsInPixels.set(i, currentOffset);
                 drawDenomination(bmp, canvas, currentOffset, verticalOffset);
                 currentOffset += bmp.getWidth() + PADDING;
             }
+        }
+
+        public List<Integer> getVerticalOffsetsInPixels() {
+            return verticalOffsetsInPixels;
+        }
+
+        public List<Integer> getHorizontalOffsetsInPixels() {
+            return horizontalOffsetsInPixels;
         }
 
         /**

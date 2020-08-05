@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AnimationSet;
@@ -25,6 +26,7 @@ import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 
 public class TutorialActivity extends AppCompatActivity {
@@ -33,6 +35,10 @@ public class TutorialActivity extends AppCompatActivity {
     private CurrencyModel currency;
     private ArrayList<Animator> animations;
     private CountingTableView countingTable;
+    private List<Integer> horizontalOffsets;
+    private List<Integer> verticalOffsets;
+    private int height;
+    private int width;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,11 +49,16 @@ public class TutorialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tutorial);
         fragment = (CashCalculatorFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TutorialFragment);
-        fragment.initialize("PKR");
+        if (fragment != null) {
+            fragment.initialize("PKR");
+        }
         currencyScrollbar = fragment.getCurrencyScrollbarView();
         currency = currencyScrollbar.getCurrency();
         countingTable = fragment.getCountingTableView();
+        horizontalOffsets = currencyScrollbar.getHorizontalOffsetsInPixels();
+        verticalOffsets = currencyScrollbar.getVerticalOffsetsInPixels();
         animations = new ArrayList<>();
+        
         animate();
     }
     private DenominationModel getDenomination(int index) {
@@ -58,12 +69,21 @@ public class TutorialActivity extends AppCompatActivity {
         return current;
     }
     private void animate() {
-        scrollScrollbar(1500, 1000, 2000);
-        clickOnDenomination(currency.getDenominations().size() - 1, 3500);
-        scrollScrollbar(0, 4000, 2000);
-        clickOnDenomination(1, 6500);
-        changeToAddition(7000);
+        switch (getIntent().getIntExtra("animationStage", 0)) {
+            case 0:
+                AnimatorSet scrollLeft = new AnimatorSet();
 
+                scrollScrollbar(1500, 1000, 2000);
+                clickOnDenomination(currency.getDenominations().size() - 1, 3500);
+                scrollScrollbar(0, 4000, 2000);
+                clickOnDenomination(1, 6500);
+                changeToAddition(7000);
+                break;
+            case 1:
+                scrollScrollbar(500, 1000, 2000);
+                clickOnDenomination(currency.getDenominations().size() - 2, 3500);
+                break;
+        }
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animations);
         set.start();
@@ -92,6 +112,29 @@ public class TutorialActivity extends AppCompatActivity {
                 countingTable.getListener().onSwipeAddition();
             }
         }, time);
+    }
+    private ObjectAnimator getXAnimation(View view, float dX, int duration) {
+        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "translationX", dX);
+        animation.setDuration(duration);
+        return animation;
+    }
+
+    private ObjectAnimator getYAnimation(View view, float dY, int duration) {
+        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "translationY", dY);
+        animation.setDuration(duration);
+        return animation;
+    }
+
+    private ObjectAnimator getFadeOut(View view, int duration) {
+        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "alpha", 0f);
+        animation.setDuration(duration);
+        return animation;
+    }
+
+    private ObjectAnimator getFadeIn(View view, int duration) {
+        ObjectAnimator animation = ObjectAnimator.ofFloat(view, "alpha", 1f);
+        animation.setDuration(duration);
+        return animation;
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

@@ -42,6 +42,7 @@ public class SplashActivity extends AppCompatActivity {
         Intent intent = new Intent(this, TutorialActivity.class);
         intent.putExtra("currencyName", currencyName);
         intent.putExtra("numericMode", numericMode);
+        intent.putExtra("animationStage", 0);
         startActivity(intent);
         finish();
     }
