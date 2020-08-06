@@ -39,6 +39,8 @@ public class TutorialActivity extends AppCompatActivity {
     private List<Integer> verticalOffsets;
     private int height;
     private int width;
+    private int[]fingerLocation;
+    private ImageView finger;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,12 @@ public class TutorialActivity extends AppCompatActivity {
         horizontalOffsets = currencyScrollbar.getHorizontalOffsetsInPixels();
         verticalOffsets = currencyScrollbar.getVerticalOffsetsInPixels();
         animations = new ArrayList<>();
-        
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        height = displayMetrics.heightPixels;
+        width = displayMetrics.widthPixels;
+        fingerLocation = new int[2];
+        finger = findViewById(R.id.finger);
         animate();
     }
     private DenominationModel getDenomination(int index) {
@@ -71,9 +78,8 @@ public class TutorialActivity extends AppCompatActivity {
     private void animate() {
         switch (getIntent().getIntExtra("animationStage", 0)) {
             case 0:
-                AnimatorSet scrollLeft = new AnimatorSet();
-
                 scrollScrollbar(1500, 1000, 2000);
+                tapFinger(100, 100, 1000, 100);
                 clickOnDenomination(currency.getDenominations().size() - 1, 3500);
                 scrollScrollbar(0, 4000, 2000);
                 clickOnDenomination(1, 6500);
@@ -112,6 +118,21 @@ public class TutorialActivity extends AppCompatActivity {
                 countingTable.getListener().onSwipeAddition();
             }
         }, time);
+    }
+    private void tapFinger(int x, int y, int time, int duration) {
+        if (duration < 600) duration = 600;
+        finger.getLocationOnScreen(fingerLocation);
+        int dX = x - fingerLocation[0];
+        int dY = y - fingerLocation[1];
+        AnimatorSet as = new AnimatorSet();
+        ObjectAnimator xMove = getXAnimation(finger, dX, 0);
+        ObjectAnimator yMove = getYAnimation(finger, dY, 0);
+        ObjectAnimator fadeIn = getFadeIn(finger, 300);
+        ObjectAnimator fadeOut = getFadeOut(finger, 300);
+        fadeOut.setStartDelay((duration - 300));
+        as.playTogether(xMove, yMove, fadeIn, fadeOut);
+        as.setStartDelay(time);
+        animations.add(as);
     }
     private ObjectAnimator getXAnimation(View view, float dX, int duration) {
         ObjectAnimator animation = ObjectAnimator.ofFloat(view, "translationX", dX);
