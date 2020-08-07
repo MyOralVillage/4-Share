@@ -223,7 +223,6 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
             for (int i = 0; i < bitmaps.size(); i++) {
                 Bitmap bmp = bitmaps.get(i);
                 Integer verticalOffset = verticalOffsetsInPixels.get(i);
-                horizontalOffsetsInPixels.add(currentOffset);
                 drawDenomination(bmp, canvas, currentOffset, verticalOffset);
                 currentOffset += bmp.getWidth() + PADDING;
             }
@@ -274,6 +273,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
          */
         public void addBitmap(Bitmap bmp, float scaleFactor, int verticalOffsetInPixels) {
             Bitmap scaledBitmap = bitmapService.resizeCashBitmap(bmp, getContext(), scaleFactor);
+            horizontalOffsetsInPixels.add(width);
 
             width += scaledBitmap.getWidth() + PADDING;
             setLayoutParams(new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT));

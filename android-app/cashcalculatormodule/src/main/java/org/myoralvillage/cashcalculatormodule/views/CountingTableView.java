@@ -336,6 +336,10 @@ public class CountingTableView extends RelativeLayout {
         return listener;
     }
 
+    public CountingTableSurfaceView getCountingTableSurfaceView() {
+        return countingTableSurfaceView;
+    }
+
     /**
      * Sets the appState of this view and render the updated state.
      *

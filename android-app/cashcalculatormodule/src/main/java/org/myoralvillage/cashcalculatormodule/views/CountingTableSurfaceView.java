@@ -327,15 +327,18 @@ public class CountingTableSurfaceView extends View {
      *
      * @param deno the denomination model to be removed.
      */
-    public void removeDenomination(DenominationModel deno) {
+    public boolean removeDenomination(DenominationModel deno) {
+        boolean successful = false;
         if (counts.containsKey(deno)) {
             int value = counts.get(deno) - 1;
             if (value >= 0) {
                 counts.put(deno, counts.get(deno));
                 callEvent(deno, value);
                 invalidate();
+                successful = true;
             }
         }
+        return successful;
     }
 
     /**
