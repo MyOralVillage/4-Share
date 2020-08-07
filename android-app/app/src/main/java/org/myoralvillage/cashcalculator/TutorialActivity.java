@@ -279,7 +279,7 @@ public class TutorialActivity extends AppCompatActivity {
         ImageView button = findViewById(org.myoralvillage.cashcalculatormodule.R.id.calculate_button);
         int coords[] = new int[2];
         button.getLocationOnScreen(coords);
-        animateFingerTap(coords[0] + button.getWidth() / 2 - finger.getWidth() / 2, coords[1], elapsed, 1000);
+        animateFingerTap(coords[0] + button.getWidth() / 2 - finger.getWidth() / 2, coords[1] - button.getWidth() / 2, elapsed, 1000);
         elapsed += 1000;
         pressCalculate(elapsed);
     }
