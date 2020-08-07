@@ -91,5 +91,4 @@
         app:layout_constraintStart_toEndOf="@+id/mode_switch"
         app:srcCompat="@drawable/toggle_number" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null) {
             fragment.initialize(currencyCode);
             if (numericMode) {
-                fragment.switchAppMode();
+                fragment.switchToNumericMode();
             }
         }
     }

@@ -55,35 +55,7 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
      * Initializes the number pad in this view.
      */
     private void initializeNumberpad(){
-        View.OnClickListener listener = v -> {
-            String text;
-
-            if (v instanceof Button) {
-                text = ((Button) v).getText().toString();
-            } else {
-                text = v.getContentDescription().toString();
-            }
-
-            switch (text) {
-                case "check":
-                    check(stringBuilderToBigDecimal(stringBuilder));
-                    stringBuilder.setLength(0);
-                    return;
-                case "back":
-                    if (stringBuilder.length() > 0) {
-                        stringBuilder.setLength(stringBuilder.length() - 1);
-                        back(stringBuilderToBigDecimal(stringBuilder));
-                    }
-                    break;
-                default:
-                    if (stringBuilder.length() == 0 && text.equals("0")) {
-                        return;
-                    }
-                    stringBuilder.append(text);
-                    number(stringBuilderToBigDecimal(stringBuilder));
-                    break;
-            }
-        };
+        View.OnClickListener listener = this::clickView;
 
         for (View button : new View[] {findViewById(R.id.zero), findViewById(R.id.one),
                 findViewById(R.id.two), findViewById(R.id.three), findViewById(R.id.four),
@@ -91,6 +63,36 @@ public class NumberPadView extends LinearLayout implements View.OnTouchListener 
                 findViewById(R.id.eight), findViewById(R.id.nine), findViewById(R.id.check),
                 findViewById(R.id.back)}) {
             button.setOnClickListener(listener);
+        }
+    }
+
+    public void clickView(View v) {
+        String text;
+
+        if (v instanceof Button) {
+            text = ((Button) v).getText().toString();
+        } else {
+            text = v.getContentDescription().toString();
+        }
+
+        switch (text) {
+            case "check":
+                check(stringBuilderToBigDecimal(stringBuilder));
+                stringBuilder.setLength(0);
+                return;
+            case "back":
+                if (stringBuilder.length() > 0) {
+                    stringBuilder.setLength(stringBuilder.length() - 1);
+                    back(stringBuilderToBigDecimal(stringBuilder));
+                }
+                break;
+            default:
+                if (stringBuilder.length() == 0 && text.equals("0")) {
+                    return;
+                }
+                stringBuilder.append(text);
+                number(stringBuilderToBigDecimal(stringBuilder));
+                break;
         }
     }
 
