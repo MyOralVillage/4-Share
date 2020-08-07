@@ -137,7 +137,7 @@ public class AppService {
     public void gotoNextHistorySlide() {
         if (isInHistorySlideshow())
             appState.setCurrentOperationIndex(appState.getCurrentOperationIndex() + 1);
-
+            changeCalculation();
         if (!isInHistorySlideshow())
             changeCalculation();
     }
@@ -146,8 +146,15 @@ public class AppService {
      * Recalculates the result of previous operations
      */
     private void changeCalculation() {
-        appState.getOperations().remove(appState.getOperations().size() - 1);
-        calculate();
+        int standardIndex = findFirstOperationOfMode(appState.getOperations(), MathOperationMode.STANDARD);
+        for (int i = standardIndex + 1; i < appState.getOperations().size(); i++) {
+            if (appState.getOperations().get(i).getMode() == MathOperationMode.STANDARD) {
+                BigDecimal result = calculateOperationsResult(appState.getOperations().subList(standardIndex, i));
+                appState.getOperations().remove(i);
+                appState.getOperations().add(i, MathOperationModel.createStandard(result));
+                standardIndex = i;
+            }
+        }
     }
 
     /**
@@ -214,7 +221,7 @@ public class AppService {
         if (operations.size() == 1)
             return operations.get(0).getValue();
 
-        int standardIndex = findFirstOperationOfMode(operations, MathOperationMode.STANDARD);
+        int standardIndex = findLastStandardOperation(operations);
         if (standardIndex > 0)
             return calculateOperationsResult(operations.subList(standardIndex, operations.size()));
 
@@ -269,10 +276,10 @@ public class AppService {
     private static int findFirstOperationOfMode(List<MathOperationModel> operations, MathOperationMode mode) {
         int index = findLastStandardOperation(operations);
 
-        if (mode == MathOperationMode.STANDARD){
-            return index;
-        }
-        for (int i = index; i < operations.size(); i++)
+        //if (mode == MathOperationMode.STANDARD){
+        //    return index;
+        //}
+        for (int i = 0; i < operations.size(); i++)
             if (operations.get(i).getMode() == mode)
                 return i;
         return -1;

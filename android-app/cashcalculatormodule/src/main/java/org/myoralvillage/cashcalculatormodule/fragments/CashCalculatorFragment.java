@@ -1,12 +1,21 @@
 package org.myoralvillage.cashcalculatormodule.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ViewFlipper;
+
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import org.myoralvillage.cashcalculatormodule.R;
@@ -122,6 +131,7 @@ public class CashCalculatorFragment extends Fragment {
         return view;
     }
 
+
     /**
      * Gets the value of current total amount of money of the Cash Calculator.
      *
@@ -221,8 +231,19 @@ public class CashCalculatorFragment extends Fragment {
                 service.calculate();
                 switch (service.getAppState().getAppMode()) {
                     case NUMERIC:
-                        numberInputView.setText(formatCurrency(service.getValue()));
-                        numberPadView.setValue(service.getValue());
+                        if (numberInputView.getVisibility() == View.INVISIBLE) {
+                            BigDecimal actual = service.getValue();
+                            service.setValue(BigDecimal.ZERO);
+                            countingTableView.initialize(currCurrency, service.getAppState(), locale);
+                            sum.setVisibility(View.INVISIBLE);
+                            numberInputView.setVisibility(View.VISIBLE);
+                            numberInputView.setText(formatCurrency(actual));
+                            numberPadView.setValue(actual);
+                        }
+                        else {
+                            numberInputView.setText(formatCurrency(service.getValue()));
+                            numberPadView.setValue(service.getValue());
+                        }
                         break;
                 }
                 updateAll();
@@ -232,6 +253,8 @@ public class CashCalculatorFragment extends Fragment {
             public void onTapClearButton() {
                 switch (service.getAppState().getAppMode()) {
                     case NUMERIC:
+                        sum.setVisibility(View.INVISIBLE);
+                        numberInputView.setVisibility(View.VISIBLE);
                         numberInputView.setText(formatCurrency(BigDecimal.ZERO));
                         numberPadView.setValue(BigDecimal.ZERO);
                         break;
@@ -294,8 +317,10 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onVerticalSwipe() {
-                switchAppMode();
+                //switchAppMode();
             }
+
+
         });
     }
 
@@ -339,12 +364,18 @@ public class CashCalculatorFragment extends Fragment {
         numberPadView.setListener(new NumberPadListener() {
             @Override
             public void onCheck(BigDecimal value) {
-                sum.setVisibility(View.VISIBLE);
-                service.setValue(value);
-                numberInputView.setVisibility(View.INVISIBLE);
-                switchAppMode();
-                countingTableView.initialize(currCurrency, service.getAppState(), locale);
-                updateAll();
+                if (numberInputView.getVisibility() == View.INVISIBLE) {
+                    //do nothing
+                }
+                else {
+                    sum.setVisibility(View.VISIBLE);
+                    service.setValue(value);
+                    numberInputView.setVisibility(View.INVISIBLE);
+                    service.getAppState().setAppMode(AppStateModel.AppMode.IMAGE);
+                    countingTableView.initialize(currCurrency, service.getAppState(), locale);
+                    service.getAppState().setAppMode(AppStateModel.AppMode.NUMERIC);
+                    updateAll();
+                }
             }
 
             @Override
@@ -355,6 +386,11 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onTapNumber(BigDecimal value) {
+                if (numberInputView.getVisibility() == View.INVISIBLE) {
+                    service.setValue(BigDecimal.ZERO);
+                    countingTableView.initialize(currCurrency, service.getAppState(), locale);
+                    updateAll();
+                }
                 service.setValue(value);
                 sum.setVisibility(View.INVISIBLE);
                 numberInputView.setVisibility(View.VISIBLE);
@@ -363,7 +399,7 @@ public class CashCalculatorFragment extends Fragment {
 
             @Override
             public void onVerticalSwipe() {
-                switchAppMode();
+                //switchAppMode();
             }
         });
     }

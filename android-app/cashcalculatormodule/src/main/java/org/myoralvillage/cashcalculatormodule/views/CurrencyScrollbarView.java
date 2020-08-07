@@ -9,8 +9,12 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
@@ -39,7 +43,6 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     private CurrencyScrollbarListener currencyScrollbarListener;
     private CurrencyModel currCurrency;
     private ScrollbarDenominationsView denominationsView;
-
     /**
      * Retrieves the Currency model associated with this view.
      *
@@ -90,6 +93,8 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
         denominationsView = new ScrollbarDenominationsView(getContext());
         denominationsView.setOnTouchListener(new TapDetector(getResources().getDisplayMetrics().ydpi) {
+
+
             @Override
             public void onTap(MotionEvent e) {
                 int index = denominationsView.getAreaModel().getBoxIndexFromPoint(e.getX(), e.getY());
@@ -273,7 +278,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         }
     }
 
-    private static abstract class TapDetector implements OnTouchListener {
+    private static abstract class TapDetector implements OnTouchListener{
         private static final long MAX_DURATION = 250;
         private static final float MIN_SWIPE_DISTANCE_IN_INCHES = 0.2f;
         private float downX, downY;

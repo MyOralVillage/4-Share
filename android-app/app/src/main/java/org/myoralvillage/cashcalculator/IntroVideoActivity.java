@@ -2,8 +2,10 @@ package org.myoralvillage.cashcalculator;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -14,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.myoralvillage.cashcalculator.views.CustomVideoView;
 import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
 
-public class VideoActivity extends AppCompatActivity {
+public class IntroVideoActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,7 +28,7 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_launch_video);
 
         final VideoView video = (CustomVideoView) this.findViewById(R.id.videoView);
-        final String uri = "android.resource://" + getPackageName() + "/" + R.raw.launch_video;
+        final String uri = "android.resource://" + getPackageName() + "/" + R.raw.intro_video_updated_edited;
         video.setVideoURI(Uri.parse(uri));
         video.start();
         replayButtonListener(video);
@@ -47,10 +49,24 @@ public class VideoActivity extends AppCompatActivity {
         currencyName[0] = getIntent().getStringExtra("currencyName");
         setting.setOnClickListener(e -> new CurrencyService(getApplicationContext(), currencyName)
                 .call(currencies -> switchToMain(currencies[0])));
+        // perhaps find a way to go to the flags when skipping the video so that the user can select their currency
     }
 
     private void replayButtonListener(VideoView video) {
         ImageView setting = findViewById(R.id.replay);
+        video.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                setting.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (v.getId() == R.id.replay) {
+                            video.start();
+                        }
+                    }
+                });
+            }
+        });
         setting.setOnClickListener(e -> video.resume());
     }
 }

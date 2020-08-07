@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation = "horizontal"
+    tools:context=".TutorialActivity"
+    android:background="@drawable/metallic_surface">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/intro_video"
+        android:layout_width="190dp"
+        android:layout_height="134dp"
+        android:background="@drawable/intro_video_icon">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/advanced_video"
+        android:layout_marginLeft="5dp"
+        android:layout_width="190dp"
+        android:layout_height="134dp"
+        android:text="Advanced Video">
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/numeric_video"
+        android:layout_marginLeft="5dp"
+        android:layout_width="190dp"
+        android:layout_height="134dp"
+        android:background="@drawable/numeric_video_icon">
+</androidx.appcompat.widget.AppCompatButton>
+
+</LinearLayout>

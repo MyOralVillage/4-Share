@@ -211,7 +211,7 @@ public class AppServiceTest {
     }
 
     @Test
-    public void testChangedHistory() {
+    public void testChainChangedHistory() {
         AppService service = new AppService();
         service.setValue(new BigDecimal(5));
         service.add();
@@ -239,6 +239,46 @@ public class AppServiceTest {
         expected = new BigDecimal(61);
         assertEquals(expected, service.getValue());
     }
+
+    @Test
+    public void testSequentialChangedHistory() {
+        AppService service = new AppService();
+        service.setValue(new BigDecimal(100));
+        service.add();
+        service.setValue(new BigDecimal(50));
+        service.calculate();
+        service.multiply();
+        service.setValue(new BigDecimal(2));
+        service.calculate();
+        service.subtract();
+        service.setValue(new BigDecimal(20));
+        service.calculate();
+
+        BigDecimal expected = new BigDecimal(280);
+        assertEquals(expected, service.getValue());
+
+        service.enterHistorySlideshow();
+        service.gotoNextHistorySlide();
+        service.setValue(new BigDecimal(30));
+        service.gotoNextHistorySlide();
+
+        expected = new BigDecimal(130);
+        assertEquals(expected, service.getValue());
+
+        service.gotoNextHistorySlide();
+        service.setValue(new BigDecimal(3));
+        service.gotoNextHistorySlide();
+
+        expected = new BigDecimal(390);
+        assertEquals(expected, service.getValue());
+
+        service.gotoNextHistorySlide();
+        service.gotoNextHistorySlide();
+
+        expected = new BigDecimal(370);
+        assertEquals(expected, service.getValue());
+    }
+
 
     @Test
     public void testSubtractionCalculation() {

@@ -12,6 +12,7 @@ import android.view.View;
 
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
+import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.services.BitmapService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableSurfaceListener;
 
@@ -114,7 +115,7 @@ public class CountingTableSurfaceView extends View {
         denoNumber.setTypeface(font);
 
         denoNumber.setTextSize(numSize);
-        denoNumber.setStrokeWidth((float) numSize / OFFSET_STROKE_RATE);
+        denoNumber.setStrokeWidth(numSize / OFFSET_STROKE_RATE);
         denoNumber.setAntiAlias(true);
 
         int currentPosition = 0;
@@ -211,14 +212,14 @@ public class CountingTableSurfaceView extends View {
 
         if (num >= 100){
             denoNumber.setTextSize(numSize / 2);
-            denoNumber.setStrokeWidth((float) numSize / 23);
+            denoNumber.setStrokeWidth(numSize / 23);
         }else{
             if (num > 9){
                 denoNumber.setTextSize(numSize * 2 / 3);
-                denoNumber.setStrokeWidth((float) numSize / 19);
+                denoNumber.setStrokeWidth(numSize / 19);
             }else{
                 denoNumber.setTextSize(numSize);
-                denoNumber.setStrokeWidth((float) numSize / OFFSET_STROKE_RATE);
+                denoNumber.setStrokeWidth(numSize / OFFSET_STROKE_RATE);
             }
         }
         denoNumber.setStyle(Paint.Style.FILL);
