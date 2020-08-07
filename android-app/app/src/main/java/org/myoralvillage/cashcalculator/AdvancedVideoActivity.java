@@ -1,14 +1,12 @@
 package org.myoralvillage.cashcalculator;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -17,8 +15,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AnimationSet;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment;

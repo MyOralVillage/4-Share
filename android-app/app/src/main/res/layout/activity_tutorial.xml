@@ -23,7 +23,7 @@
         android:layout_marginLeft="5dp"
         android:layout_width="190dp"
         android:layout_height="134dp"
-        android:text="Advanced Video">
+        android:background="@drawable/advanced_video_icon">
 
     </androidx.appcompat.widget.AppCompatButton>
 

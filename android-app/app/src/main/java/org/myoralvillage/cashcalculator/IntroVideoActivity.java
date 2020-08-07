@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import org.myoralvillage.cashcalculatormodule.fragments.CashCalculatorFragment;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
+import org.myoralvillage.cashcalculatormodule.services.CurrencyService;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 import org.myoralvillage.cashcalculatormodule.views.NumberPadView;
@@ -208,7 +209,7 @@ public class IntroVideoActivity extends AppCompatActivity {
                     runCalculate();
                     wait(1000);
                     runFadeOut();
-                    runExit();
+
             }
         }
         AnimatorSet set = new AnimatorSet();
@@ -621,4 +622,5 @@ public class IntroVideoActivity extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return true;
     }
+
 }
