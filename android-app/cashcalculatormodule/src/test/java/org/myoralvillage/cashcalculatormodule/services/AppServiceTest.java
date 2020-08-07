@@ -261,8 +261,17 @@ public class AppServiceTest {
         service.gotoNextHistorySlide();
         service.setValue(new BigDecimal(30));
         service.gotoNextHistorySlide();
+
+        expected = new BigDecimal(130);
+        assertEquals(expected, service.getValue());
+
         service.gotoNextHistorySlide();
         service.setValue(new BigDecimal(3));
+        service.gotoNextHistorySlide();
+
+        expected = new BigDecimal(390);
+        assertEquals(expected, service.getValue());
+
         service.gotoNextHistorySlide();
         service.gotoNextHistorySlide();
 

@@ -12,7 +12,7 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/intro_video"
-        android:layout_width="237dp"
+        android:layout_width="190dp"
         android:layout_height="134dp"
         android:background="@drawable/intro_video_icon">
 
@@ -20,17 +20,19 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/advanced_video"
-        android:layout_marginLeft="10dp"
-        android:layout_width="237dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="190dp"
         android:layout_height="134dp"
-        android:background="@drawable/numeric_video_icon">
+        android:text="Advanced Video">
 
     </androidx.appcompat.widget.AppCompatButton>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/numeric_video"
-        android:layout_width="0dp"
-        android:layout_height="0dp">
+        android:layout_marginLeft="5dp"
+        android:layout_width="190dp"
+        android:layout_height="134dp"
+        android:background="@drawable/numeric_video_icon">
 </androidx.appcompat.widget.AppCompatButton>
 
 </LinearLayout>

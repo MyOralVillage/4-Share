@@ -356,6 +356,4 @@ public class CountingTableView extends RelativeLayout {
     public void setBackgroundResource(int resid) {
         countingTableSurfaceView.setBackgroundResource(resid);
     }
-
-
 }

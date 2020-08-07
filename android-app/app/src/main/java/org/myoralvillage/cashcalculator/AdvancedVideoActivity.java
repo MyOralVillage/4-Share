@@ -28,7 +28,7 @@ public class AdvancedVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_launch_video);
 
         final VideoView video = (CustomVideoView) this.findViewById(R.id.videoView);
-        final String uri = "android.resource://" + getPackageName() + "/" + R.raw.numeric_video_updated_edited;
+        final String uri = "android.resource://" + getPackageName() + "/" + R.raw.numeric_video;
         video.setVideoURI(Uri.parse(uri));
         video.start();
         replayButtonListener(video);
