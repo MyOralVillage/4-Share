@@ -331,9 +331,6 @@ public class CashCalculatorFragment extends Fragment {
      */
     public void switchAppMode() {
         service.switchAppMode();
-        if (service.getAppState().getAppMode() == AppStateModel.AppMode.NUMERIC)
-            service.setValue(BigDecimal.ZERO);
-
         TextView sum = getView().findViewById(R.id.sum_view);
 
         switch(service.getAppState().getAppMode()) {
@@ -350,6 +347,17 @@ public class CashCalculatorFragment extends Fragment {
         }
 
         updateAll();
+    }
+
+    public void switchToNumericMode() {
+        if (service.getAppState().getAppMode() == AppStateModel.AppMode.IMAGE) {
+            service.switchAppMode();
+            TextView sum = getView().findViewById(R.id.sum_view);
+            sum.setVisibility(View.INVISIBLE);
+            numberInputView.setVisibility(View.VISIBLE);
+            numberInputView.setText(formatCurrency(service.getValue()));
+            service.setValue(BigDecimal.ZERO);
+        }
     }
 
     /**
@@ -466,6 +474,12 @@ public class CashCalculatorFragment extends Fragment {
         if (getActivity().getIntent().hasExtra("animationStage")) {
             intent.putExtra("animationStage", getActivity().getIntent().getIntExtra("animationStage", -2) + 1);
         }
+        if (getActivity().getIntent().hasExtra("numericMode")) {
+            intent.putExtra("numericMode", getActivity().getIntent().getBooleanExtra("numericMode", false));
+        }
+        if (getActivity().getIntent().hasExtra("currencyName")) {
+            intent.putExtra("currencyName", getActivity().getIntent().getStringExtra("currencyName"));
+        }
         startActivity(intent);
     }
 
@@ -483,5 +497,9 @@ public class CashCalculatorFragment extends Fragment {
 
     public CountingTableView getCountingTableView() {
         return countingTableView;
+    }
+
+    public NumberPadView getNumberPadView() {
+        return numberPadView;
     }
 }

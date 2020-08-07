@@ -20,7 +20,8 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         setContentView(R.layout.activity_tutorial);
-
+        numericMode = getIntent().getBooleanExtra("numericMode", false);
+        currencyName = getIntent().getStringExtra("currencyName");
         Button intro_video = findViewById(R.id.intro_video);
         intro_video.setOnClickListener(this);
         Button advanced_video = findViewById(R.id.advanced_video);

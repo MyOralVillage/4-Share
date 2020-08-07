@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
+import org.myoralvillage.cashcalculatormodule.views.NumberPadView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -33,22 +35,30 @@ import java.util.List;
 
 public class IntroVideoActivity extends AppCompatActivity {
     private CashCalculatorFragment fragment;
-    private CurrencyScrollbarView currencyScrollbar;
-    private CurrencyModel currency;
-    private ArrayList<Animator> animations;
     private CountingTableView countingTable;
+    private CurrencyScrollbarView currencyScrollbar;
+    private NumberPadView numberPad;
+
+    private CurrencyModel currency;
     private int numDenominations;
+    private ArrayList<Animator> animations;
     private List<Integer> horizontalOffsets;
     private List<Integer> verticalOffsets;
+
     private int height;
     private int width;
     private int[] fingerLocation;
     private int[] scrollbarLocation;
     private int scrollbarWidth;
     private int scrollbarScrollPosition;
+
     private int elapsed = 0;
+
     private ImageView finger;
     private View black;
+
+    private String currencyName;
+    private boolean numericMode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,15 +68,18 @@ public class IntroVideoActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_animations);
+        currencyName = getIntent().getStringExtra("currencyName");
+        numericMode = getIntent().getBooleanExtra("numericMode", false);
         fragment = (CashCalculatorFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TutorialFragment);
         if (fragment != null) {
-            fragment.initialize("PKR");
+            fragment.initialize(currencyName);
         }
         currencyScrollbar = fragment.getCurrencyScrollbarView();
         currency = currencyScrollbar.getCurrency();
         numDenominations = currency.getDenominations().size();
         countingTable = fragment.getCountingTableView();
+        numberPad = fragment.getNumberPadView();
         horizontalOffsets = currencyScrollbar.getHorizontalOffsetsInPixels();
         verticalOffsets = currencyScrollbar.getVerticalOffsetsInPixels();
         animations = new ArrayList<>();
@@ -79,13 +92,15 @@ public class IntroVideoActivity extends AppCompatActivity {
         finger = findViewById(R.id.finger);
         black = findViewById(R.id.black_view);
         ViewTreeObserver vto = currencyScrollbar.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener(){
-                                          @Override public void onGlobalLayout(){
-                                              animate();
-                                              currencyScrollbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                                          }
-                                      });
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                animate();
+                currencyScrollbar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
     }
+
     private void animate() {
         currencyScrollbar.getLocationOnScreen(scrollbarLocation);
         scrollbarWidth = currencyScrollbar.getChildAt(0).getWidth();
@@ -193,12 +208,14 @@ public class IntroVideoActivity extends AppCompatActivity {
                     runCalculate();
                     wait(1000);
                     runFadeOut();
+                    runExit();
             }
         }
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animations);
         set.start();
     }
+
     private void runAddDenomination(int denominationIndex) {
         denominationIndex = (denominationIndex % numDenominations + numDenominations) % numDenominations;
         if (denominationIndex < numDenominations - 1 && horizontalOffsets.get(denominationIndex) <= width / 2) {
@@ -221,60 +238,109 @@ public class IntroVideoActivity extends AppCompatActivity {
             addDenomination(denominationIndex, elapsed);
         }
     }
+
     private void runScrollBarScroll(int destX) {
         int originalTime = elapsed;
         if (destX < 0) {
             destX = 0;
-        } else if (destX >= scrollbarWidth - width){
+        } else if (destX >= scrollbarWidth - width) {
             destX = scrollbarWidth - width - 1;
         }
         int imaginaryScrollPosition = scrollbarScrollPosition;
         if (destX > imaginaryScrollPosition) {
-//            if (destX - imaginaryScrollPosition > width / 2) {
-//                while (destX - imaginaryScrollPosition > width / 2) {
-//                    imaginaryScrollPosition += width / 2;
-//                    animateSwipe(3 * width / 4, scrollbarLocation[1], width / 4, scrollbarLocation[1], elapsed, 1500);
-//                    elapsed += 1500;
-//                }
-//            } else {
-                animateSwipe(3 * width / 4, scrollbarLocation[1], 3 * width / 4 - destX + imaginaryScrollPosition, scrollbarLocation[1], elapsed, 1000);
-                elapsed += 1000;
-//            }
+            animateSwipe(3 * width / 4, scrollbarLocation[1], 3 * width / 4 - destX + imaginaryScrollPosition, scrollbarLocation[1], elapsed, 1000);
+            elapsed += 1000;
         }
         if (destX < imaginaryScrollPosition) {
-//            if (imaginaryScrollPosition - destX > width / 2) {
-//                while (imaginaryScrollPosition - destX > width / 2) {
-//                    imaginaryScrollPosition -= width / 2;
-//                    animateSwipe(width / 4, scrollbarLocation[1], 3 * width / 4, scrollbarLocation[1], elapsed, 1500);
-//                    elapsed += 1500;
-//                }
-//            } else {
-                animateSwipe(width / 4, scrollbarLocation[1], width / 4 - destX + imaginaryScrollPosition, scrollbarLocation[1], elapsed, 1000);
-                elapsed += 1000;
-//            }
+            animateSwipe(width / 4, scrollbarLocation[1], width / 4 - destX + imaginaryScrollPosition, scrollbarLocation[1], elapsed, 1000);
+            elapsed += 1000;
         }
         animateScrollbarScroll(destX, originalTime, elapsed - originalTime);
     }
+
     private void runRemoveDenomination() {
         animateFingerTap(0, 0, elapsed, 1000);
         removeDenomination(elapsed + 800);
         elapsed += 1000;
     }
+
+    private void runClickNumber(int num) {
+        View button;
+        switch (num) {
+            case 1:
+                button = findViewById(R.id.one);
+                break;
+            case 2:
+                button = findViewById(R.id.two);
+                break;
+            case 3:
+                button = findViewById(R.id.three);
+                break;
+            case 4:
+                button = findViewById(R.id.four);
+                break;
+            case 5:
+                button = findViewById(R.id.five);
+                break;
+            case 6:
+                button = findViewById(R.id.six);
+                break;
+            case 7:
+                button = findViewById(R.id.seven);
+                break;
+            case 8:
+                button = findViewById(R.id.eight);
+                break;
+            case 9:
+                button = findViewById(R.id.nine);
+                break;
+            default:
+                button = findViewById(R.id.zero);
+                break;
+        }
+        int coords[] = new int[2];
+        button.getLocationOnScreen(coords);
+        animateFingerTap(coords[0] + button.getWidth() / 2 - finger.getWidth() / 2, coords[1], elapsed, 1000);
+        elapsed += 1000;
+        clickNumPadButton(button, elapsed);
+    }
+
+    private void runClickCross() {
+        View button = findViewById(R.id.back);
+        int coords[] = new int[2];
+        button.getLocationOnScreen(coords);
+        animateFingerTap(coords[0] + button.getWidth() / 2 - finger.getWidth() / 2, coords[1] - button.getWidth() / 2, elapsed, 1000);
+        elapsed += 1000;
+        clickNumPadButton(button, elapsed);
+    }
+
+    private void runClickCheck() {
+        View button = findViewById(R.id.check);
+        int coords[] = new int[2];
+        button.getLocationOnScreen(coords);
+        animateFingerTap(coords[0] + button.getWidth() / 2 - finger.getWidth() / 2, coords[1] - button.getWidth() / 2, elapsed, 1000);
+        elapsed += 1000;
+        clickNumPadButton(button, elapsed);
+    }
+
     private void runSwitchToAddition() {
         animateSwipe(width - finger.getWidth(), height / 4, 0, height / 4, elapsed, 1500);
         elapsed += 1600;
         changeToAddition(elapsed);
     }
-    private void runSwitchToSubtraction () {
+
+    private void runSwitchToSubtraction() {
         animateSwipe(0, height / 4, width - finger.getWidth(), height / 4, elapsed, 1500);
         elapsed += 1600;
         changeToSubtraction(elapsed);
     }
+
     private void runSwitchToMultiplication() {
         animateSwipe(width / 2, 0, width / 2, height * 9 / 10, elapsed, 1000);
         elapsed += 1100;
         changeToMultiplication(elapsed);
     }
+
     private void runClear() {
         ImageView button = findViewById(org.myoralvillage.cashcalculatormodule.R.id.clear_button);
         int coords[] = new int[2];
@@ -283,6 +349,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         elapsed += 1000;
         pressClear(elapsed);
     }
+
     private void runCalculate() {
         ImageView button = findViewById(org.myoralvillage.cashcalculatormodule.R.id.calculate_button);
         int coords[] = new int[2];
@@ -291,6 +358,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         elapsed += 1000;
         pressCalculate(elapsed);
     }
+
     private void runEnterHistory() {
         ImageView button = findViewById(org.myoralvillage.cashcalculatormodule.R.id.enter_history_button);
         int coords[] = new int[2];
@@ -299,6 +367,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         elapsed += 1000;
         pressEnterHistory(elapsed);
     }
+
     private void runNext() {
         ImageView button = findViewById(org.myoralvillage.cashcalculatormodule.R.id.right_history_button);
         int coords[] = new int[2];
@@ -316,6 +385,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         elapsed += 1000;
         pressPrev(elapsed);
     }
+
     private void runFadeOutAndIn() {
         AnimatorSet as = new AnimatorSet();
         as.playSequentially(getFadeIn(black, 1000), getFadeOut(black, 1000));
@@ -323,13 +393,34 @@ public class IntroVideoActivity extends AppCompatActivity {
         animations.add(as);
         elapsed += 2000;
     }
+
     private void runFadeOut() {
-        animations.add(getFadeIn(black, 2000));
-        elapsed += 2000;
+        animations.add(getFadeIn(black, 500));
+        elapsed += 500;
     }
+
+    private void runExit() {
+        exit(elapsed);
+    }
+
     private void wait(int time) {
         elapsed += time;
     }
+
+    private void exit(int time) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(IntroVideoActivity.this, TutorialActivity.class);
+                intent.putExtra("currencyName", currencyName);
+                intent.putExtra("numericMode", numericMode);
+                startActivity(intent);
+                finish();
+            }
+        }, time);
+    }
+
     private void addDenomination(int denominationIndex, int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -340,6 +431,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void removeDenomination(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -352,6 +444,17 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
+    private void clickNumPadButton(View view, int time) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                numberPad.clickView(view);
+            }
+        }, time);
+    }
+
     private void changeToAddition(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -361,6 +464,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void changeToSubtraction(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -370,6 +474,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void changeToMultiplication(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -379,6 +484,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void pressClear(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -388,6 +494,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void pressCalculate(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -397,6 +504,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void pressEnterHistory(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -406,6 +514,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void pressNext(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -415,6 +524,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void pressPrev(int time) {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -424,6 +534,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             }
         }, time);
     }
+
     private void animateScrollbarScroll(int xValue, int time, int duration) {
         ObjectAnimator animator = ObjectAnimator.ofInt(fragment.getCurrencyScrollbarView(), "scrollX", xValue);
         animator.setDuration(duration);
@@ -431,6 +542,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         scrollbarScrollPosition = xValue;
         animations.add(animator);
     }
+
     private void animateFingerTap(int x, int y, int time, int duration) {
         AnimatorSet moveSet = new AnimatorSet();
         AnimatorSet fadeSet = new AnimatorSet();
@@ -446,6 +558,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         overallSet.setStartDelay(time);
         animations.add(overallSet);
     }
+
     private void animateSwipe(int xStart, int yStart, int xEnd, int yEnd, int time, int duration) {
         AnimatorSet initialMoveSet = new AnimatorSet();
         AnimatorSet swipeSet = new AnimatorSet();
@@ -463,6 +576,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         overalllSet.setStartDelay(time);
         animations.add(overalllSet);
     }
+
     private ObjectAnimator getXAnimation(View view, float dX, int duration) {
         ObjectAnimator animation = ObjectAnimator.ofFloat(view, "translationX", dX);
         animation.setDuration(duration);
@@ -486,6 +600,7 @@ public class IntroVideoActivity extends AppCompatActivity {
         animation.setDuration(duration);
         return animation;
     }
+
     private DenominationModel getDenomination(int index) {
         Iterator<DenominationModel> denominationModelIterator = currency.getDenominations().iterator();
         DenominationModel current = null;
@@ -493,6 +608,7 @@ public class IntroVideoActivity extends AppCompatActivity {
             current = denominationModelIterator.next();
         return current;
     }
+
     private boolean usesDecimal() {
         if (getDenomination(numDenominations - 1).getValue().compareTo(new BigDecimal("1")) >= 0) {
             return false;
@@ -500,7 +616,9 @@ public class IntroVideoActivity extends AppCompatActivity {
             return true;
         }
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return true;
     }
+}
