@@ -71,7 +71,7 @@ public class CashCalculatorFragment extends Fragment {
      *
      * @see AppService
      */
-    private AppService service;
+    AppService service;
 
     /**
      * The model class used to represent the type of currency as well as the set of denominations
@@ -463,6 +463,9 @@ public class CashCalculatorFragment extends Fragment {
     private void switchState() {
         Intent intent = new Intent(getActivity(), getActivity().getClass());
         intent.putExtra(APP_STATE_KEY, service.getAppState());
+        if (getActivity().getIntent().hasExtra("animationStage")) {
+            intent.putExtra("animationStage", getActivity().getIntent().getIntExtra("animationStage", -2) + 1);
+        }
         startActivity(intent);
     }
 
@@ -472,5 +475,13 @@ public class CashCalculatorFragment extends Fragment {
     private void updateAll() {
         updateCountingTable();
         updateAppMode();
+    }
+
+    public CurrencyScrollbarView getCurrencyScrollbarView() {
+        return currencyScrollbarView;
+    }
+
+    public CountingTableView getCountingTableView() {
+        return countingTableView;
     }
 }
