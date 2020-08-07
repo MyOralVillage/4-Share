@@ -34,6 +34,7 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent(this, IntroVideoActivity.class);
         intent.putExtra("currencyName", currencyName);
         intent.putExtra("numericMode", numericMode);
+        intent.putExtra("animationStage", 0);
         startActivity(intent);
         finish();
     }
@@ -42,6 +43,7 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = new Intent(this, AdvancedVideoActivity.class);
         intent.putExtra("currencyName", currencyName);
         intent.putExtra("numericMode", numericMode);
+        intent.putExtra("animationStage", 0);
         startActivity(intent);
         finish();
     }
