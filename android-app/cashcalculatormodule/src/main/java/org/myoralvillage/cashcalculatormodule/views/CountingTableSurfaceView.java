@@ -12,7 +12,6 @@ import android.view.View;
 
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
 import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
-import org.myoralvillage.cashcalculatormodule.services.AppService;
 import org.myoralvillage.cashcalculatormodule.services.BitmapService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableSurfaceListener;
 
@@ -115,7 +114,7 @@ public class CountingTableSurfaceView extends View {
         denoNumber.setTypeface(font);
 
         denoNumber.setTextSize(numSize);
-        denoNumber.setStrokeWidth(numSize / OFFSET_STROKE_RATE);
+        denoNumber.setStrokeWidth((float) numSize / OFFSET_STROKE_RATE);
         denoNumber.setAntiAlias(true);
 
         int currentPosition = 0;
@@ -212,14 +211,14 @@ public class CountingTableSurfaceView extends View {
 
         if (num >= 100){
             denoNumber.setTextSize(numSize / 2);
-            denoNumber.setStrokeWidth(numSize / 23);
+            denoNumber.setStrokeWidth((float) numSize / 23);
         }else{
             if (num > 9){
                 denoNumber.setTextSize(numSize * 2 / 3);
-                denoNumber.setStrokeWidth(numSize / 19);
+                denoNumber.setStrokeWidth((float) numSize / 19);
             }else{
                 denoNumber.setTextSize(numSize);
-                denoNumber.setStrokeWidth(numSize / OFFSET_STROKE_RATE);
+                denoNumber.setStrokeWidth((float) numSize / OFFSET_STROKE_RATE);
             }
         }
         denoNumber.setStyle(Paint.Style.FILL);
@@ -328,15 +327,18 @@ public class CountingTableSurfaceView extends View {
      *
      * @param deno the denomination model to be removed.
      */
-    public void removeDenomination(DenominationModel deno) {
+    public boolean removeDenomination(DenominationModel deno) {
+        boolean successful = false;
         if (counts.containsKey(deno)) {
             int value = counts.get(deno) - 1;
             if (value >= 0) {
                 counts.put(deno, counts.get(deno));
                 callEvent(deno, value);
                 invalidate();
+                successful = true;
             }
         }
+        return successful;
     }
 
     /**

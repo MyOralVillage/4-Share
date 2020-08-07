@@ -11,15 +11,12 @@ import android.widget.TextView;
 import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.AppStateModel;
 import org.myoralvillage.cashcalculatormodule.models.CurrencyModel;
-import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.models.MathOperationModel;
 import org.myoralvillage.cashcalculatormodule.services.CountingService;
 import org.myoralvillage.cashcalculatormodule.views.listeners.CountingTableListener;
 import org.myoralvillage.cashcalculatormodule.views.listeners.SwipeListener;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -169,22 +166,22 @@ public class CountingTableView extends RelativeLayout {
         dfsUS.setCurrency(dfs.getCurrency());
         dfsUS.setCurrencySymbol(dfs.getCurrencySymbol());
         df.setDecimalFormatSymbols(dfsUS);
-            switch(df.getPositivePrefix()) {
-                case "Rs":
-                    df.setPositivePrefix("Rs. ");
-            }
-            switch(df.getNegativePrefix()) {
-                case "-Rs":
-                    df.setNegativePrefix("Rs. -");
-            }
-            switch(df.getPositiveSuffix()) {
-                case "৳":
-                    df.setPositiveSuffix(" ৳");
-            }
-            switch(df.getNegativeSuffix()) {
-                case "৳":
-                    df.setNegativeSuffix(" ৳");
-            }
+        switch(df.getPositivePrefix()) {
+            case "Rs":
+                df.setPositivePrefix("Rs. ");
+        }
+        switch(df.getNegativePrefix()) {
+            case "-Rs":
+                df.setNegativePrefix("Rs. -");
+        }
+        switch(df.getPositiveSuffix()) {
+            case "৳":
+                df.setPositiveSuffix(" ৳");
+        }
+        switch(df.getNegativeSuffix()) {
+            case "৳":
+                df.setNegativeSuffix(" ৳");
+        }
         return df;
     }
 
@@ -275,7 +272,7 @@ public class CountingTableView extends RelativeLayout {
             clearButton.setVisibility(View.VISIBLE);
     }
 
-    public void updateCountingSurface() {
+    private void updateCountingSurface() {
         countingTableSurfaceView.setDenominations(currencyModel.getDenominations().iterator(),
                 countingService.allocate(appState.getCurrentOperation().getValue(), currencyModel),
                 appState.getCurrentOperation().getValue());
@@ -333,6 +330,14 @@ public class CountingTableView extends RelativeLayout {
      */
     public void setListener(CountingTableListener listener) {
         this.listener = listener;
+    }
+
+    public CountingTableListener getListener() {
+        return listener;
+    }
+
+    public CountingTableSurfaceView getCountingTableSurfaceView() {
+        return countingTableSurfaceView;
     }
 
     /**

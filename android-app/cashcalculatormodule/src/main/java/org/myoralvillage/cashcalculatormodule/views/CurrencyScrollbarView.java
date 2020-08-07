@@ -9,12 +9,8 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.Toast;
 
 import org.myoralvillage.cashcalculatormodule.R;
 import org.myoralvillage.cashcalculatormodule.models.AreaModel;
@@ -43,6 +39,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
     private CurrencyScrollbarListener currencyScrollbarListener;
     private CurrencyModel currCurrency;
     private ScrollbarDenominationsView denominationsView;
+
     /**
      * Retrieves the Currency model associated with this view.
      *
@@ -93,8 +90,6 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
 
         denominationsView = new ScrollbarDenominationsView(getContext());
         denominationsView.setOnTouchListener(new TapDetector(getResources().getDisplayMetrics().ydpi) {
-
-
             @Override
             public void onTap(MotionEvent e) {
                 int index = denominationsView.getAreaModel().getBoxIndexFromPoint(e.getX(), e.getY());
@@ -131,6 +126,18 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
      */
     public void setCurrencyScrollbarListener(CurrencyScrollbarListener currencyScrollbarListener) {
         this.currencyScrollbarListener = currencyScrollbarListener;
+    }
+
+    public CurrencyScrollbarListener getCurrencyScrollbarListener() {
+        return currencyScrollbarListener;
+    }
+
+    public List<Integer> getVerticalOffsetsInPixels() {
+        return denominationsView.getVerticalOffsetsInPixels();
+    }
+
+    public List<Integer> getHorizontalOffsetsInPixels() {
+        return denominationsView.getHorizontalOffsetsInPixels();
     }
 
     /**
@@ -174,6 +181,8 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
          */
         private List<Integer> verticalOffsetsInPixels = new ArrayList<>();
 
+        private List<Integer> horizontalOffsetsInPixels = new ArrayList<>();
+
         /**
          * the width of a denomination to the beginning of the view.
          */
@@ -214,10 +223,17 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
             for (int i = 0; i < bitmaps.size(); i++) {
                 Bitmap bmp = bitmaps.get(i);
                 Integer verticalOffset = verticalOffsetsInPixels.get(i);
-
                 drawDenomination(bmp, canvas, currentOffset, verticalOffset);
                 currentOffset += bmp.getWidth() + PADDING;
             }
+        }
+
+        public List<Integer> getVerticalOffsetsInPixels() {
+            return verticalOffsetsInPixels;
+        }
+
+        public List<Integer> getHorizontalOffsetsInPixels() {
+            return horizontalOffsetsInPixels;
         }
 
         /**
@@ -257,6 +273,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
          */
         public void addBitmap(Bitmap bmp, float scaleFactor, int verticalOffsetInPixels) {
             Bitmap scaledBitmap = bitmapService.resizeCashBitmap(bmp, getContext(), scaleFactor);
+            horizontalOffsetsInPixels.add(width);
 
             width += scaledBitmap.getWidth() + PADDING;
             setLayoutParams(new LinearLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -278,7 +295,7 @@ public class CurrencyScrollbarView extends HorizontalScrollView {
         }
     }
 
-    private static abstract class TapDetector implements OnTouchListener{
+    private static abstract class TapDetector implements OnTouchListener {
         private static final long MAX_DURATION = 250;
         private static final float MIN_SWIPE_DISTANCE_IN_INCHES = 0.2f;
         private float downX, downY;
