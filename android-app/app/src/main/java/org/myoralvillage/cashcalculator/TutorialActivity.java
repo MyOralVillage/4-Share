@@ -26,6 +26,7 @@ import org.myoralvillage.cashcalculatormodule.models.DenominationModel;
 import org.myoralvillage.cashcalculatormodule.views.CountingTableView;
 import org.myoralvillage.cashcalculatormodule.views.CurrencyScrollbarView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +61,7 @@ public class TutorialActivity extends AppCompatActivity {
         fragment = (CashCalculatorFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.TutorialFragment);
         if (fragment != null) {
-            fragment.initialize("USD");
+            fragment.initialize("PKR");
         }
         currencyScrollbar = fragment.getCurrencyScrollbarView();
         currency = currencyScrollbar.getCurrency();
@@ -91,101 +92,108 @@ public class TutorialActivity extends AppCompatActivity {
         scrollbarScrollPosition = (scrollbarWidth - width) / 2;
         getFadeOut(finger, 0).start();
         getFadeOut(black, 0).start();
-        switch (getIntent().getIntExtra("animationStage", 0)) {
-            case 0:
-                wait(1000);
-                runAddDenomination(-5); // add the fifth smallest denomination (use -n for nth smallest, +n for (n+1)th biggest)
-                wait(500);
-                runRemoveDenomination(); // removes denomination only if there is only one type
-                wait(500);
-                runAddDenomination(-4);
-                wait(500);
-                runRemoveDenomination();
-                wait(500);
-                runFadeOutAndIn(); // fades the screen to black and then fades back in
-                wait(1500);
-                runAddDenomination(-5);
-                wait(500);
-                runSwitchToAddition(); // every time we switch to a new operation, we must end the switch case with a break and start a new one
-                break;
-            case 1:
-                wait(1500);
-                runAddDenomination(-4);
-                wait(500);
-                runCalculate();
-                wait(1000);
-                runClear();
-                wait(500);
-                runFadeOutAndIn();
-                wait(1500);
-                runAddDenomination(-7);
-                wait(500);
-                runSwitchToSubtraction();
-                break;
-            case 2:
-                wait(1500);
-                runAddDenomination(-5);
-                wait(250);
-                runAddDenomination(-5);
-                wait(500);
-                runCalculate();
-                wait(750);
-                runClear();
-                wait(500);
-                runFadeOutAndIn();
-                wait(1500);
-                runAddDenomination(3);
-                wait(500);
-                runSwitchToMultiplication();
-                break;
-            case 3:
-                wait(1500);
-                runAddDenomination(-2);
-                wait(750);
-                runCalculate();
-                wait(1000);
-                runClear();
-                wait(500);
-                runFadeOutAndIn();
-                wait(1500);
-                runAddDenomination(-4);
-                wait(500);
-                runSwitchToMultiplication();
-                break;
-            case 4:
-                wait(1500);
-                runAddDenomination(-2);
-                wait(750);
-                runCalculate();
-                wait(500);
-                runSwitchToAddition();
-                break;
-            case 5:
-                wait(1500);
-                runAddDenomination(-1);
-                wait(500);
-                runCalculate();
-                wait(1000);
-                runClear();
-                wait(500);
-                runFadeOutAndIn();
-                wait(1500);
-                runAddDenomination(-4);
-                wait(500);
-                runSwitchToMultiplication();
-                break;
-            case 6:
-                wait(1500);
-                runAddDenomination(-1);
-                wait(500);
-                runSwitchToAddition();
-                break;
-            case 7:
-                wait(1500);
-                runAddDenomination(-1);
-                wait(500);
-                runCalculate();
-                wait(1000);
+        if (usesDecimal()) {
+            switch (getIntent().getIntExtra("animationStage", 0)) {
+
+            }
+        } else {
+            switch (getIntent().getIntExtra("animationStage", 0)) {
+                case 0:
+                    wait(1000);
+                    runAddDenomination(-5); // add the fifth smallest denomination (use -n for nth smallest, +n for (n+1)th biggest)
+                    wait(500);
+                    runRemoveDenomination(); // removes denomination only if there is only one type
+                    wait(500);
+                    runAddDenomination(-4);
+                    wait(500);
+                    runRemoveDenomination();
+                    wait(500);
+                    runFadeOutAndIn(); // fades the screen to black and then fades back in
+                    wait(1500);
+                    runAddDenomination(-5);
+                    wait(500);
+                    runSwitchToAddition(); // every time we switch to a new operation, we must end the switch case with a break and start a new one
+                    break;
+                case 1:
+                    wait(1500);
+                    runAddDenomination(-4);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-7);
+                    wait(500);
+                    runSwitchToSubtraction();
+                    break;
+                case 2:
+                    wait(1500);
+                    runAddDenomination(-5);
+                    wait(250);
+                    runAddDenomination(-5);
+                    wait(500);
+                    runCalculate();
+                    wait(750);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(3);
+                    wait(500);
+                    runSwitchToMultiplication();
+                    break;
+                case 3:
+                    wait(1500);
+                    runAddDenomination(-2);
+                    wait(750);
+                    runCalculate();
+                    wait(1000);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-4);
+                    wait(500);
+                    runSwitchToMultiplication();
+                    break;
+                case 4:
+                    wait(1500);
+                    runAddDenomination(-2);
+                    wait(750);
+                    runCalculate();
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 5:
+                    wait(1500);
+                    runAddDenomination(-1);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-4);
+                    wait(500);
+                    runSwitchToMultiplication();
+                    break;
+                case 6:
+                    wait(1500);
+                    runAddDenomination(-1);
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 7:
+                    wait(1500);
+                    runAddDenomination(-1);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runFadeOut();
+            }
         }
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animations);
@@ -484,6 +492,13 @@ public class TutorialActivity extends AppCompatActivity {
         for (int i = 0; i <= index; i++)
             current = denominationModelIterator.next();
         return current;
+    }
+    private boolean usesDecimal() {
+        if (getDenomination(numDenominations - 1).getValue().compareTo(new BigDecimal("1")) >= 0) {
+            return false;
+        } else {
+            return true;
+        }
     }
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
