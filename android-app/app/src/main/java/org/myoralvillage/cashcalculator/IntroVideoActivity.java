@@ -109,8 +109,103 @@ public class IntroVideoActivity extends AppCompatActivity {
         getFadeOut(finger, 0).start();
         getFadeOut(black, 0).start();
         if (usesDecimal()) {
-            switch (getIntent().getIntExtra("animationStage", 0)) {
 
+            switch (getIntent().getIntExtra("animationStage", 0)) {
+                case 0:
+                    wait(1000);
+                    runAddDenomination(-9);
+                    wait(500);
+                    runRemoveDenomination();
+                    wait(500);
+                    runAddDenomination(-6);
+                    wait(500);
+                    runRemoveDenomination();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-7);
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 1:
+                    wait(1500);
+                    runAddDenomination(-6);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-9);
+                    wait(500);
+                    runSwitchToSubtraction();
+                    break;
+                case 2:
+                    wait(1500);
+                    runAddDenomination(-7);
+                    wait(250);
+                    runAddDenomination(-7);
+                    wait(500);
+                    runCalculate();
+                    wait(750);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(1);
+                    wait(500);
+                    runSwitchToMultiplication();
+                    break;
+                case 3:
+                    wait(1500);
+                    runAddDenomination(-6);
+                    wait(750);
+                    runCalculate();
+                    wait(1000);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-7);
+                    wait(500);
+                    runSwitchToMultiplication();
+                    break;
+                case 4:
+                    wait(1500);
+                    runAddDenomination(-6);
+                    wait(750);
+                    runCalculate();
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 5:
+                    wait(1500);
+                    runAddDenomination(-5);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-8);
+                    wait(500);
+                    runSwitchToMultiplication();
+                    break;
+                case 6:
+                    wait(1500);
+                    runAddDenomination(-6);
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 7:
+                    wait(1500);
+                    runAddDenomination(-6);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runExit();
             }
         } else {
             switch (getIntent().getIntExtra("animationStage", 0)) {
@@ -208,8 +303,7 @@ public class IntroVideoActivity extends AppCompatActivity {
                     wait(500);
                     runCalculate();
                     wait(1000);
-                    runFadeOut();
-
+                    runExit();
             }
         }
         AnimatorSet set = new AnimatorSet();

@@ -105,7 +105,117 @@ public class AdvancedVideoActivity extends AppCompatActivity {
         getFadeOut(black, 0).start();
         if (usesDecimal()) {
             switch (getIntent().getIntExtra("animationStage", 0)) {
-
+                case 0:
+                    wait(1000);
+                    runAddDenomination(-11);
+                    wait(500);
+                    runSwitchToSubtraction();
+                    break;
+                case 1:
+                    wait(1500);
+                    runAddDenomination(-10);
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 2:
+                    wait(1500);
+                    runAddDenomination(-9);
+                    wait(500);
+                    runAddDenomination(-9);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runEnterHistory();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runPrev();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-9);
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 3:
+                    wait(1500);
+                    runAddDenomination(-8);
+                    wait(500);
+                    runSwitchToMultiplication();
+                    break;
+                case 4:
+                    wait(1500);
+                    runAddDenomination(-4);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runEnterHistory();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runAddDenomination(-9);
+                    wait(500);
+                    runNext();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runClear();
+                    wait(500);
+                    runFadeOutAndIn();
+                    wait(1500);
+                    runAddDenomination(-8);
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 5:
+                    wait(1500);
+                    runAddDenomination(-7);
+                    wait(500);
+                    runSwitchToAddition();
+                    break;
+                case 6:
+                    wait(1500);
+                    runAddDenomination(-6);
+                    wait(500);
+                    runSwitchToMultiplication();
+                    break;
+                case 7:
+                    wait(1500);
+                    runAddDenomination(-5);
+                    wait(500);
+                    runSwitchToSubtraction();
+                    break;
+                case 8:
+                    wait(1500);
+                    runAddDenomination(-8);
+                    wait(500);
+                    runCalculate();
+                    wait(1000);
+                    runEnterHistory();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runRemoveDenomination();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runNext();
+                    wait(1000);
+                    runClear();
+                    wait(1500);
+                    runExit();
             }
         } else {
             switch (getIntent().getIntExtra("animationStage", 0)) {
@@ -183,8 +293,6 @@ public class AdvancedVideoActivity extends AppCompatActivity {
                     wait(1500);
                     runAddDenomination(-5);
                     wait(500);
-                    runAddDenomination(-4);
-                    wait(500);
                     runSwitchToAddition();
                     break;
                 case 6:
@@ -209,7 +317,7 @@ public class AdvancedVideoActivity extends AppCompatActivity {
                     wait(1000);
                     runNext();
                     wait(1000);
-                    runRemoveSecondDenomination();
+                    runRemoveDenomination();
                     wait(1000);
                     runNext();
                     wait(1000);
@@ -221,7 +329,6 @@ public class AdvancedVideoActivity extends AppCompatActivity {
                     wait(1000);
                     runClear();
                     wait(1500);
-                    runFadeOut();
                     runExit();
             }
         }
@@ -274,12 +381,6 @@ public class AdvancedVideoActivity extends AppCompatActivity {
 
     private void runRemoveDenomination() {
         animateFingerTap(0, 0, elapsed, 1000);
-        removeDenomination(elapsed + 800);
-        elapsed += 1000;
-    }
-
-    private void runRemoveSecondDenomination() {
-        animateFingerTap(150, 0, elapsed, 1000);
         removeDenomination(elapsed + 800);
         elapsed += 1000;
     }

@@ -74,12 +74,14 @@ public class NumericVideoActivity extends AppCompatActivity {
                 .findFragmentById(R.id.TutorialFragment);
         if (fragment != null) {
             fragment.initialize(currencyName);
+            fragment.switchToNumericMode();
         }
         currencyScrollbar = fragment.getCurrencyScrollbarView();
         currency = currencyScrollbar.getCurrency();
         numDenominations = currency.getDenominations().size();
         countingTable = fragment.getCountingTableView();
         numberPad = fragment.getNumberPadView();
+        numberPad.setVisibility(View.VISIBLE);
         horizontalOffsets = currencyScrollbar.getHorizontalOffsetsInPixels();
         verticalOffsets = currencyScrollbar.getVerticalOffsetsInPixels();
         animations = new ArrayList<>();
@@ -200,10 +202,8 @@ public class NumericVideoActivity extends AppCompatActivity {
                 wait(750);
                 runNext();
                 wait(1000);
-                runFadeOut();
                 runExit();
         }
-        fragment.switchToNumericMode();
         AnimatorSet set = new AnimatorSet();
         set.playTogether(animations);
         set.start();
